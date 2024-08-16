@@ -27,6 +27,8 @@ const CreateUser: React.FC = () => {
     password: '',
     confirmPassword: '',
   });
+  const [errorMessage, setErrorMessage] = useState<string | undefined>();
+  const [success, setSuccess] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,16 +36,16 @@ const CreateUser: React.FC = () => {
       ...user,
       [e.target.name]: e.target.value,
     });
+    setErrorMessage(undefined);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (user.password !== user.confirmPassword) {
       alert('Passwords do not match');
       return;
     } else {
-      console.log(user);
-      register(
+      const result = await register(
         user.firstName,
         user.lastName,
         user.email,
@@ -52,7 +54,15 @@ const CreateUser: React.FC = () => {
         user.dob,
         user.password,
       );
-      navigate('/login');
+
+      if (result.success) {
+        setSuccess(true);
+        setTimeout(() => {
+          navigate('/login');
+        }, 1000);
+      } else {
+        setErrorMessage(result.message);
+      }
     }
   };
 
@@ -119,10 +129,13 @@ const CreateUser: React.FC = () => {
               onChange={handleChange}
               placeholder={placeholder}
               className="formInput"
+              required
             />
           </label>
         ))}
         <Button className="submitButton">Create User</Button>
+        {errorMessage && <div className="errorMessage">{errorMessage}</div>}
+        {success && <p className="successMessage">Successfully registered</p>}
         <br />
         <div className="loginPrompt">Already have an account?</div>
 

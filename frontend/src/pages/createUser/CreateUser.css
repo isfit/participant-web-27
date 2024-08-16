@@ -29,6 +29,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-width: 300px;
 }
 
 
@@ -63,6 +64,17 @@
 .submitButton {
     margin-top: var(--margin);
     width: 100%;
+}
+
+.errorMessage {
+    color: red;
+    margin-top: var(--margin);
+
+}
+
+.successMessage {
+    color: green;
+    margin-top: var(--margin);
 }
 
 .loginPrompt {
