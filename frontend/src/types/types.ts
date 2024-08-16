@@ -6,6 +6,7 @@ export interface User {
     country: string;
     address: string;
     dateBirth: string;
+    role: string;
 }
 
 export interface AuthTokens {

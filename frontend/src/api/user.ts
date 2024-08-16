@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { ROLES } from '../config/roles';
 
 
 export const register = async (firstName: string, lastName: string, email: string, phone: string, country: string, dateBirth: string, password: string) => {
@@ -9,7 +10,8 @@ export const register = async (firstName: string, lastName: string, email: strin
         "phone": phone,
         "password": password,
         "country": country,
-        "dateBirth": dateBirth
+        "dateBirth": dateBirth,
+        "role": ROLES.USER
     });
     let config = {
         method: 'post',
