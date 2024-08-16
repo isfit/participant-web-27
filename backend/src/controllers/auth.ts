@@ -3,13 +3,27 @@ import bcrypt from "bcrypt"
 import User from "../models/User"
 import { Request, Response, NextFunction } from "express"
 import exp from "constants"
+import {body, validationResult} from 'express-validator';
 
 
 // Register
-const register = async (req: Request, res: Response, next: NextFunction) => {
+const register = [
+//Validation
+body('firstName').isString().isLength({min: 2, max: 50}).withMessage('First name is invalid'),
+body('lastName').isString().isLength({min: 2, max: 50}).withMessage('Last name is invalid'),
+body('email').isEmail().withMessage('Invalid email'),
+body('phone').isString().isLength({min: 10, max: 15}).withMessage('Phone number is invalid'),
+body('country').isString().isLength({min: 2, max: 50}).withMessage('Country is required'),
+body('dateBirth').isDate().withMessage('Date of birth is invalid'),
+body('password').isString().isLength({min: 8, max: 50}).withMessage('Password must be at least 8 characters long'),
+
+async (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
     const { firstName, lastName, email, phone, country, dateBirth, password } = req.body;
     try {
-
         const birthDate = Date.parse(dateBirth);
         const user = new User({
             firstName,
@@ -26,6 +40,7 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
         next(error)
     }
 }
+]
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
