@@ -6,24 +6,16 @@ import Header from '../../components/Header/Header';
 import './CreateUser.css';
 
 interface User {
-  firstName: string;
-  lastName: string;
+  fullName: string;
   email: string;
-  phone: string;
-  country: string;
-  dob: string;
   password: string;
   confirmPassword: string;
 }
 
 const CreateUser: React.FC = () => {
   const [user, setUser] = useState<User>({
-    firstName: '',
-    lastName: '',
+    fullName: '',
     email: '',
-    phone: '',
-    country: '',
-    dob: '',
     password: '',
     confirmPassword: '',
   });
@@ -44,12 +36,8 @@ const CreateUser: React.FC = () => {
     } else {
       console.log(user);
       register(
-        user.firstName,
-        user.lastName,
+        user.fullName,
         user.email,
-        user.phone,
-        user.country,
-        user.dob,
         user.password,
       );
       navigate('/login');
@@ -62,40 +50,16 @@ const CreateUser: React.FC = () => {
       <form onSubmit={handleSubmit} className="formContainer">
         {[
           {
-            label: 'First name',
-            name: 'firstName',
+            label: 'Full name',
+            name: 'fullName',
             type: 'text',
-            placeholder: 'John',
-          },
-          {
-            label: 'Last name',
-            name: 'lastName',
-            type: 'text',
-            placeholder: 'Doe',
+            placeholder: 'John Doe',
           },
           {
             label: 'Email',
             name: 'email',
             type: 'email',
             placeholder: 'name@email.com',
-          },
-          {
-            label: 'Phone Number',
-            name: 'phone',
-            type: 'tel',
-            placeholder: '+49 012 345 6789',
-          },
-          {
-            label: 'Country of Residence',
-            name: 'country',
-            type: 'text',
-            placeholder: 'Germany',
-          },
-          {
-            label: 'Date of Birth',
-            name: 'dob',
-            type: 'date',
-            placeholder: '',
           },
           {
             label: 'Password',

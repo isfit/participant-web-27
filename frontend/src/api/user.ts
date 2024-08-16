@@ -1,15 +1,11 @@
 import axios from 'axios';
 
 
-export const register = async (firstName: string, lastName: string, email: string, phone: string, country: string, dateBirth: string, password: string) => {
+export const register = async (fullName: string, email: string, password: string) => {
     let data = JSON.stringify({
-        "firstName": firstName,
-        "lastName": lastName,
+        "fullName": fullName,
         "email": email,
-        "phone": phone,
         "password": password,
-        "country": country,
-        "dateBirth": dateBirth
     });
     let config = {
         method: 'post',
