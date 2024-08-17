@@ -28,7 +28,7 @@ const uri: string =
 })();
 
 app.use('/auth', auth);
-app.use('/user', user);
+app.use('/api', user);
 
 app.get('/health', (_req: Request, res: Response) => {
     res.status(200).send('Server is running');
