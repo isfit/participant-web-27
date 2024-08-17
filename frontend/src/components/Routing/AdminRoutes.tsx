@@ -17,6 +17,7 @@ const ProtectedAdminRoute: React.FC<Props> = ({ children }) => {
     console.log(user?.role);
     return <Navigate to="/login" />;
   }
+  console.log('User role ' + user?.role);
   return children;
 };
 
