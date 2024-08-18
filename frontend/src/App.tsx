@@ -33,7 +33,7 @@ const App: React.FC = () => {
           {/* Add more routes here if needed */}
           {/* <Route path="*" element={<NotFoundPage />} /> */}
           <Route
-            path="/adminPage"
+            path="/admin"
             element={
               <ProtectedAdminRoute>
                 <AdminPage />

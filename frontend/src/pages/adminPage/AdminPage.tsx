@@ -6,8 +6,12 @@ import './AdminPage.css';
 
 const AdminPage: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
-  //remove quotes from token to get rid of the error
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+
+
   const token = JSON.parse(localStorage.getItem('authTokens') || '');
+
 
   const fetchUsers = async () => {
     try {
@@ -15,6 +19,10 @@ const AdminPage: React.FC = () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        params: {
+          startDate : startDate || undefined,
+          endDate : endDate || undefined,
+        }
       });
 
       const users = response.data; 
@@ -28,11 +36,13 @@ const AdminPage: React.FC = () => {
 
   useEffect(() => {
       const getUsers = async () => {
-          const data = await fetchUsers();
-          setUsers(data);
+        const users = await fetchUsers();
+        setUsers(users);
+      }
+      getUsers();
   }
-  getUsers();
-  }, []);
+  , [startDate, endDate]);
+
 
 
   const exportToCSV = () => {
@@ -60,6 +70,24 @@ const AdminPage: React.FC = () => {
       </div>
       <div>
         <h2>Applicants</h2>
+        <div className="filterContainer">
+          <label>
+            Start Date:
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+          </label>
+          <label>
+            End Date:
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+            />
+          </label>
+        </div>
         <button onClick={exportToCSV}>Export to CSV</button>
         <div className='tableContainer'>
           <table>

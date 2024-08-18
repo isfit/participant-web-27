@@ -3,7 +3,7 @@ import { ROLES } from '../config/roles';
 
 
 export const register = async (firstName: string, lastName: string, email: string, phone: string, country: string, dateBirth: string, password: string) => {
-    let data = JSON.stringify({
+    const data = JSON.stringify({
         "firstName": firstName,
         "lastName": lastName,
         "email": email,
@@ -13,7 +13,7 @@ export const register = async (firstName: string, lastName: string, email: strin
         "dateBirth": dateBirth,
         "role": ROLES.USER
     });
-    let config = {
+    const config = {
         method: 'post',
         maxBodyLength: Infinity,
         url: 'http://localhost:4000/auth/register',

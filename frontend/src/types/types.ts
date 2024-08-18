@@ -9,6 +9,7 @@ export interface User {
     dateBirth: string;
     phone: string;
     role: string;
+    createdAt: string;
 }
 
 export interface AuthTokens {
