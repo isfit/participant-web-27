@@ -312,7 +312,7 @@ const ApplicationForm: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="applicationFormContainer">
       <div className="topRight">
         <Link to="/login" style={{ color: 'white' }}>
           <Button>Login</Button>

@@ -1,6 +1,6 @@
-:root {
+.createUser {
     --primary-bg: rgba(74, 56, 56, 0.31);
-    --primary-color: #4a3838;
+    --primary-color: white;
     --secondary-color: white;
     --input-bg: white;
     --input-text: black;
@@ -22,10 +22,7 @@
 }
 
 .formContainer {
-    background-color: var(--secondary-color);
     padding: 20px 60px 40px 60px;
-    border-radius: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -63,18 +60,22 @@
 .submitButton {
     margin-top: var(--margin);
     width: 100%;
+    color: var(--primary-color);
+
 }
 
-.createUserPrompt {
+.loginPrompt {
     margin-top: var(--margin);
     color: var(--primary-color);
 }
 
-.createUserButton {
+.loginButton {
     margin-top: var(--margin);
+    color: var(--primary-color);
+
 }
 
-.createUserLink {
+.loginLink {
     color: var(--secondary-color);
     text-decoration: none;
 }
