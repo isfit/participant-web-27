@@ -44,6 +44,8 @@ const ApplicationForm: React.FC = () => {
     consentMedia: false,
   });
   const [redirect, setRedirect] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -81,8 +83,10 @@ const ApplicationForm: React.FC = () => {
     try {
       const response = await apply(formData);
       if (response.status === 201) {
-        alert('Thank you for your application! A confirmation email will be sent to you shortly.');
-        setRedirect(true);
+        setSubmitted(true);
+        setTimeout(() => {
+          setRedirect(true);
+        }, 5000);
       } else {
         console.log('Error submitting application:', response.data.message);
       }
@@ -255,10 +259,17 @@ const ApplicationForm: React.FC = () => {
       </div>
       <Header linkTo="/homepage" />
 
+      {submitted ? (
+        <div className="outerContainer">
+          <h1 className="applicationSectionHeader">Application submitted</h1>
+          <p>Thank you for applying to ISFiT!</p>
+        </div>
+      ) : (
+      <>
       <div className="outerContainer">
           <h1 className="applicationSectionHeader">Application Form</h1>
           <p>Hey! Awesome that you want to apply for ISFiT 2025, please fill out all required fields.</p>
-          </div>
+      </div>
 
       <form className="applicationForm" onSubmit={handleSubmit}>
         <div id="applicationContainer">
@@ -290,6 +301,8 @@ const ApplicationForm: React.FC = () => {
         </div>
         <Button type="submit">Apply</Button>
       </form>
+      </>
+      )};
     </div>
   );
 };

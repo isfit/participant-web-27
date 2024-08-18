@@ -12,3 +12,15 @@ export const apply = async (applicationForm: FormData) => {
 
   return response;
 };
+
+export const getApplications = async () => {
+  const token = JSON.parse(localStorage.getItem('authTokens') || '');
+
+  const response = await axios.get('http://localhost:4000/api/application/applications', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response;
+};

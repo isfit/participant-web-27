@@ -25,6 +25,7 @@ export interface AuthContextType {
 }
 
 export interface IApplicationForm {
+    _id?: string;
     fullName: string;
     dateOfBirth: string;
     gender: string;
@@ -58,4 +59,5 @@ export interface IApplicationForm {
     consentPersonalDetails: boolean;
     consentAttendance: boolean;
     consentMedia: boolean;
+    createdAt?: string;
   }

@@ -86,5 +86,28 @@ const submitApplication = async (req: Request, res: Response, next: NextFunction
       next(error);
     }
   };
+
+  const getApplications = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+      const { startDate, endDate } = req.query;
+
+      const dateFilter: any = {};
+      if (startDate) {
+        dateFilter.$gte = new Date(startDate as string);
+      }
+      if (endDate) {
+        dateFilter.$lte = new Date(endDate as string);
+      }
+
+      const query = startDate || endDate ? { createdAt: dateFilter } : {};
+
+      const applications = await Application.find(query);
   
-  export default submitApplication;
+      res.status(200).json(applications);
+    } catch (error) {
+      next(error);
+    }
+  }
+  
+export { submitApplication, getApplications };
