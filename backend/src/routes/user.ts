@@ -17,10 +17,4 @@ router.get('/adminPage', authenticate, checkRole(ROLES.ADMIN), (req, res) => {
 
 router.get('/users', authenticate, checkRole(ROLES.ADMIN), getAllUsers);
 
-
-
-router.get("/refresh")
-
-router.get("/logout")
-
 export default router

@@ -13,10 +13,4 @@ router.post('/apply', authenticate, upload.single('studentCertificate'), submitA
 
 router.get('/applications', authenticate, checkRole(ROLES.ADMIN), getApplications);
 
-
-
-router.get("/refresh")
-
-router.get("/logout")
-
 export default router
