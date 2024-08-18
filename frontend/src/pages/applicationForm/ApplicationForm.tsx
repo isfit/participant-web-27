@@ -91,7 +91,6 @@ const ApplicationForm: React.FC = () => {
   });
 
   const [currentStep, setCurrentStep] = useState(0);
-  const [errors, setErrors] = useState<string[]>([]);
 
   useEffect(() => {
     localStorage.setItem('applicationForm', JSON.stringify(formValues));
@@ -130,7 +129,6 @@ const ApplicationForm: React.FC = () => {
       }
     });
 
-    setErrors(stepErrors);
     return stepErrors.length === 0;
   };
 
@@ -348,18 +346,6 @@ const ApplicationForm: React.FC = () => {
       </span>
   ))}
 </div>
-
-
-        {errors.length > 0 && (
-          <div className="errorSummary">
-            <p>Please fill out the following fields:</p>
-            <ul>
-              {errors.map((error, index) => (
-                <li key={index}>{error}</li>
-              ))}
-            </ul>
-          </div>
-        )}
 
         <form className="applicationForm" onSubmit={handleSubmit}>
           <div id="applicationContainer">
