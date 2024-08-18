@@ -239,3 +239,40 @@ label {
     color: var(--secondary-color);
     text-decoration: none;
 }
+
+  .navigationButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+
+
+  .progressOverview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    background-color: rgba(37, 37, 37, 0.431);
+    border-radius: 20px;
+    padding: 20px;
+    width: 100%;
+  }
+  
+  .progressStep {
+    margin: 0 10px;
+    position: relative;
+  }
+  
+  .currentStep {
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+  
+  .separator {
+    margin: 0 5px;
+    color: #888; /* Optional: style for the arrow separator */
+  }
+  
