@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import './ApplicationForm.css';
 import { IApplicationForm } from '../../types/types';
+import { apply } from '../../api/application';
+import { Navigate } from 'react-router-dom';
 
 const ApplicationForm: React.FC = () => {
   const [formValues, setFormValues] = useState<IApplicationForm>({
@@ -41,6 +43,8 @@ const ApplicationForm: React.FC = () => {
     consentAttendance: false,
     consentMedia: false,
   });
+  const [redirect, setRedirect] = useState(false);
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -60,11 +64,36 @@ const ApplicationForm: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Form submitted:', formValues);
     
+    const formData = new FormData();
+    
+    Object.entries(formValues).forEach(([key, value]) => {
+      //add the studentCertificate as a file if it exists
+      if (key === 'studentCertificate' && value) {
+        formData.append(key, value as File); 
+      } else {
+        formData.append(key, String(value)); 
+      }
+    });
+  
+    try {
+      const response = await apply(formData);
+      if (response.status === 201) {
+        alert('Thank you for your application! A confirmation email will be sent to you shortly.');
+        setRedirect(true);
+      } else {
+        console.log('Error submitting application:', response.data.message);
+      }
+    } catch (error) {
+      console.error('Error submitting application:', error);
+    }
   };
+
+  if (redirect) {
+    return <Navigate to="/homepage" />;
+  }
 
   const personalDetails: Array<{ label: string; name: keyof IApplicationForm; type: string; options?: string[]; placeholder?: string; required?: boolean }> = [
     { label: 'Full Name', name: 'fullName', type: 'text', placeholder: 'John Doe', required: true },
@@ -259,7 +288,7 @@ const ApplicationForm: React.FC = () => {
           {consentSection.map(renderInput)}
           </div>
         </div>
-        <Button type="submit" onSubmit={handleSubmit}>Apply</Button>
+        <Button type="submit">Apply</Button>
       </form>
     </div>
   );

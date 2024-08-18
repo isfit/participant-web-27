@@ -70,6 +70,7 @@ const ApplicationSchema: Schema = new Schema({
   consentPersonalDetails: { type: Boolean, required: true },
   consentAttendance: { type: Boolean, required: true },
   consentMedia: { type: Boolean, required: true },
+  createdAt: { type: Date, default: Date.now },
 });
 
 const Application = mongoose.model<IApplication>('Application', ApplicationSchema);

@@ -17,7 +17,6 @@ const submitApplication = async (req: Request, res: Response, next: NextFunction
         studyField,
         university,
         universityWebsite,
-        studentCertificate,
         isEnglishSpeaker,
         tShirtSize,
         applyingAs,
@@ -41,6 +40,8 @@ const submitApplication = async (req: Request, res: Response, next: NextFunction
         consentAttendance,
         consentMedia
       } = req.body;
+
+      const studentCertificate = req.file?.buffer;
   
       const newApplication = new Application({
         fullName,

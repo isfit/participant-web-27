@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import user from './routes/user';
 import auth from './routes/auth';
 import cookieParser from 'cookie-parser';
+import application from './routes/application';
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ const uri: string =
 
 app.use('/auth', auth);
 app.use('/api', user);
+app.use('/api/application', application)
 
 app.get('/health', (_req: Request, res: Response) => {
     res.status(200).send('Server is running');
