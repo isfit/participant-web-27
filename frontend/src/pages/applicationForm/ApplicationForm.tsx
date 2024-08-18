@@ -150,8 +150,7 @@ const ApplicationForm: React.FC = () => {
     e.preventDefault();
     if (validateStep()) {
       console.log('Form submitted:', formValues);
-      // Optionally, you can clear local storage here:
-      // localStorage.removeItem('applicationForm');
+      localStorage.removeItem('applicationForm');
     }
   };
 
