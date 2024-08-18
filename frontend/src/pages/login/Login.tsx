@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@radix-ui/themes';
 import { useAuth } from '../../context/AuthenticationContext';
 import Header from '../../components/Header/Header';
-import './Login.css';
+import styles from './Login.module.css';
 
 interface User {
   email: string;
@@ -37,9 +37,10 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="outerContainer">
+    <div className={styles.login}>
+    <div className={styles.outerContainer}>
       <Header linkTo="/homepage" />
-      <form onSubmit={handleSubmit} className="formContainer">
+      <form onSubmit={handleSubmit} className={styles.formContainer}>
         {[
           {
             label: 'Email',
@@ -54,26 +55,27 @@ const Login: React.FC = () => {
             placeholder: '**********',
           },
         ].map(({ label, name, type, placeholder }) => (
-          <label key={name} className="formSection">
-            <p>{label}</p>
+          <label key={name} className={styles.formSection}>
+            <p className={styles.label}>{label}</p>
             <input
               type={type}
               name={name}
               value={user[name as keyof User]}
               onChange={handleChange}
               placeholder={placeholder}
-              className="formInput"
+              className={styles.formInput}
             />
           </label>
         ))}
-        <Button className="submitButton">Login</Button>
+        <Button className={styles.submitButton}>Login</Button>
         <br />
-        <div className="createUserPrompt">Don't have an account?</div>
+        <div className={styles.createUserPrompt}>Don't have an account?</div>
 
-        <Link to="/createUser" className="createUserLink">
-          <Button className="createUserButton">Create User</Button>
+        <Link to="/createUser" className={styles.createUserLink}>
+          <Button className={styles.createUserButton}>Create User</Button>
         </Link>
       </form>
+    </div>
     </div>
   );
 };
