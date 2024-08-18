@@ -1,6 +1,6 @@
-:root {
+.login {
     --primary-bg: rgba(74, 56, 56, 0.31);
-    --primary-color: #4a3838;
+    --primary-color: white;
     --secondary-color: white;
     --input-bg: white;
     --input-text: black;
@@ -10,7 +10,7 @@
 }
 
 .outerContainer {
-    background-color: var(--primary-bg);
+    background-color: rgba(74, 56, 56, 0.31);
     padding: 20px;
     border-radius: 20px;
     width: 100%;
@@ -18,14 +18,15 @@
     flex-direction: column;
     align-items: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
+.label{
+    color: var(--primary-color) !important;
 }
 
 .formContainer {
-    background-color: var(--secondary-color);
     padding: 20px 60px 40px 60px;
     border-radius: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -38,6 +39,7 @@
     align-items: center;
     width: 100%;
     margin-bottom: var(--margin);
+    color: var(--input-text);
 }
 
 .formSection p {
@@ -47,7 +49,7 @@
 .formSection p {
     margin-bottom: 5px;
     font-size: 1em;
-    color: var(--primary-color);
+    color: var(--input-text);
 }
 
 .formInput {
@@ -63,18 +65,21 @@
 .submitButton {
     margin-top: var(--margin);
     width: 100%;
+    color: var(--primary-color);
 }
 
-.loginPrompt {
+.createUserPrompt {
     margin-top: var(--margin);
     color: var(--primary-color);
 }
 
-.loginButton {
+.createUserButton {
     margin-top: var(--margin);
+    color: var(--primary-color);
 }
 
-.loginLink {
+.createUserLink {
     color: var(--secondary-color);
     text-decoration: none;
+    
 }
