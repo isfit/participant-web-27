@@ -23,3 +23,39 @@ export interface AuthContextType {
     logout: () => void;
     authTokens: AuthTokens | null;
 }
+
+export interface IApplicationForm {
+    fullName: string;
+    dateOfBirth: string;
+    gender: string;
+    nationality: string;
+    continent: string;
+    residenceCountry: string;
+    isStudent: boolean;
+    studyField: string;
+    university: string;
+    universityWebsite?: string;
+    studentCertificate?: File;
+    isEnglishSpeaker: boolean;
+    tShirtSize: string;
+    applyingAs: string;
+    themePowerThoughts: string;
+    countryPowerIssue: string;
+    motivation: string;
+    firstPriority: string;
+    firstPriorityReason: string;
+    secondPriority?: string;
+    secondPriorityReason?: string;
+    thirdPriority?: string;
+    thirdPriorityReason?: string;
+    workshopMandatory: boolean;
+    financialSupportReason: string;
+    dependents: number;
+    familyIncome: string;
+    canParticipate: string;
+    consentVisa: boolean;
+    consentFlight: boolean;
+    consentPersonalDetails: boolean;
+    consentAttendance: boolean;
+    consentMedia: boolean;
+  }

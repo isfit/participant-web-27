@@ -3,45 +3,10 @@ import { Button } from '@radix-ui/themes';
 import { Link } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import './ApplicationForm.css';
-
-interface FormValues {
-  fullName: string;
-  dateOfBirth: string;
-  gender: string;
-  nationality: string;
-  continent: string;
-  residenceCountry: string;
-  isStudent: boolean;
-  studyField: string;
-  university: string;
-  universityWebsite?: string;
-  studentCertificate?: File;
-  isEnglishSpeaker: boolean;
-  tShirtSize: string;
-  applyingAs: string;
-  themePowerThoughts: string;
-  countryPowerIssue: string;
-  motivation: string;
-  firstPriority: string;
-  firstPriorityReason: string;
-  secondPriority?: string;
-  secondPriorityReason?: string;
-  thirdPriority?: string;
-  thirdPriorityReason?: string;
-  workshopMandatory: boolean;
-  financialSupportReason: string;
-  dependents: number;
-  familyIncome: string;
-  canParticipate: string;
-  consentVisa: boolean;
-  consentFlight: boolean;
-  consentPersonalDetails: boolean;
-  consentAttendance: boolean;
-  consentMedia: boolean;
-}
+import { IApplicationForm } from '../../types/types';
 
 const ApplicationForm: React.FC = () => {
-  const [formValues, setFormValues] = useState<FormValues>({
+  const [formValues, setFormValues] = useState<IApplicationForm>({
     fullName: '',
     dateOfBirth: '',
     gender: '',
@@ -98,9 +63,10 @@ const ApplicationForm: React.FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('Form submitted:', formValues);
+    
   };
 
-  const personalDetails: Array<{ label: string; name: keyof FormValues; type: string; options?: string[]; placeholder?: string; required?: boolean }> = [
+  const personalDetails: Array<{ label: string; name: keyof IApplicationForm; type: string; options?: string[]; placeholder?: string; required?: boolean }> = [
     { label: 'Full Name', name: 'fullName', type: 'text', placeholder: 'John Doe', required: true },
     { label: 'Date of Birth', name: 'dateOfBirth', type: 'date', placeholder: 'YYYY-MM-DD', required: true },
     { label: 'Gender', name: 'gender', type: 'select', options: ['Male', 'Female', 'Other'], required: true },
@@ -117,13 +83,13 @@ const ApplicationForm: React.FC = () => {
     { label: 'I am applying as', name: 'applyingAs', type: 'select', options: ['Regular participant', 'SOrCE', 'Coastal Carolina University', 'Dialogue Project'], required: true },
   ];
 
-  const themeSection: Array<{ label: string; name: keyof FormValues; type: string; placeholder?: string; required?: boolean }> = [
+  const themeSection: Array<{ label: string; name: keyof IApplicationForm; type: string; placeholder?: string; required?: boolean }> = [
     { label: "When considering the theme of 'POWER' for ISFiT25, what aspects or dimensions of power come to your mind first?", name: 'themePowerThoughts', type: 'textarea', placeholder: 'When I think of power I think of ...', required: true },
     { label: "Reflecting on your country's context, can you identify a specific power issue? How does this issue manifest, and what are its consequences?", name: 'countryPowerIssue', type: 'textarea', placeholder: 'When reflecting on my country\'s context, an issue regarding power is ...', required: true },
     { label: 'What is your motivation for attending ISFiT25? How do you envision contributing to discussions and activities surrounding this theme during the festival?', name: 'motivation', type: 'textarea', placeholder: 'My motivation for attending ISFiT25 is ...', required: true },
   ];
 
-  const workshopSection: Array<{ label: string; name: keyof FormValues; type: string; placeholder?: string; required?: boolean }> = [
+  const workshopSection: Array<{ label: string; name: keyof IApplicationForm; type: string; placeholder?: string; required?: boolean }> = [
     { label: 'Select your first priority', name: 'firstPriority', type: 'text', placeholder: 'Your first priority', required: true },
     { label: 'Why do you want to attend this workshop? Please give examples of how this workshop relates to your life or to the theme Polarization.', name: 'firstPriorityReason', type: 'textarea', placeholder: 'I want to attend this workshop because ...', required: true },
     { label: 'Select your second priority (optional)', name: 'secondPriority', type: 'text', placeholder: 'Your second priority', required: true },
@@ -133,14 +99,14 @@ const ApplicationForm: React.FC = () => {
     { label: 'By checking this box, I confirm I am aware it is mandatory to participate in the given workshop even if I don´t get any of my priorities', name: 'workshopMandatory', type: 'checkbox', required: true },
   ];
 
-  const financialSupportSection: Array<{ label: string; name: keyof FormValues; type: string; options?: string[]; placeholder?: string; required?: boolean }> = [
+  const financialSupportSection: Array<{ label: string; name: keyof IApplicationForm; type: string; options?: string[]; placeholder?: string; required?: boolean }> = [
     { label: 'Some of the participants get financial support for their trip to participate in ISFiT25. Why do you think that you should be considered for this financial support?', name: 'financialSupportReason', type: 'textarea', placeholder: 'I should be considered to get financial support because ...' },
     { label: 'How many dependents do you have?', name: 'dependents', type: 'number', placeholder: 'Number of dependents' },
     { label: 'What is your family´s monthly income?', name: 'familyIncome', type: 'text', placeholder: 'Your family income' },
     { label: 'I can participate in ISFiT25', name: 'canParticipate', type: 'select', options: ['without any financial support', 'if I get partial financial support', 'if I get full financial support'] },
   ];
 
-  const consentSection: Array<{ label: string; name: keyof FormValues; type: string; placeholder?: string; required?: boolean }> = [
+  const consentSection: Array<{ label: string; name: keyof IApplicationForm; type: string; placeholder?: string; required?: boolean }> = [
     { label: 'I have to apply for a visa if I get accepted as a participant', name: 'consentVisa', type: 'checkbox', required: true },
     { label: 'I am aware that I have to book a flight to Norway on my own even if I get financial support', name: 'consentFlight', type: 'checkbox', required: true },
     { label: 'I agree that ISFiT can keep my personal details to be used later in the festival', name: 'consentPersonalDetails', type: 'checkbox', required: true },
@@ -157,7 +123,7 @@ const ApplicationForm: React.FC = () => {
     required,
   }: {
     label: string;
-    name: keyof FormValues;
+    name: keyof IApplicationForm;
     type: string;
     options?: string[];
     placeholder?: string;
@@ -293,7 +259,7 @@ const ApplicationForm: React.FC = () => {
           {consentSection.map(renderInput)}
           </div>
         </div>
-        <Button type="submit">Apply</Button>
+        <Button type="submit" onSubmit={handleSubmit}>Apply</Button>
       </form>
     </div>
   );
