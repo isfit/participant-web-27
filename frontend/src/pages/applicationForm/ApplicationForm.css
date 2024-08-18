@@ -263,6 +263,8 @@ label {
   .progressStep {
     margin: 0 10px;
     position: relative;
+    cursor: not-allowed; /* By default, steps are not clickable */
+
   }
   
   .currentStep {
@@ -275,4 +277,13 @@ label {
     margin: 0 5px;
     color: #888; /* Optional: style for the arrow separator */
   }
+  
+
+  
+  
+  .clickableStep {
+    cursor: pointer; /* Make visited steps clickable */
+  }
+  
+
   
