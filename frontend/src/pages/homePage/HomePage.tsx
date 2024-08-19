@@ -2,12 +2,16 @@ import React from 'react';
 import { Heading, Text, Box, Button } from '@radix-ui/themes';
 import { Link } from 'react-router-dom';
 import './HomePage.css';
+import { useAuth } from '../../context/AuthenticationContext';
+import { ROLES } from '../../config/roles';
 
 
 const AboutPage: React.FC = () => {
+  const { user } = useAuth();
   return (
     <div className="loginNavbar">
       <div className="topRight">
+        {user?.role === ROLES.ADMIN && <Link to="/admin" style={{ color: 'white'}}><Button>Admin</Button></Link>}
         <Link to="/login" style={{ color: 'white'}}><Button>Login</Button></Link>
         <Link to="/profilePage" style={{ color: 'white'}}><Button>My profile</Button></Link>
       </div>
