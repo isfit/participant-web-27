@@ -10,12 +10,8 @@ import { ROLES } from "../../config/roles";
 // Register
 const register = [
 //Validation
-body('firstName').isString().isLength({min: 2, max: 50}).withMessage('First name is invalid'),
-body('lastName').isString().isLength({min: 2, max: 50}).withMessage('Last name is invalid'),
+body('fullName').isString().isLength({min: 2, max: 100}).withMessage('Name is invalid'),
 body('email').isEmail().withMessage('Invalid email'),
-body('phone').isString().isLength({min: 10, max: 15}).withMessage('Phone number is invalid'),
-body('country').isString().isLength({min: 2, max: 50}).withMessage('Country is required'),
-body('dateBirth').isDate().withMessage('Date of birth is invalid'),
 body('password').isString().isLength({min: 8, max: 50}).withMessage('Password must be at least 8 characters long'),
 body('role').isString().isIn([ROLES.ADMIN, ROLES.USER]).withMessage('Role is invalid'),
 
@@ -24,18 +20,12 @@ async (req: Request, res: Response, next: NextFunction) => {
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-    const { firstName, lastName, email, phone, country, dateBirth, password, role } = req.body;
+    const { fullName, email, password } = req.body;
     try {
-        const birthDate = Date.parse(dateBirth);
         const user = new User({
-            firstName,
-            lastName,
+            fullName,
             email,
-            phone,
             password,
-            country,
-            dateBirth: birthDate,
-            role,
         });
         await user.save();
         res.status(201).json({ message: 'User created' });
