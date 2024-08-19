@@ -8,6 +8,8 @@ import ApplicationForm from './pages/applicationForm/ApplicationForm';
 import { AuthProvider } from './context/AuthenticationContext';
 import PrivateRoute from './components/Routing/PrivateRoutes';
 import ProfilePage from './pages/profilePage/ProfilePage';
+import AdminPage from './pages/adminPage/AdminPage';
+import ProtectedAdminRoute from './components/Routing/AdminRoutes';
 //import NotFoundPage from './pages/NotFoundPage';
 
 const App: React.FC = () => {
@@ -30,6 +32,14 @@ const App: React.FC = () => {
           <Route path="/profilePage" element={<ProfilePage />} />
           {/* Add more routes here if needed */}
           {/* <Route path="*" element={<NotFoundPage />} /> */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedAdminRoute>
+                <AdminPage />
+              </ProtectedAdminRoute>
+            }
+          />
         </Routes>
       </AuthProvider>
     </Router>

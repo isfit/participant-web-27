@@ -1,13 +1,15 @@
 import axios from 'axios';
+import { ROLES } from '../config/roles';
 
 
 export const register = async (fullName: string, email: string, password: string) => {
-    let data = JSON.stringify({
+    const data = JSON.stringify({
         "fullName": fullName,
         "email": email,
         "password": password,
+        "role": ROLES.USER
     });
-    let config = {
+    const config = {
         method: 'post',
         maxBodyLength: Infinity,
         url: 'http://localhost:4000/auth/register',
