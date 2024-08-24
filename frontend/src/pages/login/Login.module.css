@@ -16,6 +16,7 @@ div{
 
 .outerContainer {
     background-color: rgba(74, 56, 56, 0.31);
+    margin-top: 40px;
     padding-top: 20px;
     border-radius: 20px;
     width: 100%;

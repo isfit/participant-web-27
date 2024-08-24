@@ -12,6 +12,7 @@
 .outerContainer {
     background-color: var(--primary-bg);
     padding-top: 40px;
+    margin-top: 40px;
     border-radius: 20px;
     width: 100%;
     display: flex;
