@@ -10,6 +10,10 @@ const AdminPage: React.FC = () => {
   const [endDate, setEndDate] = useState('');
   const [loading, setLoading] = useState<boolean>(true);
 
+  const handleLogout = () => {
+    localStorage.removeItem('authTokens');
+    window.location.reload();
+  }
 
   const token = JSON.parse(localStorage.getItem('authTokens') || '');
 
@@ -128,27 +132,30 @@ const AdminPage: React.FC = () => {
         <Header linkTo="/homepage" />
         <h1 className={loading ? 'adminLoading' : ''}>Admin page</h1>
       </div>
+      <div className='topRight'>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
       <div>
-        <h2>Applicants</h2>
         <div className="filterContainer">
           <label>
-            Start Date:
+            Start Date
             <input
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-            />
+              />
           </label>
           <label>
-            End Date:
+            End Date
             <input
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-            />
+              />
           </label>
         </div>
         <button onClick={exportToCSV}>Export to CSV</button>
+              <h2>Applicants</h2>
         <div className='tableContainer'>
           <table>
             <thead>
