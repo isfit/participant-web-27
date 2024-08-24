@@ -18,13 +18,6 @@ interface IApplication extends Document {
   themePowerThoughts: string;
   countryPowerIssue: string;
   motivation: string;
-  firstPriority: string;
-  firstPriorityReason: string;
-  secondPriority?: string;
-  secondPriorityReason?: string;
-  thirdPriority?: string;
-  thirdPriorityReason?: string;
-  workshopMandatory: boolean;
   financialSupportReason: string;
   dependents: number;
   familyIncome: string;
@@ -54,13 +47,6 @@ const ApplicationSchema: Schema = new Schema({
   themePowerThoughts: { type: String, required: true },
   countryPowerIssue: { type: String, required: true },
   motivation: { type: String, required: true },
-  firstPriority: { type: String, required: true },
-  firstPriorityReason: { type: String, required: true },
-  secondPriority: { type: String },
-  secondPriorityReason: { type: String },
-  thirdPriority: { type: String },
-  thirdPriorityReason: { type: String },
-  workshopMandatory: { type: Boolean, required: true },
   financialSupportReason: { type: String },
   dependents: { type: Number, required: true },
   familyIncome: { type: String, required: true },

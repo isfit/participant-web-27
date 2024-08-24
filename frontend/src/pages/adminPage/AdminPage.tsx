@@ -65,13 +65,6 @@ const AdminPage: React.FC = () => {
         'Theme Power Thoughts', 
         'Country Power Issue', 
         'Motivation', 
-        'First Priority', 
-        'First Priority Reason', 
-        'Second Priority', 
-        'Second Priority Reason', 
-        'Third Priority', 
-        'Third Priority Reason', 
-        'Workshop Mandatory', 
         'Financial Support Reason', 
         'Dependents', 
         'Family Income', 
@@ -100,13 +93,6 @@ const AdminPage: React.FC = () => {
         app.themePowerThoughts,
         app.countryPowerIssue,
         app.motivation,
-        app.firstPriority,
-        app.firstPriorityReason,
-        app.secondPriority || 'N/A',
-        app.secondPriorityReason || 'N/A',
-        app.thirdPriority || 'N/A',
-        app.thirdPriorityReason || 'N/A',
-        app.workshopMandatory ? 'Yes' : 'No',
         app.financialSupportReason,
         app.dependents.toString(),
         app.familyIncome,
@@ -177,13 +163,6 @@ const AdminPage: React.FC = () => {
                 <th>Theme Power Thoughts</th>
                 <th>Country Power Issue</th>
                 <th>Motivation</th>
-                <th>First Priority</th>
-                <th>First Priority Reason</th>
-                <th>Second Priority</th>
-                <th>Second Priority Reason</th>
-                <th>Third Priority</th>
-                <th>Third Priority Reason</th>
-                <th>Workshop Mandatory</th>
                 <th>Financial Support Reason</th>
                 <th>Dependents</th>
                 <th>Family Income</th>
@@ -215,13 +194,6 @@ const AdminPage: React.FC = () => {
                   <td>{application.themePowerThoughts}</td>
                   <td>{application.countryPowerIssue}</td>
                   <td>{application.motivation}</td>
-                  <td>{application.firstPriority}</td>
-                  <td>{application.firstPriorityReason}</td>
-                  <td>{application.secondPriority || 'N/A'}</td>
-                  <td>{application.secondPriorityReason || 'N/A'}</td>
-                  <td>{application.thirdPriority || 'N/A'}</td>
-                  <td>{application.thirdPriorityReason || 'N/A'}</td>
-                  <td>{application.workshopMandatory ? 'Yes' : 'No'}</td>
                   <td>{application.financialSupportReason}</td>
                   <td>{application.dependents}</td>
                   <td>{application.familyIncome}</td>
