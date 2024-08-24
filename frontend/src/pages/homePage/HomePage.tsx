@@ -8,7 +8,7 @@ import { ROLES } from '../../config/roles';
 const HomePage: React.FC = () => {
   const { user } = useAuth();
   return (
-    <div>
+    <div className={styles.homePage}>
       <div className={styles.hamburgerMenu}>
         <div className={styles.hamburgerIcon}></div>
         <div className={styles.hamburgerIcon}></div>

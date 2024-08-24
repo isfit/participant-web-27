@@ -1,23 +1,13 @@
 
-
-.topRight{
-  position: absolute; 
-  top: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px;
-}
-
-.loginNavbar{
-  margin: 30px;
-}
-
-.center-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.homePage{
+  --primary-bg: rgba(74, 56, 56, 0.31);
+  --primary-color: white;
+  --secondary-color: white;
+  --input-bg: white;
+  --input-text: black;
+  --border-radius: 5px;
+  --padding: 10px;
+  --margin: 5px;
 }
 
 .logo{
