@@ -341,9 +341,6 @@ const ApplicationForm: React.FC = () => {
         <Link to="/login" style={{ color: 'white' }}>
           <Button>Login</Button>
         </Link>
-        <Link to="/profilePage" style={{ color: 'white' }}>
-          <Button>My profile</Button>
-        </Link>
       </div>
       <Header linkTo="/homepage" />
   
