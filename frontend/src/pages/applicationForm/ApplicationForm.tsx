@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@radix-ui/themes';
-import { Link } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import './ApplicationForm.css';
 import { IApplicationForm } from '../../types/types';
@@ -317,11 +316,6 @@ const ApplicationForm: React.FC = () => {
 
   return (
     <div className="applicationFormContainer">
-      <div className="topRight">
-        <Link to="/login" style={{ color: 'white' }}>
-          <Button>Login</Button>
-        </Link>
-      </div>
       <Header linkTo="/homepage" />
   
       {submitted ? (
