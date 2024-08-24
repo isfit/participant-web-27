@@ -1,0 +1,102 @@
+
+
+.topRight{
+  position: absolute; 
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+}
+
+.loginNavbar{
+  margin: 30px;
+}
+
+.center-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo{
+  width: 300px;
+  align-items: center;
+}
+
+.applyButton{
+  width: 150px;
+  height: 60px;
+  color: white;
+}
+
+.applyButtonLink{
+  color: white;
+  font-size: 18px;
+}
+
+
+/* HomePage.module.css */
+.hamburgerMenu {
+  position: relative;
+  display: inline-block;
+}
+
+.hamburgerIcon {
+  width: 30px;
+  height: 3px;
+  background-color: white;
+  margin: 5px 0;
+  transition: 0.4s;
+}
+
+.menuContent {
+  display: none;
+  position: absolute;
+  top: 40px;
+  left: 0;
+  background-color: #333;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  flex-direction: column;
+}
+
+.menuContent a {
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.menuContent a:hover {
+  background-color: #575757;
+}
+
+.hamburgerMenu:hover .menuContent {
+  display: flex;
+}
+
+.centerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.logo {
+  max-width: 200px;
+  height: auto;
+}
+
+.applyButtonLink {
+  display: block;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.applyButton {
+  background-color: #007bff;
+  color: white;
+}
