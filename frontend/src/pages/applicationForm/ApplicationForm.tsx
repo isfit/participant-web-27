@@ -79,6 +79,14 @@ const ApplicationForm: React.FC = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name } = e.target;
     const file = e.target.files?.[0];
+    if (file && !['application/pdf', 'image/jpeg', 'image/png'].includes(file.type)) {
+      alert('File must be a PDF, JPEG or PNG');
+      return;
+    }
+    if (file && file.size > 5 * 1024 * 1024) { // 5 MB limit
+      alert('File size exceeds 5 MB');
+      return;
+    }
     setFormValues((prevState) => ({
       ...prevState,
       [name]: file || undefined,
