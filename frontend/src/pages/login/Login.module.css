@@ -9,15 +9,23 @@
     --margin: 5px;
 }
 
+div{
+    max-width: 800px; /* Set maximum width for the container */
+    margin: 0 auto; /* Center the container horizontally */
+  }
+
 .outerContainer {
     background-color: rgba(74, 56, 56, 0.31);
-    padding: 20px;
+    margin-top: 40px;
+    padding-top: 20px;
     border-radius: 20px;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-right: 0px;
 }
 
 .label{
@@ -82,4 +90,11 @@
     color: var(--secondary-color);
     text-decoration: none;
     
+}
+
+
+@media (max-width: 480px) {
+    .login{
+        width: 100%;
+    }
 }
