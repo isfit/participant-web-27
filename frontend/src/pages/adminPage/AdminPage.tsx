@@ -58,6 +58,7 @@ const AdminPage: React.FC = () => {
         'Is Student', 
         'Study Field', 
         'University', 
+        'Student Certificate',
         'University Website', 
         'Is English Speaker', 
         'T-Shirt Size', 
@@ -83,7 +84,11 @@ const AdminPage: React.FC = () => {
         'Consent Media',
         'Application Date (DD/MM/YYYY)'
       ],
-      ...applications.map(app => [
+      ...applications.map(app => {
+        const certificateLink = app.studentCertificate 
+          ? `data:application/pdf;base64,${app.studentCertificate}` 
+          : 'N/A';        
+        return [
         app.fullName,
         new Date(app.dateOfBirth).toLocaleDateString('en-GB'),
         app.gender,
@@ -93,6 +98,7 @@ const AdminPage: React.FC = () => {
         app.isStudent ? 'Yes' : 'No',
         app.studyField,
         app.university,
+        certificateLink !== 'N/A' ? certificateLink : 'N/A',
         app.universityWebsite || 'N/A',
         app.isEnglishSpeaker ? 'Yes' : 'No',
         app.tShirtSize,
@@ -117,7 +123,7 @@ const AdminPage: React.FC = () => {
         app.consentAttendance ? 'Yes' : 'No',
         app.consentMedia ? 'Yes' : 'No',
         app.createdAt ? new Date(app.createdAt).toLocaleDateString('en-GB') : 'N/A'
-      ])
+      ];})
     ];
   
     const csvContent = 'data:text/csv;charset=utf-8,' + csvRows.map(e => e.join(',')).join('\n');
@@ -170,6 +176,7 @@ const AdminPage: React.FC = () => {
                 <th>Is Student</th>
                 <th>Study Field</th>
                 <th>University</th>
+                <th>Student Certificate</th>
                 <th>University Website</th>
                 <th>Is English Speaker</th>
                 <th>T-Shirt Size</th>
@@ -208,6 +215,13 @@ const AdminPage: React.FC = () => {
                   <td>{application.isStudent ? 'Yes' : 'No'}</td>
                   <td>{application.studyField}</td>
                   <td>{application.university}</td>
+                  <td>
+                    {application.studentCertificate ? (
+                      <a href={`data:application/pdf;base64,${application.studentCertificate}`} download>
+                        Download
+                      </a>
+                    ) : 'N/A'}
+                  </td>                 
                   <td>{application.universityWebsite || 'N/A'}</td>
                   <td>{application.isEnglishSpeaker ? 'Yes' : 'No'}</td>
                   <td>{application.tShirtSize}</td>
