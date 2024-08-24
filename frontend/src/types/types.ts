@@ -42,13 +42,6 @@ export interface IApplicationForm {
     themePowerThoughts: string;
     countryPowerIssue: string;
     motivation: string;
-    firstPriority: string;
-    firstPriorityReason: string;
-    secondPriority?: string;
-    secondPriorityReason?: string;
-    thirdPriority?: string;
-    thirdPriorityReason?: string;
-    workshopMandatory: boolean;
     financialSupportReason: string;
     dependents: number;
     familyIncome: string;

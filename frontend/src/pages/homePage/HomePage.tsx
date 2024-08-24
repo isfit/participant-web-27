@@ -18,7 +18,6 @@ const HomePage: React.FC = () => {
             <Link to="/admin">Admin</Link>
           )}
           <Link to="/login">Login</Link>
-          <Link to="/profilePage">My profile</Link>
         </div>
       </div>
 
