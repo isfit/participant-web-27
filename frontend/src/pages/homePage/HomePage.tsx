@@ -13,6 +13,11 @@ const HomePage: React.FC = () => {
     setMenuOpen(!menuOpen);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('authTokens');
+    window.location.reload();
+  }
+
   return (
     <div className={styles.homePage}>
       <div className={styles.hamburgerMenu} onClick={toggleMenu}>
@@ -26,11 +31,14 @@ const HomePage: React.FC = () => {
           <Link to="/admin">Admin</Link>
         )}
         <Link to="/login">Login</Link>
+        {user ? <Button onClick={handleLogout}>Logout</Button> : ''}
+
       </div>
 
       <div className={styles.centerContainer}>
         <img src={'/isfit_log.png'} alt="Logo" className={styles.logo} />
-      </div>
+
+   
       <br />
       <Link to="/applicationForm" className={styles.applyButtonLink}>
         <Button className={styles.applyButton}>Apply now!</Button>
@@ -49,6 +57,8 @@ Each festival centers around a unique theme, and for 2025, we will be exploring 
       </p>
       </div>
     </div>
+    </div>
+
   );
 };
 
