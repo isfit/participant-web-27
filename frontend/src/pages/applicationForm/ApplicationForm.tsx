@@ -317,11 +317,6 @@ const ApplicationForm: React.FC = () => {
 
   return (
     <div className="applicationFormContainer">
-      <div className="topRight">
-        <Link to="/login" style={{ color: 'white' }}>
-          <Button>Login</Button>
-        </Link>
-      </div>
       <Header linkTo="/homepage" />
   
       {submitted ? (

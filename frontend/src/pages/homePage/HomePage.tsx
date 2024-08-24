@@ -12,7 +12,8 @@ const AboutPage: React.FC = () => {
     <div className="loginNavbar">
       <div className="topRight">
         {user?.role === ROLES.ADMIN && <Link to="/admin" style={{ color: 'white'}}><Button>Admin</Button></Link>}
-        <Link to="/login" style={{ color: 'white'}}><Button>Login</Button></Link>
+        {!user ? <Link to="/login" style={{ color: 'white'}}><Button>Login</Button></Link> : ''}
+        {user ? <Link to="/login" style={{ color: 'white'}}><Button>Logout</Button></Link> : ''}
       </div>
      
       <div className="center-container">
