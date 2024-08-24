@@ -13,7 +13,6 @@ const AboutPage: React.FC = () => {
       <div className="topRight">
         {user?.role === ROLES.ADMIN && <Link to="/admin" style={{ color: 'white'}}><Button>Admin</Button></Link>}
         <Link to="/login" style={{ color: 'white'}}><Button>Login</Button></Link>
-        <Link to="/profilePage" style={{ color: 'white'}}><Button>My profile</Button></Link>
       </div>
      
       <div className="center-container">
