@@ -1,0 +1,25 @@
+.tableContainer {
+    margin: 20px 0 0 0;
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 10px;
+    background-color: rgba(77, 58, 58, 0.1);
+  }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 10px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #29292976;
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: #2020201d;
+  }

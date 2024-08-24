@@ -3,27 +3,19 @@ import { Button } from '@radix-ui/themes';
 import { Link, useNavigate } from 'react-router-dom';
 import { register } from '../../api/user';
 import Header from '../../components/Header/Header';
-import './CreateUser.css';
+import styles from './CreateUser.module.css';
 
 interface User {
-  firstName: string;
-  lastName: string;
+  fullName: string;
   email: string;
-  phone: string;
-  country: string;
-  dob: string;
   password: string;
   confirmPassword: string;
 }
 
 const CreateUser: React.FC = () => {
   const [user, setUser] = useState<User>({
-    firstName: '',
-    lastName: '',
+    fullName: '',
     email: '',
-    phone: '',
-    country: '',
-    dob: '',
     password: '',
     confirmPassword: '',
   });
@@ -43,59 +35,28 @@ const CreateUser: React.FC = () => {
       return;
     } else {
       console.log(user);
-      register(
-        user.firstName,
-        user.lastName,
-        user.email,
-        user.phone,
-        user.country,
-        user.dob,
-        user.password,
-      );
+      register(user.fullName, user.email, user.password);
       navigate('/login');
     }
   };
 
   return (
-    <div className="outerContainer">
+    <div className={styles.createUser}>
+    <div className={styles.outerContainer}>
       <Header linkTo="/homepage" />
-      <form onSubmit={handleSubmit} className="formContainer">
+      <form onSubmit={handleSubmit} className={styles.formContainer}>
         {[
           {
-            label: 'First name',
-            name: 'firstName',
+            label: 'Full name',
+            name: 'fullName',
             type: 'text',
-            placeholder: 'John',
-          },
-          {
-            label: 'Last name',
-            name: 'lastName',
-            type: 'text',
-            placeholder: 'Doe',
+            placeholder: 'John Doe',
           },
           {
             label: 'Email',
             name: 'email',
             type: 'email',
             placeholder: 'name@email.com',
-          },
-          {
-            label: 'Phone Number',
-            name: 'phone',
-            type: 'tel',
-            placeholder: '+49 012 345 6789',
-          },
-          {
-            label: 'Country of Residence',
-            name: 'country',
-            type: 'text',
-            placeholder: 'Germany',
-          },
-          {
-            label: 'Date of Birth',
-            name: 'dob',
-            type: 'date',
-            placeholder: '',
           },
           {
             label: 'Password',
@@ -110,7 +71,7 @@ const CreateUser: React.FC = () => {
             placeholder: '**********',
           },
         ].map(({ label, name, type, placeholder }) => (
-          <label key={name} className="formSection">
+          <label key={name} className={styles.formSection}>
             <p>{label}</p>
             <input
               type={type}
@@ -118,18 +79,19 @@ const CreateUser: React.FC = () => {
               value={user[name as keyof User]}
               onChange={handleChange}
               placeholder={placeholder}
-              className="formInput"
+              className={styles.formInput}
             />
           </label>
         ))}
-        <Button className="submitButton">Create User</Button>
+        <Button className={styles.submitButton}>Create User</Button>
         <br />
-        <div className="loginPrompt">Already have an account?</div>
+        <div className={styles.loginPrompt}>Already have an account?</div>
 
-        <Link to="/login" className="loginLink">
-          <Button className="loginButton">Login</Button>
+        <Link to="/login" className={styles.loginLink}>
+          <Button className={styles.loginButton}>Login</Button>
         </Link>
       </form>
+    </div>
     </div>
   );
 };

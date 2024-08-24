@@ -1,14 +1,20 @@
 import express from 'express';
 import authenticate from '../middleware/auth';
+import checkRole from '../middleware/checkRole';
+import { ROLES } from '../../config/roles';
+import { getAllUsers } from '../controllers/users';
 
 const router = express.Router();
 
 router.get('/profile', authenticate, (req, res) => {
-    res.json({ message: `Welcome ${req.body.user.firstName} ${req.body.user.lastName}` })
+    res.json({ message: `Welcome ${req.body.user.fullName}` })
 });
 
-router.get("/refresh")
 
-router.get("/logout")
+router.get('/adminPage', authenticate, checkRole(ROLES.ADMIN), (req, res) => {
+    res.json({ message: 'Welcome ' + req.body.user.fullName + ' to the admin page' });
+});
+
+router.get('/users', authenticate, checkRole(ROLES.ADMIN), getAllUsers);
 
 export default router
