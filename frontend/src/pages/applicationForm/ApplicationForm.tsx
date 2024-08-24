@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@radix-ui/themes';
-import { Link } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import './ApplicationForm.css';
 import { IApplicationForm } from '../../types/types';
@@ -10,7 +9,6 @@ import { Navigate } from 'react-router-dom';
 const steps = [
   'Personal Details',
   'Theme',
-  'Workshop',
   'Financial Support',
   'Consent',
 ];
@@ -38,13 +36,6 @@ const ApplicationForm: React.FC = () => {
           themePowerThoughts: '',
           countryPowerIssue: '',
           motivation: '',
-          firstPriority: '',
-          firstPriorityReason: '',
-          secondPriority: '',
-          secondPriorityReason: '',
-          thirdPriority: '',
-          thirdPriorityReason: '',
-          workshopMandatory: false,
           financialSupportReason: '',
           dependents: 0,
           familyIncome: '',
@@ -189,16 +180,6 @@ const ApplicationForm: React.FC = () => {
     { label: 'What is your motivation for attending ISFiT25? How do you envision contributing to discussions and activities surrounding this theme during the festival?', name: 'motivation', type: 'textarea', placeholder: 'My motivation for attending ISFiT25 is ...', required: true },
   ];
 
-  const workshopSection: Array<{ label: string; name: keyof IApplicationForm; type: string; placeholder?: string; required?: boolean }> = [
-    { label: 'Select your first priority', name: 'firstPriority', type: 'text', placeholder: 'Your first priority', required: true },
-    { label: 'Why do you want to attend this workshop? Please give examples of how this workshop relates to your life or to the theme Polarization.', name: 'firstPriorityReason', type: 'textarea', placeholder: 'I want to attend this workshop because ...', required: true },
-    { label: 'Select your second priority (optional)', name: 'secondPriority', type: 'text', placeholder: 'Your second priority', required: true },
-    { label: 'Why do you want to attend this workshop? Please give examples of how this workshop relates to your life or to the theme Power. (optional)', name: 'secondPriorityReason', type: 'textarea', placeholder: 'I want to attend this workshop because ...' },
-    { label: 'Select your third priority (optional)', name: 'thirdPriority', type: 'text', placeholder: 'Your third priority', required: true },
-    { label: 'Why do you want to attend this workshop? Please give examples of how this workshop relates to your life or to the theme Power. (optional)', name: 'thirdPriorityReason', type: 'textarea', placeholder: 'I want to attend this workshop because ...' },
-    { label: 'By checking this box, I confirm I am aware it is mandatory to participate in the given workshop even if I don´t get any of my priorities', name: 'workshopMandatory', type: 'checkbox', required: true },
-  ];
-
   const financialSupportSection: Array<{ label: string; name: keyof IApplicationForm; type: string; options?: string[]; placeholder?: string; required?: boolean }> = [
     { label: 'Some of the participants get financial support for their trip to participate in ISFiT25. Why do you think that you should be considered for this financial support?', name: 'financialSupportReason', type: 'textarea', placeholder: 'I should be considered to get financial support because ...' },
     { label: 'How many dependents do you have?', name: 'dependents', type: 'number', placeholder: 'Number of dependents' },
@@ -321,10 +302,8 @@ const ApplicationForm: React.FC = () => {
       case 1:
         return themeSection;
       case 2:
-        return workshopSection;
-      case 3:
         return financialSupportSection;
-      case 4:
+      case 3:
         return consentSection;
       default:
         return [];
@@ -337,14 +316,6 @@ const ApplicationForm: React.FC = () => {
 
   return (
     <div className="applicationFormContainer">
-      <div className="topRight">
-        <Link to="/login" style={{ color: 'white' }}>
-          <Button>Login</Button>
-        </Link>
-        <Link to="/profilePage" style={{ color: 'white' }}>
-          <Button>My profile</Button>
-        </Link>
-      </div>
       <Header linkTo="/homepage" />
   
       {submitted ? (
