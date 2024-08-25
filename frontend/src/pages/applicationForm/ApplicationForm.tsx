@@ -79,8 +79,8 @@ const ApplicationForm: React.FC = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name } = e.target;
     const file = e.target.files?.[0];
-    if (file && !['application/pdf', 'image/jpeg', 'image/png'].includes(file.type)) {
-      alert('File must be a PDF, JPEG or PNG');
+    if (file && !['application/pdf'].includes(file.type)) {
+      alert('File must be a PDF.');
       return;
     }
     if (file && file.size > 5 * 1024 * 1024) { // 5 MB limit
@@ -176,7 +176,7 @@ const ApplicationForm: React.FC = () => {
     { label: 'What do you study?', name: 'studyField', type: 'text', placeholder: 'ex. Infomatics', required: true },
     { label: 'Name of your University/Institute', name: 'university', type: 'text', placeholder: 'ex. Norwegian University of Science and Technology', required: true },
     { label: 'Your University/Institute website address (optional)', name: 'universityWebsite', type: 'text', placeholder: 'ex. https://youruniversity.edu' },
-    { label: 'Please upload your student certificate', name: 'studentCertificate', type: 'file', required: true },
+    { label: 'Please upload your student certificate as a PDF', name: 'studentCertificate', type: 'file', required: true },
     { label: 'By checking this box, I confirm I am able to communicate in English', name: 'isEnglishSpeaker', type: 'checkbox', required: true },
     { label: 'What is your T-Shirt size?', name: 'tShirtSize', type: 'select', options: ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'], required: true },
     { label: 'I am applying as', name: 'applyingAs', type: 'select', options: ['Regular participant', 'SOrCE', 'Coastal Carolina University', 'Dialogue Project'], required: true },
