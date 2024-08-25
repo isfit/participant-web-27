@@ -24,7 +24,7 @@ export interface AuthContextType {
 }
 
 export interface IApplicationForm {
-    _id?: string;
+    _id: string;
     fullName: string;
     dateOfBirth: string;
     gender: string;
@@ -35,7 +35,7 @@ export interface IApplicationForm {
     studyField: string;
     university: string;
     universityWebsite?: string;
-    studentCertificate?: File;
+    studentCertificate?: Buffer;
     isEnglishSpeaker: boolean;
     tShirtSize: string;
     applyingAs: string;

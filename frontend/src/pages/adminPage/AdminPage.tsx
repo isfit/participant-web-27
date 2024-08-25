@@ -82,9 +82,7 @@ const AdminPage: React.FC = () => {
         'Application Date (DD/MM/YYYY)'
       ],
       ...applications.map(app => {
-        const certificateLink = app.studentCertificate 
-          ? `data:application/pdf;base64,${app.studentCertificate}` 
-          : 'N/A';        
+     
         return [
         app.fullName,
         new Date(app.dateOfBirth).toLocaleDateString('en-GB'),
@@ -95,7 +93,7 @@ const AdminPage: React.FC = () => {
         app.isStudent ? 'Yes' : 'No',
         app.studyField,
         app.university,
-        certificateLink !== 'N/A' ? certificateLink : 'N/A',
+        app.studentCertificate,
         app.universityWebsite || 'N/A',
         app.isEnglishSpeaker ? 'Yes' : 'No',
         app.tShirtSize,
@@ -124,6 +122,27 @@ const AdminPage: React.FC = () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+
+  const downloadPDF = async (id: string) => {
+    try {
+      const response = await axios.get(`http://localhost:4000/api/application/certificate/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        responseType: 'blob', 
+      });
+
+      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'student_certificate.pdf'); 
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+    }
   };
 
   return (
@@ -201,13 +220,7 @@ const AdminPage: React.FC = () => {
                   <td>{application.isStudent ? 'Yes' : 'No'}</td>
                   <td>{application.studyField}</td>
                   <td>{application.university}</td>
-                  <td>
-                    {application.studentCertificate ? (
-                      <a href={`data:application/pdf;base64,${application.studentCertificate}`} download>
-                        Download
-                      </a>
-                    ) : 'N/A'}
-                  </td>                 
+                  <td>{application.studentCertificate ? <button onClick={() => downloadPDF(application?._id)}>Download Certificate</button> : 'N/A'}</td>            
                   <td>{application.universityWebsite || 'N/A'}</td>
                   <td>{application.isEnglishSpeaker ? 'Yes' : 'No'}</td>
                   <td>{application.tShirtSize}</td>

@@ -52,7 +52,11 @@ table {
     display: block;
     margin: 30px;
     padding: 20px;
-    color: #ffffff
+    color: #eaeaea
+  }
+
+  .filterContainer input:hover {
+    cursor: pointer;
   }
   
   .filterContainer input[type="date"] {
