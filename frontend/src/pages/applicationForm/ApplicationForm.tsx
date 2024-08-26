@@ -49,11 +49,16 @@ const ApplicationForm: React.FC = () => {
           countryPowerIssue: '',
           motivation: '',
           financialSupportReason: '',
+          fullOrPartialFunding: '',
           dependents: 0,
           familyIncome: '',
+          countryTravelingFrom: '',
+          otherFundingInfo: '',
           canParticipate: '',
           consentVisa: false,
           consentFlight: false,
+          consentNorwegianLaw: false,
+          consentReturn: false,
           consentPersonalDetails: false,
           consentAttendance: false,
           consentMedia: false,
@@ -79,14 +84,26 @@ const ApplicationForm: React.FC = () => {
   ) => {
     const { name, value, type } = e.target;
     const isCheckbox = type === 'checkbox';
+
+    // Check if the field is "dependents" and prevent it from going below 0
+  if (name === 'dependents') {
+    const numericValue = parseInt(value, 10);
+    if (numericValue < 0) {
+      setFormValues((prevState) => ({
+        ...prevState,
+        [name]: 0,
+      }));
+      return;
+    }
+  }
   
     // Update word counts for textareas
     if (type === 'textarea') {
       const wordCount = value.trim().split(/\s+/).length;
       
       if (
-        (name === 'themePowerThoughts' && wordCount <= 100) ||
-        ((name === 'countryPowerIssue' || name === 'motivation') && wordCount <= 300)
+        ((name === 'themePowerThoughts' || name === 'otherFundingInfo') && wordCount <= 100) ||
+        ((name === 'countryPowerIssue' || name === 'motivation' || name === 'financialSupportReason') && wordCount <= 300)
       ) {
         setFormValues((prevState) => ({
           ...prevState,
@@ -217,26 +234,38 @@ const ApplicationForm: React.FC = () => {
     ), label: 'I am applying as', name: 'applyingAs', type: 'select', options: ['SOrCE','Regular participant'], required: true },
   ];
 
-  const themeSection: Array<{ label: string; name: keyof IApplicationForm; type: string; placeholder?: string; required?: boolean }> = [
+  const themeSection: FormField[] = [
     { label: "Every time ISFiT is arranged, we explore a new theme that affects students across the globe. The theme for ISFiT25 is ‘POWER’. When considering the theme of 'POWER' for ISFiT25, what aspects or dimensions of power come to your mind first? (max 100 words)", name: 'themePowerThoughts', type: 'textarea', placeholder: 'When I think of power I think of ...', required: true },
     { label: "Reflecting on your country's context, can you identify a specific power issue? How does this issue manifest, and what are its consequences? (max 300 words)", name: 'countryPowerIssue', type: 'textarea', placeholder: 'When reflecting on my country\'s context, an issue regarding power is ...', required: true },
     { label: 'What is your motivation for attending ISFiT25? How do you envision contributing to discussions and activities surrounding this theme during the festival? (max 300 words)', name: 'motivation', type: 'textarea', placeholder: 'My motivation for attending ISFiT25 is ...', required: true },
   ];
 
-  const financialSupportSection: Array<{ label: string; name: keyof IApplicationForm; type: string; options?: string[]; placeholder?: string; required?: boolean }> = [
-    { label: '?', name: 'financialSupportReason', type: 'textarea', placeholder: 'I should be considered to get financial support because ...' },
-    { label: 'Some of the participants get financial support for their trip to participate in ISFiT25. Why do you think that you should be considered for this financial support?', name: 'financialSupportReason', type: 'textarea', placeholder: 'I should be considered to get financial support because ...' },
-    { label: 'How many dependents do you have?', name: 'dependents', type: 'number', placeholder: 'Number of dependents' },
-    { label: 'What is your family´s monthly income?', name: 'familyIncome', type: 'text', placeholder: 'Your family income' },
+  const financialSupportSection: FormField[] = [
+    { labelElement: (
+      <>
+        ISFiT seeks to bring together students from around the globe, and we are committed to making the journey to Trondheim accessible for those who may not otherwise afford it. To support this, we offer full or partial funding to selected students. However, we encourage you to thoughtfully consider your financial need before applying, so that we can assist those who need it most. Why do you think that you should be considered for financial support to attend ISFiT25?        <span className="info-icon"><Information/>
+          <span className="tooltip-text">
+          Why do you believe you should receive financial assistance over other applicants? How would receiving this funding impact your ability to attend ISFiT and contribute to its goals?</span>
+        </span>
+      </>
+    ), label: 'ISFiT seeks to bring together students from around the globe, and we are committed to making the journey to Trondheim accessible for those who may not otherwise afford it. To support this, we offer full or partial funding to selected students. However, we encourage you to thoughtfully consider your financial need before applying, so that we can assist those who need it most. Why do you think that you should be considered for financial support to attend ISFiT25?', name: 'financialSupportReason', type: 'textarea', placeholder: 'I should be considered to get financial support because ...' },
+    { label: 'Are you applying for full or partial funding?', name: 'fullOrPartialFunding', type: 'select', options: ['Full funding', 'Partial funding', 'No funding'] },
+    { label: 'How many people do you financially support (e.g., children, spouse, elderly parents)?', name: 'dependents', type: 'number', placeholder: 'Number of dependents' },
+    { label: 'What is your family´s monthly income? (approximately in Euros)', name: 'familyIncome', type: 'text', placeholder: '' },
     { label: 'I can participate in ISFiT25', name: 'canParticipate', type: 'select', options: ['without any financial support', 'if I get partial financial support', 'if I get full financial support'] },
+    { label: "What country will you be traveling to Trondheim from?", name: 'countryTravelingFrom', type: 'text', placeholder: 'ex. India' },
+    { label: "Is there any other information you would like us to consider when reviewing your application for travel funds?", name: 'otherFundingInfo', type: 'textarea', placeholder: '...' },
+
   ];
 
-  const consentSection: Array<{ label: string; name: keyof IApplicationForm; type: string; placeholder?: string; required?: boolean }> = [
+  const consentSection: FormField[] = [
     { label: 'I have to apply for a visa if I get accepted as a participant', name: 'consentVisa', type: 'checkbox', required: true },
     { label: 'I am aware that I have to book a flight to Norway on my own even if I get financial support', name: 'consentFlight', type: 'checkbox', required: true },
+    { label: 'I agree to comply with Norwegian law and to conduct myself with respect and decency during my stay in Trondheim.', name: 'consentNorwegianLaw', type: 'checkbox', required: true },
+    { label: 'I agree that I will return to my country of residence after the festival has ended.', name: 'consentReturn', type: 'checkbox', required: true },
     { label: 'I agree that ISFiT can keep my personal details to be used later in the festival', name: 'consentPersonalDetails', type: 'checkbox', required: true },
     { label: 'I am aware that a participation certificate will be given only if I attend all days of the workshop and mandatory events', name: 'consentAttendance', type: 'checkbox', required: true },
-    { label: 'I agree that ISFiT can share pictures and videos of me taken during the festival on social media', name: 'consentMedia', type: 'checkbox', required: true },
+    { label: 'I agree that ISFiT can share pictures and videos of me taken during the festival on social media', name: 'consentMedia', type: 'checkbox' },
   ];
 
   const renderInput = ({
