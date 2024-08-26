@@ -19,11 +19,16 @@ interface IApplication extends Document {
   countryPowerIssue: string;
   motivation: string;
   financialSupportReason: string;
+  fullOrPartialFunding: string;
   dependents: number;
   familyIncome: string;
+  countryTravelingFrom: string;
+  otherFundingInfo: string;
   canParticipate: string;
   consentVisa: boolean;
   consentFlight: boolean;
+  consentNorwegianLaw: boolean;
+  consentReturn: boolean;
   consentPersonalDetails: boolean;
   consentAttendance: boolean;
   consentMedia: boolean;
@@ -42,17 +47,22 @@ const ApplicationSchema: Schema = new Schema({
   universityWebsite: { type: String },
   studentCertificate: { type: Buffer },
   isEnglishSpeaker: { type: Boolean, required: true },
-  tShirtSize: { type: String, required: true },
+  tShirtSize: { type: String },
   applyingAs: { type: String, required: true },
   themePowerThoughts: { type: String, required: true },
   countryPowerIssue: { type: String, required: true },
   motivation: { type: String, required: true },
   financialSupportReason: { type: String },
+  fullOrPartialFunding: { type: String },
   dependents: { type: Number, required: true },
-  familyIncome: { type: String, required: true },
+  familyIncome: { type: String },
   canParticipate: { type: String, required: true },
+  countryTravelingFrom: { type: String },
+  otherFundingInfo: { type: String },
   consentVisa: { type: Boolean, required: true },
   consentFlight: { type: Boolean, required: true },
+  consentNorwegianLaw: { type: Boolean, required: true },
+  consentReturn: { type: Boolean, required: true },
   consentPersonalDetails: { type: Boolean, required: true },
   consentAttendance: { type: Boolean, required: true },
   consentMedia: { type: Boolean, required: true },

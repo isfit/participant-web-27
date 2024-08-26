@@ -19,6 +19,15 @@
     box-shadow: 0 0 10px 0 rgba(68, 68, 68, 0.388);
 }
 
+.sectionSubtext {
+    font-size: 1em;
+    color: #ddd;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+
 .textareaContainer:hover {
     box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.388);
 }
@@ -379,3 +388,41 @@ label {
         font-size: 0.8em;
     }
 }
+
+
+.info-icon {
+    display: inline-block;
+    margin-left: 8px;
+    background-color: #602c2c9b;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    text-align: center;
+    line-height: 18px;
+    cursor: pointer;
+    position: relative;
+    font-size: 14px;
+  }
+  
+  .tooltip-text {
+    visibility: hidden;
+    width: 300px;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    text-align: left;
+    border-radius: 6px;
+    padding: 10px;
+    position: absolute;
+    z-index: 1;
+    top: 125%;
+    margin-left: -300px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .info-icon:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+  }
+  

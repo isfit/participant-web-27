@@ -71,11 +71,16 @@ const AdminPage: React.FC = () => {
         'Country Power Issue', 
         'Motivation', 
         'Financial Support Reason', 
+        'Full or partial funding',
         'Dependents', 
         'Family Income', 
         'Can Participate', 
+        'Traveling to Trondheim from',
+        'Other funding info',
         'Consent Visa', 
         'Consent Flight', 
+        'Consent Norwegian law',
+        'Consent Return',
         'Consent Personal Details', 
         'Consent Attendance', 
         'Consent Media',
@@ -102,11 +107,16 @@ const AdminPage: React.FC = () => {
         app.countryPowerIssue,
         app.motivation,
         app.financialSupportReason,
+        app.fullOrPartialFunding,
         app.dependents.toString(),
         app.familyIncome,
         app.canParticipate,
+        app.countryTravelingFrom,
+        app.otherFundingInfo,
         app.consentVisa ? 'Yes' : 'No',
         app.consentFlight ? 'Yes' : 'No',
+        app.consentNorwegianLaw ? 'Yes' : 'No',
+        app.consentReturn ? 'Yes' : 'No',
         app.consentPersonalDetails ? 'Yes' : 'No',
         app.consentAttendance ? 'Yes' : 'No',
         app.consentMedia ? 'Yes' : 'No',
@@ -197,11 +207,16 @@ const AdminPage: React.FC = () => {
                 <th>Country Power Issue</th>
                 <th>Motivation</th>
                 <th>Financial Support Reason</th>
+                <th>Full or partial funding</th>
                 <th>Dependents</th>
                 <th>Family Income</th>
                 <th>Can Participate</th>
+                <th>Traveling to Trondheim from</th>
+                <th>Other funding info</th>
                 <th>Consent Visa</th>
                 <th>Consent Flight</th>
+                <th>Consent Norwegian law</th>
+                <th>Consent return</th>
                 <th>Consent Personal Details</th>
                 <th>Consent Attendance</th>
                 <th>Consent Media</th>
@@ -229,11 +244,16 @@ const AdminPage: React.FC = () => {
                   <td>{application.countryPowerIssue}</td>
                   <td>{application.motivation}</td>
                   <td>{application.financialSupportReason}</td>
+                  <td>{application.fullOrPartialFunding}</td>
                   <td>{application.dependents}</td>
                   <td>{application.familyIncome}</td>
                   <td>{application.canParticipate}</td>
+                  <td>{application.countryTravelingFrom}</td>
+                  <td>{application.otherFundingInfo}</td>
                   <td>{application.consentVisa ? 'Yes' : 'No'}</td>
                   <td>{application.consentFlight ? 'Yes' : 'No'}</td>
+                  <td>{application.consentNorwegianLaw ? 'Yes' : 'No'}</td>
+                  <td>{application.consentReturn ? 'Yes' : 'No'}</td>
                   <td>{application.consentPersonalDetails ? 'Yes' : 'No'}</td>
                   <td>{application.consentAttendance ? 'Yes' : 'No'}</td>
                   <td>{application.consentMedia ? 'Yes' : 'No'}</td>
