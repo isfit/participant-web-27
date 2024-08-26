@@ -67,14 +67,25 @@ const ApplicationForm: React.FC = () => {
   ) => {
     const { name, value, type } = e.target;
     const isCheckbox = type === 'checkbox';
-    
-    setFormValues((prevState) => ({
-      ...prevState,
-      [name]: isCheckbox
-        ? (e.target as HTMLInputElement).checked 
-        : value,
-    }));
+  
+    setFormValues((prevState) => {
+      const updatedValues = {
+        ...prevState,
+        [name]: isCheckbox ? (e.target as HTMLInputElement).checked : value,
+      };
+  
+      // Update the continent field based on the selected nationality
+      if (name === 'nationality') {
+        const continent = getContinentFromNationality(value);
+        updatedValues['continent'] = continent;
+      }
+  
+      return updatedValues;
+    });
+  
+    console.log(name, value, type);
   };
+  
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name } = e.target;
