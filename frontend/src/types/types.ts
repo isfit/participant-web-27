@@ -43,11 +43,16 @@ export interface IApplicationForm {
     countryPowerIssue: string;
     motivation: string;
     financialSupportReason: string;
+    fullOrPartialFunding: string;
     dependents: number;
     familyIncome: string;
     canParticipate: string;
+    countryTravelingFrom: string;
+    otherFundingInfo: string;
     consentVisa: boolean;
     consentFlight: boolean;
+    consentNorwegianLaw: boolean;
+    consentReturn: boolean;
     consentPersonalDetails: boolean;
     consentAttendance: boolean;
     consentMedia: boolean;
