@@ -2,25 +2,16 @@ import { Schema, model, Document, Model, CallbackError } from 'mongoose';
 import bcrypt from 'bcrypt';
 
 interface IUser {
-    firstName: string;
-    lastName: String;
+    fullName: string;
     email: string;
-    phone: string;
     password: string;
-    country: string;
-    address: string;
-    dateBirth: Date;
     role: string;
     comparePassword: (password: string) => Promise<boolean>;
 };
 
 
 const userSchema = new Schema<IUser>({
-    firstName: {
-        type: String,
-        required: true
-    },
-    lastName: {
+    fullName: {
         type: String,
         required: true
     },
@@ -29,24 +20,8 @@ const userSchema = new Schema<IUser>({
         required: true,
         unique: true
     },
-    phone: {
-        type: String,
-        required: false
-    },
     password: {
         type: String,
-        required: true
-    },
-    country: {
-        type: String,
-        required: true
-    },
-    address: {
-        type: String,
-        required: false
-    },
-    dateBirth: {
-        type: Date,
         required: true
     },
     role: {

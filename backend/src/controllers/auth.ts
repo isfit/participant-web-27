@@ -4,35 +4,28 @@ import User from "../models/User"
 import { Request, Response, NextFunction } from "express"
 import exp from "constants"
 import {body, validationResult} from 'express-validator';
+import { ROLES } from "../../config/roles";
 
 
 // Register
 const register = [
 //Validation
-body('firstName').isString().isLength({min: 2, max: 50}).withMessage('First name is invalid'),
-body('lastName').isString().isLength({min: 2, max: 50}).withMessage('Last name is invalid'),
+body('fullName').isString().isLength({min: 2, max: 100}).withMessage('Name is invalid'),
 body('email').isEmail().withMessage('Invalid email'),
-body('phone').isString().isLength({min: 10, max: 15}).withMessage('Phone number is invalid'),
-body('country').isString().isLength({min: 2, max: 50}).withMessage('Country is required'),
-body('dateBirth').isDate().withMessage('Date of birth is invalid'),
 body('password').isString().isLength({min: 8, max: 50}).withMessage('Password must be at least 8 characters long'),
+body('role').isString().isIn([ROLES.ADMIN, ROLES.USER]).withMessage('Role is invalid'),
 
 async (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-    const { firstName, lastName, email, phone, country, dateBirth, password } = req.body;
+    const { fullName, email, password } = req.body;
     try {
-        const birthDate = Date.parse(dateBirth);
         const user = new User({
-            firstName,
-            lastName,
+            fullName,
             email,
-            phone,
             password,
-            country,
-            dateBirth: birthDate
         });
         await user.save();
         res.status(201).json({ message: 'User created' });
@@ -43,7 +36,7 @@ async (req: Request, res: Response, next: NextFunction) => {
 ]
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
     try {
         const user = await User.findOne({ email });
         if (!user) {
@@ -54,9 +47,14 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
             return res.status(401).json({ message: 'Incorrect password' });
         }
 
-        const token = jwt.sign({ email: email }, process.env.ACCESS_TOKEN_SECRET!, { expiresIn: '30m' });
+        const payload = {
+            email: user.email,
+            role: user.role
+        }
 
-        const refreshToken = jwt.sign({ email: email }, process.env.REFRESH_TOKEN_SECRET!, { expiresIn: '7d' });
+        const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET!, { expiresIn: '30m' });
+
+        const refreshToken = jwt.sign({ email: email, role: role }, process.env.REFRESH_TOKEN_SECRET!, { expiresIn: '7d' });
 
         res.cookie('jwt', refreshToken, { httpOnly: true, secure: true, sameSite: 'none', maxAge: 7 * 24 * 60 * 60 * 1000 });
 

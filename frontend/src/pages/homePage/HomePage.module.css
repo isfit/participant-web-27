@@ -1,0 +1,95 @@
+/* HomePage.module.css */
+
+.homePage{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: auto 0;
+}
+
+.hamburgerMenu {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.hamburgerIcon {
+  width: 30px;
+  height: 3px;
+  background-color: white;
+  margin: 5px 0;
+  transition: 0.4s;
+}
+
+.sideMenu {
+  position: fixed;
+  top: 0;
+  left: -250px; /* Hidden by default */
+  width: 250px;
+  height: 100%;
+  background-color: #333;
+  z-index: 999;
+  padding-top: 60px; /* Space for the hamburger menu */
+  transition: left 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.sideMenu.open {
+  left: 0; /* Slide in the menu */
+}
+
+.sideMenu a {
+  color: white;
+  padding: 15px 25px;
+  text-decoration: none;
+  display: block;
+  transition: background 0.3s ease;
+}
+
+.sideMenu a:hover {
+  background-color: #575757;
+}
+
+.centerContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+
+.container{
+  max-width: 800px;
+  margin: auto 0;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.homePageHeader{
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.logo {
+  max-width: 200px;
+  height: auto;
+}
+
+.applyButtonLink {
+  display: block;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.applyButton {
+  background-color: #000;
+  color: white;
+}

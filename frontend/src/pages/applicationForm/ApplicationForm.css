@@ -1,7 +1,5 @@
-
-
 #pageContainer {
-    padding: 40px 40px 40px 40px;
+    padding: 40px;
 }
 
 .applicationInfo {
@@ -19,14 +17,11 @@
     background-color: rgba(255, 255, 255, 0.928);
     margin-bottom: 16px;
     box-shadow: 0 0 10px 0 rgba(68, 68, 68, 0.388);
-
-
-    &:hover {
-        box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.388);
-    }
 }
 
-
+.textareaContainer:hover {
+    box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.388);
+}
 
 p {
     font-size: 1.2em;
@@ -35,7 +30,6 @@ p {
     box-sizing: border-box;
 }
 
-/* style the text area */
 textarea {
     position: relative;
     resize: none;
@@ -46,7 +40,7 @@ textarea {
     outline: none;
     background-color: transparent;
     color: rgb(50, 50, 50);
-    font-size: 1.2em;;
+    font-size: 1.2em;
     line-height: 1.5em;
     font-family: 'Roboto', sans-serif;
     box-sizing: border-box;
@@ -74,10 +68,10 @@ textarea::-webkit-scrollbar-thumb {
 }
 
 textarea::-webkit-scrollbar-track {
-    background-color: rgba(0,0,0,0);
+    background-color: rgba(0, 0, 0, 0);
 }
 
-div #applicationContainer {
+#applicationContainer {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -101,13 +95,13 @@ label {
     align-items: center;
     justify-content: center;
     margin-top: 20px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
     padding-bottom: 20px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .dropdownContainer:nth-last-child(2) {
-    border: none; 
+    border: none;
     margin-bottom: 0;
     padding-bottom: 0;
 }
@@ -120,7 +114,6 @@ label {
 }
 
 .coverLetterInfo {
-    /* reserve space for the section and position text */
     min-height: 7em;
     padding: 0;
     margin: 0;
@@ -128,6 +121,250 @@ label {
 
 #selectionInfo {
     padding: 10px;
-    /* add a transition */
     transition: all 2s;
+}
+
+.applicationFormContainer {
+    --primary-bg: rgba(74, 56, 56, 0.31);
+    --primary-color: white;
+    --secondary-color: white;
+    --input-bg: white;
+    --input-text: black;
+    --border-radius: 5px;
+    --padding: 10px;
+    --margin: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.outerContainer {
+    background-color: rgba(37, 37, 37, 0.431);
+    padding: 20px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 64px;
+}
+
+.formContainer {
+    background-color: var(--secondary-color);
+    padding: 20px 60px 40px 60px;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.formSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    margin-bottom: var(--margin);
+}
+
+.formLabel {
+    margin-left: 120px;
+}
+
+.formSection p {
+    align-self: flex-start;
+}
+
+.checkboxContainer {
+    display: flex;
+    margin-top: 16px;
+}
+
+.checkboxInput {
+    height: 20px;
+    width: 20px;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--primary-color);
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    font-size: 0.8em;
+    margin-top: 6px;
+}
+
+.checkboxLabel {
+    width: 600px;
+    margin-left: 16px;
+    color: var(--input-bg);
+}
+
+.formSection p {
+    margin-bottom: 5px;
+    font-size: 1em;
+    color: var(--primary-color);
+}
+
+.formInput {
+    width: 60%;
+    padding: var(--padding);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--primary-color);
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    font-size: 0.8em;
+}
+
+.submitButton {
+    margin-top: var(--margin);
+    width: 100%;
+}
+
+.createUserPrompt {
+    margin-top: var(--margin);
+    color: var(--primary-color);
+}
+
+.createUserButton {
+    margin-top: var(--margin);
+}
+
+.createUserLink {
+    color: var(--secondary-color);
+    text-decoration: none;
+}
+
+.navigationButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.progressOverview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    background-color: rgba(37, 37, 37, 0.431);
+    border-radius: 20px;
+    padding: 20px;
+    width: 100%;
+}
+
+.progressStep {
+    margin: 0 10px;
+    position: relative;
+    cursor: not-allowed;
+}
+
+.currentStep {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.separator {
+    margin: 0 5px;
+    color: #888;
+}
+
+.clickableStep {
+    cursor: pointer;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .formContainer {
+        padding: 15px 30px;
+    }
+
+    .formSection p {
+        font-size: 0.9em;
+    }
+
+    .formInput {
+        font-size: 0.9em;
+    }
+
+    .navigationButtons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .checkboxLabel {
+        width: auto;
+    }
+
+    .checkboxContainer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .formLabel {
+        margin-left: 0;
+    }
+
+    .checkboxInput {
+        margin-top: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .outerContainer {
+        padding: 10px;
+        margin-bottom: 40px;
+        border-radius: 10px;
+    }
+
+    .formContainer {
+        padding: 10px 20px;
+    }
+
+    .formSection {
+        width: 100%;
+    }
+
+    .formSection p {
+        font-size: 0.8em;
+    }
+
+    .formInput {
+        font-size: 0.8em;
+        padding: 8px;
+    }
+
+    .navigationButtons {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .applicationSectionHeader {
+        font-size: 1.5em;
+        text-align: center;
+    }
+
+    .progressOverview {
+        flex-direction: column;
+        align-items: center;
+        font-size: 1em;
+        padding: 10px;
+    }
+
+    .progressStep {
+        font-size: 0.9em;
+        margin: 5px 0;
+    }
+
+    .checkboxContainer {
+        font-size: 0.8em;
+    }
+
+    .checkboxInput {
+        width: 16px;
+        height: 16px;
+    }
+
+    .checkboxLabel {
+        margin-left: 10px;
+        font-size: 0.8em;
+    }
 }

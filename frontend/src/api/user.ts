@@ -1,33 +1,22 @@
 import axios from 'axios';
+import { ROLES } from '../config/roles';
 
 
-export const register = async (
-    firstName: string,
-    lastName: string,
-    email: string,
-    phone: string,
-    country: string,
-    dateBirth: string,
-    password: string
-  ): Promise<{ success: boolean; message?: string }> => {
-    let data = JSON.stringify({
-      firstName,
-      lastName,
-      email,
-      phone,
-      password,
-      country,
-      dateBirth
+export const register = async (fullName: string, email: string, password: string) => {
+    const data = JSON.stringify({
+        "fullName": fullName,
+        "email": email,
+        "password": password,
+        "role": ROLES.USER
     });
-  
-    let config = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: 'http://localhost:4000/auth/register',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      data: data
+    const config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: 'http://localhost:4000/auth/register',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: data
     };
   
     try {
