@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@radix-ui/themes';
-import { Link } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import './ApplicationForm.css';
 import { IApplicationForm } from '../../types/types';
@@ -10,7 +9,6 @@ import { Navigate } from 'react-router-dom';
 const steps = [
   'Personal Details',
   'Theme',
-  'Workshop',
   'Financial Support',
   'Consent',
 ];
@@ -38,13 +36,6 @@ const ApplicationForm: React.FC = () => {
           themePowerThoughts: '',
           countryPowerIssue: '',
           motivation: '',
-          firstPriority: '',
-          firstPriorityReason: '',
-          secondPriority: '',
-          secondPriorityReason: '',
-          thirdPriority: '',
-          thirdPriorityReason: '',
-          workshopMandatory: false,
           financialSupportReason: '',
           dependents: 0,
           familyIncome: '',
@@ -88,6 +79,14 @@ const ApplicationForm: React.FC = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name } = e.target;
     const file = e.target.files?.[0];
+    if (file && !['application/pdf'].includes(file.type)) {
+      alert('File must be a PDF.');
+      return;
+    }
+    if (file && file.size > 5 * 1024 * 1024) { // 5 MB limit
+      alert('File size exceeds 5 MB');
+      return;
+    }
     setFormValues((prevState) => ({
       ...prevState,
       [name]: file || undefined,
@@ -177,7 +176,7 @@ const ApplicationForm: React.FC = () => {
     { label: 'What do you study?', name: 'studyField', type: 'text', placeholder: 'ex. Infomatics', required: true },
     { label: 'Name of your University/Institute', name: 'university', type: 'text', placeholder: 'ex. Norwegian University of Science and Technology', required: true },
     { label: 'Your University/Institute website address (optional)', name: 'universityWebsite', type: 'text', placeholder: 'ex. https://youruniversity.edu' },
-    { label: 'Please upload your student certificate', name: 'studentCertificate', type: 'file', required: true },
+    { label: 'Please upload your student certificate as a PDF', name: 'studentCertificate', type: 'file', required: true },
     { label: 'By checking this box, I confirm I am able to communicate in English', name: 'isEnglishSpeaker', type: 'checkbox', required: true },
     { label: 'What is your T-Shirt size?', name: 'tShirtSize', type: 'select', options: ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'], required: true },
     { label: 'I am applying as', name: 'applyingAs', type: 'select', options: ['Regular participant', 'SOrCE', 'Coastal Carolina University', 'Dialogue Project'], required: true },
@@ -187,16 +186,6 @@ const ApplicationForm: React.FC = () => {
     { label: "When considering the theme of 'POWER' for ISFiT25, what aspects or dimensions of power come to your mind first?", name: 'themePowerThoughts', type: 'textarea', placeholder: 'When I think of power I think of ...', required: true },
     { label: "Reflecting on your country's context, can you identify a specific power issue? How does this issue manifest, and what are its consequences?", name: 'countryPowerIssue', type: 'textarea', placeholder: 'When reflecting on my country\'s context, an issue regarding power is ...', required: true },
     { label: 'What is your motivation for attending ISFiT25? How do you envision contributing to discussions and activities surrounding this theme during the festival?', name: 'motivation', type: 'textarea', placeholder: 'My motivation for attending ISFiT25 is ...', required: true },
-  ];
-
-  const workshopSection: Array<{ label: string; name: keyof IApplicationForm; type: string; placeholder?: string; required?: boolean }> = [
-    { label: 'Select your first priority', name: 'firstPriority', type: 'text', placeholder: 'Your first priority', required: true },
-    { label: 'Why do you want to attend this workshop? Please give examples of how this workshop relates to your life or to the theme Polarization.', name: 'firstPriorityReason', type: 'textarea', placeholder: 'I want to attend this workshop because ...', required: true },
-    { label: 'Select your second priority (optional)', name: 'secondPriority', type: 'text', placeholder: 'Your second priority', required: true },
-    { label: 'Why do you want to attend this workshop? Please give examples of how this workshop relates to your life or to the theme Power. (optional)', name: 'secondPriorityReason', type: 'textarea', placeholder: 'I want to attend this workshop because ...' },
-    { label: 'Select your third priority (optional)', name: 'thirdPriority', type: 'text', placeholder: 'Your third priority', required: true },
-    { label: 'Why do you want to attend this workshop? Please give examples of how this workshop relates to your life or to the theme Power. (optional)', name: 'thirdPriorityReason', type: 'textarea', placeholder: 'I want to attend this workshop because ...' },
-    { label: 'By checking this box, I confirm I am aware it is mandatory to participate in the given workshop even if I don´t get any of my priorities', name: 'workshopMandatory', type: 'checkbox', required: true },
   ];
 
   const financialSupportSection: Array<{ label: string; name: keyof IApplicationForm; type: string; options?: string[]; placeholder?: string; required?: boolean }> = [
@@ -321,10 +310,8 @@ const ApplicationForm: React.FC = () => {
       case 1:
         return themeSection;
       case 2:
-        return workshopSection;
-      case 3:
         return financialSupportSection;
-      case 4:
+      case 3:
         return consentSection;
       default:
         return [];
@@ -337,14 +324,6 @@ const ApplicationForm: React.FC = () => {
 
   return (
     <div className="applicationFormContainer">
-      <div className="topRight">
-        <Link to="/login" style={{ color: 'white' }}>
-          <Button>Login</Button>
-        </Link>
-        <Link to="/profilePage" style={{ color: 'white' }}>
-          <Button>My profile</Button>
-        </Link>
-      </div>
       <Header linkTo="/homepage" />
   
       {submitted ? (

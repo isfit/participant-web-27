@@ -23,13 +23,6 @@ const submitApplication = async (req: Request, res: Response, next: NextFunction
         themePowerThoughts,
         countryPowerIssue,
         motivation,
-        firstPriority,
-        firstPriorityReason,
-        secondPriority,
-        secondPriorityReason,
-        thirdPriority,
-        thirdPriorityReason,
-        workshopMandatory,
         financialSupportReason,
         dependents,
         familyIncome,
@@ -61,13 +54,6 @@ const submitApplication = async (req: Request, res: Response, next: NextFunction
         themePowerThoughts,
         countryPowerIssue,
         motivation,
-        firstPriority,
-        firstPriorityReason,
-        secondPriority,
-        secondPriorityReason,
-        thirdPriority,
-        thirdPriorityReason,
-        workshopMandatory,
         financialSupportReason,
         dependents,
         familyIncome,
@@ -109,5 +95,22 @@ const submitApplication = async (req: Request, res: Response, next: NextFunction
       next(error);
     }
   }
+
+  const downloadCertificate = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const application = await Application.findById(id);
   
-export { submitApplication, getApplications };
+      if (!application || !application.studentCertificate) {
+        return res.status(404).json({ message: 'File not found' });
+      }
+  
+      res.setHeader('Content-Disposition', 'attachment; filename=student_certificate.pdf');
+      res.setHeader('Content-Type', 'application/pdf');
+      res.send(application.studentCertificate);
+    } catch (error) {
+      next(error);
+    }
+  };
+  
+  export { submitApplication, getApplications, downloadCertificate };

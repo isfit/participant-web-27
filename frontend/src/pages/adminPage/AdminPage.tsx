@@ -10,6 +10,10 @@ const AdminPage: React.FC = () => {
   const [endDate, setEndDate] = useState('');
   const [loading, setLoading] = useState<boolean>(true);
 
+  const handleLogout = () => {
+    localStorage.removeItem('authTokens');
+    window.location.reload();
+  }
 
   const token = JSON.parse(localStorage.getItem('authTokens') || '');
 
@@ -58,6 +62,7 @@ const AdminPage: React.FC = () => {
         'Is Student', 
         'Study Field', 
         'University', 
+        'Student Certificate',
         'University Website', 
         'Is English Speaker', 
         'T-Shirt Size', 
@@ -65,13 +70,6 @@ const AdminPage: React.FC = () => {
         'Theme Power Thoughts', 
         'Country Power Issue', 
         'Motivation', 
-        'First Priority', 
-        'First Priority Reason', 
-        'Second Priority', 
-        'Second Priority Reason', 
-        'Third Priority', 
-        'Third Priority Reason', 
-        'Workshop Mandatory', 
         'Financial Support Reason', 
         'Dependents', 
         'Family Income', 
@@ -83,7 +81,9 @@ const AdminPage: React.FC = () => {
         'Consent Media',
         'Application Date (DD/MM/YYYY)'
       ],
-      ...applications.map(app => [
+      ...applications.map(app => {
+     
+        return [
         app.fullName,
         new Date(app.dateOfBirth).toLocaleDateString('en-GB'),
         app.gender,
@@ -93,6 +93,7 @@ const AdminPage: React.FC = () => {
         app.isStudent ? 'Yes' : 'No',
         app.studyField,
         app.university,
+        app.studentCertificate,
         app.universityWebsite || 'N/A',
         app.isEnglishSpeaker ? 'Yes' : 'No',
         app.tShirtSize,
@@ -100,13 +101,6 @@ const AdminPage: React.FC = () => {
         app.themePowerThoughts,
         app.countryPowerIssue,
         app.motivation,
-        app.firstPriority,
-        app.firstPriorityReason,
-        app.secondPriority || 'N/A',
-        app.secondPriorityReason || 'N/A',
-        app.thirdPriority || 'N/A',
-        app.thirdPriorityReason || 'N/A',
-        app.workshopMandatory ? 'Yes' : 'No',
         app.financialSupportReason,
         app.dependents.toString(),
         app.familyIncome,
@@ -117,7 +111,7 @@ const AdminPage: React.FC = () => {
         app.consentAttendance ? 'Yes' : 'No',
         app.consentMedia ? 'Yes' : 'No',
         app.createdAt ? new Date(app.createdAt).toLocaleDateString('en-GB') : 'N/A'
-      ])
+      ];})
     ];
   
     const csvContent = 'data:text/csv;charset=utf-8,' + csvRows.map(e => e.join(',')).join('\n');
@@ -130,33 +124,57 @@ const AdminPage: React.FC = () => {
     document.body.removeChild(link);
   };
 
+  const downloadPDF = async (id: string) => {
+    try {
+      const response = await axios.get(`http://localhost:4000/api/application/certificate/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        responseType: 'blob', 
+      });
+
+      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'student_certificate.pdf'); 
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+    }
+  };
+
   return (
     <div className='adminOuter'>
       <div>
         <Header linkTo="/homepage" />
         <h1 className={loading ? 'adminLoading' : ''}>Admin page</h1>
       </div>
+      <div className='topRight'>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
       <div>
-        <h2>Applicants</h2>
         <div className="filterContainer">
           <label>
-            Start Date:
+            Start Date
             <input
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-            />
+              />
           </label>
           <label>
-            End Date:
+            End Date
             <input
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-            />
+              />
           </label>
         </div>
         <button onClick={exportToCSV}>Export to CSV</button>
+              <h2>Applicants</h2>
         <div className='tableContainer'>
           <table>
             <thead>
@@ -170,6 +188,7 @@ const AdminPage: React.FC = () => {
                 <th>Is Student</th>
                 <th>Study Field</th>
                 <th>University</th>
+                <th>Student Certificate</th>
                 <th>University Website</th>
                 <th>Is English Speaker</th>
                 <th>T-Shirt Size</th>
@@ -177,13 +196,6 @@ const AdminPage: React.FC = () => {
                 <th>Theme Power Thoughts</th>
                 <th>Country Power Issue</th>
                 <th>Motivation</th>
-                <th>First Priority</th>
-                <th>First Priority Reason</th>
-                <th>Second Priority</th>
-                <th>Second Priority Reason</th>
-                <th>Third Priority</th>
-                <th>Third Priority Reason</th>
-                <th>Workshop Mandatory</th>
                 <th>Financial Support Reason</th>
                 <th>Dependents</th>
                 <th>Family Income</th>
@@ -208,6 +220,7 @@ const AdminPage: React.FC = () => {
                   <td>{application.isStudent ? 'Yes' : 'No'}</td>
                   <td>{application.studyField}</td>
                   <td>{application.university}</td>
+                  <td>{application.studentCertificate ? <button onClick={() => downloadPDF(application?._id)}>Download Certificate</button> : 'N/A'}</td>            
                   <td>{application.universityWebsite || 'N/A'}</td>
                   <td>{application.isEnglishSpeaker ? 'Yes' : 'No'}</td>
                   <td>{application.tShirtSize}</td>
@@ -215,13 +228,6 @@ const AdminPage: React.FC = () => {
                   <td>{application.themePowerThoughts}</td>
                   <td>{application.countryPowerIssue}</td>
                   <td>{application.motivation}</td>
-                  <td>{application.firstPriority}</td>
-                  <td>{application.firstPriorityReason}</td>
-                  <td>{application.secondPriority || 'N/A'}</td>
-                  <td>{application.secondPriorityReason || 'N/A'}</td>
-                  <td>{application.thirdPriority || 'N/A'}</td>
-                  <td>{application.thirdPriorityReason || 'N/A'}</td>
-                  <td>{application.workshopMandatory ? 'Yes' : 'No'}</td>
                   <td>{application.financialSupportReason}</td>
                   <td>{application.dependents}</td>
                   <td>{application.familyIncome}</td>

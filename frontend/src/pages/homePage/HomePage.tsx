@@ -1,58 +1,89 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Heading, Text, Box, Button } from '@radix-ui/themes';
 import { Link } from 'react-router-dom';
-import './HomePage.css';
+import styles from './HomePage.module.css';
 import { useAuth } from '../../context/AuthenticationContext';
 import { ROLES } from '../../config/roles';
 
-
-const AboutPage: React.FC = () => {
+const HomePage: React.FC = () => {
   const { user } = useAuth();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('authTokens');
+    window.location.reload();
+  };
+
+  // Handle click outside to close menu
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+
+    // Add event listener
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [menuRef]);
+
   return (
-    <div className="loginNavbar">
-      <div className="topRight">
-        {user?.role === ROLES.ADMIN && <Link to="/admin" style={{ color: 'white'}}><Button>Admin</Button></Link>}
-        <Link to="/login" style={{ color: 'white'}}><Button>Login</Button></Link>
-        <Link to="/profilePage" style={{ color: 'white'}}><Button>My profile</Button></Link>
+    <div className={styles.homePage}>
+      <div className={styles.hamburgerMenu} onClick={toggleMenu}>
+        <div className={styles.hamburgerIcon}></div>
+        <div className={styles.hamburgerIcon}></div>
+        <div className={styles.hamburgerIcon}></div>
       </div>
-     
-      <div className="center-container">
-      <img src={'/isfit_log.png'} alt="Logo" className="logo" />
+
+      <div
+        ref={menuRef}
+        className={`${styles.sideMenu} ${menuOpen ? styles.open : ''}`}
+      >
+        {user?.role === ROLES.ADMIN && (
+          <Link to="/admin">Admin</Link>
+        )}
+        <Link to="/login">Login</Link>
+        {user && <Button onClick={handleLogout}>Logout</Button>}
+      </div>
+
+      <div className={styles.centerContainer}>
+        <img src={'/isfit_log.png'} alt="Logo" className={styles.logo} />
+        <br />
+        <Link to="/applicationForm" className={styles.applyButtonLink}>
+          <Button className={styles.applyButton}>Apply now!</Button>
+        </Link>
+        <div className={styles.container}>
+          <h1 className={styles.homePageHeader}>
+            Welcome to the ISFiT 2025 Participant Web!
+          </h1>
+          <p>
+            ISFiT, the world’s largest international student festival, is held
+            biennially in Trondheim, Norway, during the spring semester. Since
+            its inception in 1990, ISFiT has brought together students from
+            diverse national and cultural backgrounds, fostering dialogue and
+            connection through stimulating discussions on important global
+            issues.
+          </p>
+          <p>
+            Each festival centers around a unique theme, and for 2025, we will
+            be exploring the theme of POWER. We invite you to join us from March
+            13th to 23rd, 2025, for this exciting event, where students from
+            across the globe will gather in Trondheim to engage, learn, and
+            inspire one another.
+          </p>
+        </div>
+      </div>
     </div>
-      <br />
-      <Link to="/applicationForm" className="applyButtonLink"><Button className="applyButton">Apply now!</Button></Link>
-      <Box>
-        <Heading as="h1" size={"1"}>
-          About ISFIT
-        </Heading>
-        <Text as="p" size={"4"}>
-          ISFiT is the world’s largest international student festival,taking place biennially during the 
-          spring semester in Trondheim, Norway. We gather students from different national and cultural 
-          backgrounds to talk and connect through exciting and engaging topics and discussions. The first 
-          ever ISFiT festival was held in 1990 and ever since people from around the world has gathered
-          in Trondheim every other year in unison. The next festival will happen in 2025. Each festival 
-          explores a different theme, and this festival's theme is POWER!
-        </Text>
-        <Text as="p">
-          In a world driven by various forms of power, ISFIT25 encourages a reflective journey into 
-          understanding and redefining the concept. Power, often associated with authority and control, 
-          extends beyond conventional boundaries. At ISFIT, we believe in harnessing the strength of 
-          influence to bring about positive change. 
-        </Text>
-        <Heading as="h2" size={"1"}>
-          The Student Peace Prize
-        </Heading>
-        <Text as="p" size={"4"}>
-          The Student Peace Prize (SPP) was established in 1999 – as an initiative by volunteers from the 
-          International Student Festival in Trondheim (ISFiT). It is awarded biennially to a student or 
-          student organization working to promote peace, human rights and democracy. The Prize is awarded 
-          on behalf of all students in Norway, while an independent Student Peace Prize Committee makes 
-          the selection itself. The election happens through the independent committee for the Students 
-          Peace Prize, while the award itself, takes place during ISFiT’s own award ceremony.
-        </Text>
-      </Box>
-    </div>
-    );
+  );
 };
 
-export default AboutPage;
+export default HomePage;
