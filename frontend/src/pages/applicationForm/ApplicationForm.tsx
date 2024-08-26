@@ -5,12 +5,14 @@ import './ApplicationForm.css';
 import { IApplicationForm } from '../../types/types';
 import { apply } from '../../api/application';
 import { Navigate } from 'react-router-dom';
+import getSummary from '../../utils/summary.tsx';
 
 const steps = [
   'Personal Details',
   'Theme',
   'Financial Support',
   'Consent',
+  'Summary',
 ];
 
 const ApplicationForm: React.FC = () => {
@@ -446,6 +448,11 @@ const getContinentFromNationality = (nationality: string): string => {
     { label: 'I agree that ISFiT can share pictures and videos of me taken during the festival on social media', name: 'consentMedia', type: 'checkbox', required: true },
   ];
 
+  const summarySection: Array<{ label: string; name: keyof IApplicationForm; type: string; placeholder?: string; required?: boolean }> = [
+    { label: 'Summary', name: 'summary', type: 'summary'},
+    { label: 'I agree that this information is correct.', name: 'summaryCheck', type: 'checkbox', required: true },
+  ];
+
   const renderInput = ({
     label,
     name,
@@ -549,6 +556,17 @@ const getContinentFromNationality = (nationality: string): string => {
         </label>
       );
     }
+    if (type === 'summary') {
+      console.log('summary', getSummary())
+      return (
+        <>
+        <label key={name} className="formSection">
+        </label>
+        
+        {getSummary()}
+        </>
+      );
+    }
     return (
       <label key={name} className="formSection">
         <p>{label}</p>
@@ -575,6 +593,8 @@ const getContinentFromNationality = (nationality: string): string => {
         return financialSupportSection;
       case 3:
         return consentSection;
+      case 4:
+        return summarySection;
       default:
         return [];
     }
