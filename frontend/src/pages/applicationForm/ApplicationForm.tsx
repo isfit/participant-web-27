@@ -84,23 +84,22 @@ const ApplicationForm: React.FC = () => {
   ) => {
     const { name, value, type } = e.target;
     const isCheckbox = type === 'checkbox';
-
-    // Check if the field is "dependents" and prevent it from going below 0
-  if (name === 'dependents') {
-    const numericValue = parseInt(value, 10);
-    if (numericValue < 0) {
-      setFormValues((prevState) => ({
-        ...prevState,
-        [name]: 0,
-      }));
-      return;
-    }
-  }
   
-    // Update word counts for textareas
+    // Handling the "dependents" field
+    if (name === 'dependents') {
+      const numericValue = parseInt(value, 10);
+      if (numericValue < 0) {
+        setFormValues((prevState) => ({
+          ...prevState,
+          [name]: 0,
+        }));
+        return;
+      }
+    }
+  
+    // Updating text areas with word limit constraints
     if (type === 'textarea') {
       const wordCount = value.trim().split(/\s+/).length;
-      
       if (
         ((name === 'themePowerThoughts' || name === 'otherFundingInfo') && wordCount <= 100) ||
         ((name === 'countryPowerIssue' || name === 'motivation' || name === 'financialSupportReason') && wordCount <= 300)
@@ -116,23 +115,19 @@ const ApplicationForm: React.FC = () => {
         [name]: isCheckbox ? (e.target as HTMLInputElement).checked : value,
       }));
     }
-    setFormValues((prevState) => {
-      const updatedValues = {
+  
+    // Separate state update for nationality/continent logic
+    if (name === 'nationality') {
+      const continent = getContinentFromNationality(value);
+      setFormValues((prevState) => ({
         ...prevState,
-        [name]: isCheckbox ? (e.target as HTMLInputElement).checked : value,
-      };
-  
-      // Update the continent field based on the selected nationality
-      if (name === 'nationality') {
-        const continent = getContinentFromNationality(value);
-        updatedValues['continent'] = continent;
-      }
-  
-      return updatedValues;
-    });
+        continent,
+      }));
+    }
   
     console.log(name, value, type);
   };
+  
   
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -553,13 +548,13 @@ const personalDetails: FormField[] = [
       </label>
       )
     }
-    
-    if (type === 'textarea') {
+
+    if (type === 'checkbox') {
       return (
         <label key={name} className="formSection">
           <div className="checkboxContainer">
             <input
-              type={type}
+              type="checkbox"
               name={name}
               checked={Boolean(formValues[name])}
               onChange={handleChange}
@@ -568,6 +563,22 @@ const personalDetails: FormField[] = [
             />
             <span className="checkboxLabel">{labelElement || label}</span>
           </div>
+        </label>
+      );
+    }
+    
+    if (type === 'textarea') {
+      return (
+        <label key={name} className="formSection">
+          <p>{label}</p>
+          <textarea
+            name={name}
+            value={formValues[name] as string}
+            onChange={handleChange}
+            className="formInput"
+            required={required}
+            placeholder={placeholder}
+          />
         </label>
       );
     }
