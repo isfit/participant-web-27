@@ -13,6 +13,7 @@ interface User {
 const Login: React.FC = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState<string | undefined>();
 
   const [user, setUser] = useState<User>({
     email: '',
@@ -24,58 +25,70 @@ const Login: React.FC = () => {
       ...user,
       [e.target.name]: e.target.value,
     });
+    setErrorMessage(undefined);
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     // Handle login logic here
     console.log(
       `Logging in with email: ${user.email} and password: ${user.password}`,
     );
-    login(user.email, user.password);
-    navigate('/');
+
+    await login(user.email, user.password)
+      .then((success) => {
+        if (success) {
+          navigate('/homepage');
+        } else {
+          setErrorMessage('Invalid email or password');
+        }
+      })
+      .catch((error) => {
+        setErrorMessage('Something went wrong. Please try again later.');
+      });
   };
 
   return (
     <div className={styles.login}>
-    <div className={styles.outerContainer}>
-      <Header linkTo="/homepage" />
-      <form onSubmit={handleSubmit} className={styles.formContainer}>
-        {[
-          {
-            label: 'Email',
-            name: 'email',
-            type: 'email',
-            placeholder: 'name@email.com',
-          },
-          {
-            label: 'Password',
-            name: 'password',
-            type: 'password',
-            placeholder: '**********',
-          },
-        ].map(({ label, name, type, placeholder }) => (
-          <label key={name} className={styles.formSection}>
-            <p className={styles.label}>{label}</p>
-            <input
-              type={type}
-              name={name}
-              value={user[name as keyof User]}
-              onChange={handleChange}
-              placeholder={placeholder}
-              className={styles.formInput}
-            />
-          </label>
-        ))}
-        <Button className={styles.submitButton}>Login</Button>
-        <br />
-        <div className={styles.createUserPrompt}>Don't have an account?</div>
+      <div className={styles.outerContainer}>
+        <Header linkTo="/homepage" />
+        <form onSubmit={handleSubmit} className={styles.formContainer}>
+          {[
+            {
+              label: 'Email',
+              name: 'email',
+              type: 'email',
+              placeholder: 'name@email.com',
+            },
+            {
+              label: 'Password',
+              name: 'password',
+              type: 'password',
+              placeholder: '**********',
+            },
+          ].map(({ label, name, type, placeholder }) => (
+            <label key={name} className={styles.formSection}>
+              <p className={styles.label}>{label}</p>
+              <input
+                type={type}
+                name={name}
+                value={user[name as keyof User]}
+                onChange={handleChange}
+                placeholder={placeholder}
+                className={styles.formInput}
+              />
+            </label>
+          ))}
+          <Button className={styles.submitButton}>Login</Button>
+          {errorMessage && <div className="errorMessage">{errorMessage}</div>}
+          <br />
+          <div className={styles.createUserPrompt}>Don't have an account?</div>
 
-        <Link to="/createUser" className={styles.createUserLink}>
-          <Button className={styles.createUserButton}>Create User</Button>
-        </Link>
-      </form>
-    </div>
+          <Link to="/createUser" className={styles.createUserLink}>
+            <Button className={styles.createUserButton}>Create User</Button>
+          </Link>
+        </form>
+      </div>
     </div>
   );
 };

@@ -18,12 +18,13 @@ export const register = async (fullName: string, email: string, password: string
         },
         data: data
     };
-
-    axios.request(config)
-        .then((response) => {
-            console.log(JSON.stringify(response.data));
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-}
+  
+    try {
+      const response = await axios.request(config);
+      console.log(JSON.stringify(response.data));
+      return { success: true };
+    } catch (error: any) {
+      console.log(error);
+      return { success: false, message: error.response.data.errors[0].msg };
+    }
+  };

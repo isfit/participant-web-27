@@ -27,6 +27,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-width: 300px;
 }
 
 
@@ -63,6 +64,17 @@
     width: 100%;
     color: var(--primary-color);
 
+}
+
+.errorMessage {
+    color: red;
+    margin-top: var(--margin);
+
+}
+
+.successMessage {
+    color: green;
+    margin-top: var(--margin);
 }
 
 .loginPrompt {
