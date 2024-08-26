@@ -42,7 +42,7 @@ const ApplicationSchema: Schema = new Schema({
   universityWebsite: { type: String },
   studentCertificate: { type: Buffer },
   isEnglishSpeaker: { type: Boolean, required: true },
-  tShirtSize: { type: String, required: true },
+  tShirtSize: { type: String },
   applyingAs: { type: String, required: true },
   themePowerThoughts: { type: String, required: true },
   countryPowerIssue: { type: String, required: true },

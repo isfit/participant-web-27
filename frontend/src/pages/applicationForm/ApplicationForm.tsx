@@ -5,6 +5,7 @@ import './ApplicationForm.css';
 import { IApplicationForm } from '../../types/types';
 import { apply } from '../../api/application';
 import { Navigate } from 'react-router-dom';
+import { Information } from '@carbon/icons-react';
 
 const steps = [
   'Personal Details',
@@ -12,6 +13,17 @@ const steps = [
   'Financial Support',
   'Consent',
 ];
+
+interface FormField {
+  label: string;
+  labelElement?: JSX.Element;
+  name: keyof IApplicationForm;
+  type: string;
+  options?: string[];
+  placeholder?: string;
+  required?: boolean;
+}
+
 
 const ApplicationForm: React.FC = () => {
   const [formValues, setFormValues] = useState<IApplicationForm>(() => {
@@ -68,13 +80,27 @@ const ApplicationForm: React.FC = () => {
     const { name, value, type } = e.target;
     const isCheckbox = type === 'checkbox';
   
-    setFormValues((prevState) => ({
-      ...prevState,
-      [name]: isCheckbox
-        ? (e.target as HTMLInputElement).checked 
-        : value,
-    }));
+    // Update word counts for textareas
+    if (type === 'textarea') {
+      const wordCount = value.trim().split(/\s+/).length;
+      
+      if (
+        (name === 'themePowerThoughts' && wordCount <= 100) ||
+        ((name === 'countryPowerIssue' || name === 'motivation') && wordCount <= 300)
+      ) {
+        setFormValues((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+      }
+    } else {
+      setFormValues((prevState) => ({
+        ...prevState,
+        [name]: isCheckbox ? (e.target as HTMLInputElement).checked : value,
+      }));
+    }
   };
+  
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name } = e.target;
@@ -157,8 +183,8 @@ const ApplicationForm: React.FC = () => {
     return <Navigate to="/homepage" />;
   }
 
-  const personalDetails: Array<{ label: string; name: keyof IApplicationForm; type: string; options?: string[]; placeholder?: string; required?: boolean }> = [
-    { label: 'Full Name', name: 'fullName', type: 'text', placeholder: 'John Doe', required: true },
+  const personalDetails: FormField[] = [
+    { label: 'Full Name (as per passport)', name: 'fullName', type: 'text', placeholder: 'John Doe', required: true },
     { label: 'Date of Birth', name: 'dateOfBirth', type: 'date', placeholder: 'YYYY-MM-DD', required: true },
     { label: 'Gender', name: 'gender', type: 'select', options: ['Male', 'Female', 'Other'], required: true },
     { label: 'Nationality', name: 'nationality', type: 'text', placeholder: 'ex. Norwegian', required: true },
@@ -168,19 +194,37 @@ const ApplicationForm: React.FC = () => {
     { label: 'What do you study?', name: 'studyField', type: 'text', placeholder: 'ex. Infomatics', required: true },
     { label: 'Name of your University/Institute', name: 'university', type: 'text', placeholder: 'ex. Norwegian University of Science and Technology', required: true },
     { label: 'Your University/Institute website address (optional)', name: 'universityWebsite', type: 'text', placeholder: 'ex. https://youruniversity.edu' },
-    { label: 'Please upload your student certificate', name: 'studentCertificate', type: 'file', required: true },
+    { labelElement: (
+      <>
+        Please upload your student certificate 
+        <span className="info-icon"><Information/>
+          <span className="tooltip-text">
+            The student certificate must confirm your student status for the academic year 2024-25 and must bear the official stamp/electronic signature of the institute/university. If the certificate is not in English, please upload an unofficial English translation of it. Please upload as a pdf that is easily readable.
+          </span>
+        </span>
+      </>
+    ), label: 'Please upload your student certificate', name: 'studentCertificate', type: 'file', required: true },
     { label: 'By checking this box, I confirm I am able to communicate in English', name: 'isEnglishSpeaker', type: 'checkbox', required: true },
-    { label: 'What is your T-Shirt size?', name: 'tShirtSize', type: 'select', options: ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'], required: true },
-    { label: 'I am applying as', name: 'applyingAs', type: 'select', options: ['Regular participant', 'SOrCE', 'Coastal Carolina University', 'Dialogue Project'], required: true },
+    { labelElement: (
+      <>
+        I am applying as 
+        <span className="info-icon"><Information/>
+          <span className="tooltip-text">
+          SOrCE (as a delegate selected by your own festival - already selected)
+          <br/>If you are not already selected, choose regular participant</span>
+        </span>
+      </>
+    ), label: 'I am applying as', name: 'applyingAs', type: 'select', options: ['SOrCE','Regular participant'], required: true },
   ];
 
   const themeSection: Array<{ label: string; name: keyof IApplicationForm; type: string; placeholder?: string; required?: boolean }> = [
-    { label: "When considering the theme of 'POWER' for ISFiT25, what aspects or dimensions of power come to your mind first?", name: 'themePowerThoughts', type: 'textarea', placeholder: 'When I think of power I think of ...', required: true },
-    { label: "Reflecting on your country's context, can you identify a specific power issue? How does this issue manifest, and what are its consequences?", name: 'countryPowerIssue', type: 'textarea', placeholder: 'When reflecting on my country\'s context, an issue regarding power is ...', required: true },
-    { label: 'What is your motivation for attending ISFiT25? How do you envision contributing to discussions and activities surrounding this theme during the festival?', name: 'motivation', type: 'textarea', placeholder: 'My motivation for attending ISFiT25 is ...', required: true },
+    { label: "Every time ISFiT is arranged, we explore a new theme that affects students across the globe. The theme for ISFiT25 is ‘POWER’. When considering the theme of 'POWER' for ISFiT25, what aspects or dimensions of power come to your mind first? (max 100 words)", name: 'themePowerThoughts', type: 'textarea', placeholder: 'When I think of power I think of ...', required: true },
+    { label: "Reflecting on your country's context, can you identify a specific power issue? How does this issue manifest, and what are its consequences? (max 300 words)", name: 'countryPowerIssue', type: 'textarea', placeholder: 'When reflecting on my country\'s context, an issue regarding power is ...', required: true },
+    { label: 'What is your motivation for attending ISFiT25? How do you envision contributing to discussions and activities surrounding this theme during the festival? (max 300 words)', name: 'motivation', type: 'textarea', placeholder: 'My motivation for attending ISFiT25 is ...', required: true },
   ];
 
   const financialSupportSection: Array<{ label: string; name: keyof IApplicationForm; type: string; options?: string[]; placeholder?: string; required?: boolean }> = [
+    { label: '?', name: 'financialSupportReason', type: 'textarea', placeholder: 'I should be considered to get financial support because ...' },
     { label: 'Some of the participants get financial support for their trip to participate in ISFiT25. Why do you think that you should be considered for this financial support?', name: 'financialSupportReason', type: 'textarea', placeholder: 'I should be considered to get financial support because ...' },
     { label: 'How many dependents do you have?', name: 'dependents', type: 'number', placeholder: 'Number of dependents' },
     { label: 'What is your family´s monthly income?', name: 'familyIncome', type: 'text', placeholder: 'Your family income' },
@@ -197,23 +241,35 @@ const ApplicationForm: React.FC = () => {
 
   const renderInput = ({
     label,
+    labelElement,
     name,
     type,
     options,
     placeholder,
     required,
-  }: {
-    label: string;
-    name: keyof IApplicationForm;
-    type: string;
-    options?: string[];
-    placeholder?: string;
-    required?: boolean;
-  }) => {
-    if (type === 'textarea') {
+  }: FormField) => {
+    if (type === 'checkbox') {
       return (
         <label key={name} className="formSection">
-          <p>{label}</p>
+          <div className="checkboxContainer">
+            <input
+              type={type}
+              name={name}
+              checked={Boolean(formValues[name])}
+              onChange={handleChange}
+              className="checkboxInput"
+              required={required}
+            />
+            <span className="checkboxLabel">{labelElement || label}</span>
+          </div>
+        </label>
+      );
+    }
+  
+    return (
+      <label key={name} className="formSection">
+        <p>{labelElement || label}</p>
+        {type === 'textarea' && (
           <textarea
             name={name}
             value={formValues[name] as string}
@@ -222,13 +278,8 @@ const ApplicationForm: React.FC = () => {
             required={required}
             placeholder={placeholder}
           />
-        </label>
-      );
-    }
-    if (type === 'file') {
-      return (
-        <label key={name} className="formSection">
-          <p>{label}</p>
+        )}
+        {type === 'file' && (
           <input
             type="file"
             name={name}
@@ -236,13 +287,8 @@ const ApplicationForm: React.FC = () => {
             className="formInput"
             required={required}
           />
-        </label>
-      );
-    }
-    if (type === 'select') {
-      return (
-        <label key={name} className="formSection">
-          <p>{label}</p>
+        )}
+        {type === 'select' && (
           <select
             name={name}
             value={formValues[name] as string}
@@ -259,41 +305,25 @@ const ApplicationForm: React.FC = () => {
               </option>
             ))}
           </select>
-        </label>
-      );
-    }
-    if (type === 'checkbox') {
-      return (
-        <label key={name} className="formSection">
-          <div className="checkboxContainer">
-            <input
-              type={type}
-              name={name}
-              checked={Boolean(formValues[name])}
-              onChange={handleChange}
-              className="checkboxInput"
-              required={required}
-            />
-            <span className="checkboxLabel">{label}</span>
-          </div>
-        </label>
-      );
-    }
-    return (
-      <label key={name} className="formSection">
-        <p>{label}</p>
-        <input
-          type={type}
-          name={name}
-          value={formValues[name] as string | number | undefined}
-          onChange={handleChange}
-          className="formInput"
-          required={required}
-          placeholder={placeholder}
-        />
+        )}
+        {/* Default case for other input types */}
+        {type !== 'textarea' && type !== 'file' && type !== 'select' && type !== 'checkbox' && (
+          <input
+            type={type}
+            name={name}
+            value={formValues[name] as string | number | undefined}
+            onChange={handleChange}
+            className="formInput"
+            required={required}
+            placeholder={placeholder}
+          />
+        )}
       </label>
     );
   };
+  
+  
+  
 
   const getCurrentFields = () => {
     switch (currentStep) {
@@ -326,10 +356,12 @@ const ApplicationForm: React.FC = () => {
       ) : (
         <>
           <div className="outerContainer">
-            <h1 className="applicationSectionHeader">Application Form</h1>
+            <h1 className="applicationSectionHeader">Welcome to the ISFiT 2025 Participant Application!</h1>
             <p>
-              Hey! Awesome that you want to apply for ISFiT 2025, please fill out
-              all required fields.
+              ISFiT, the world’s largest international student festival, is held biennially in Trondheim, Norway, during the spring semester. Since its inception in 1990, ISFiT has brought together students from diverse national and cultural backgrounds, fostering dialogue and connection through stimulating discussions on important global issues.
+            </p>
+            <p>
+              Each festival centers around a unique theme, and for 2025, we will be exploring the theme of POWER. We invite you to join us from March 13th to 23rd, 2025, for this exciting event, where students from across the globe will gather in Trondheim to engage, learn, and inspire one another.
             </p>
           </div>
   
