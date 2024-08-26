@@ -18,13 +18,13 @@ export interface AuthTokens {
 
 export interface AuthContextType {
     user: User | null;
-    login: (email: string, password: string) => Promise<void>;
+    login: (email: string, password: string) => Promise<boolean>;
     logout: () => void;
     authTokens: AuthTokens | null;
 }
 
 export interface IApplicationForm {
-    _id?: string;
+    _id: string;
     fullName: string;
     dateOfBirth: string;
     gender: string;
@@ -35,7 +35,7 @@ export interface IApplicationForm {
     studyField: string;
     university: string;
     universityWebsite?: string;
-    studentCertificate?: File;
+    studentCertificate?: Buffer;
     isEnglishSpeaker: boolean;
     tShirtSize: string;
     applyingAs: string;

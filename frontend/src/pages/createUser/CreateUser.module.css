@@ -11,14 +11,15 @@
 
 .outerContainer {
     background-color: var(--primary-bg);
-    padding: 20px;
+    padding-top: 40px;
+    margin-top: 40px;
     border-radius: 20px;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-
+    min-height: fit-content;
 }
 
 .formContainer {
@@ -26,6 +27,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-width: 300px;
 }
 
 
@@ -62,6 +64,17 @@
     width: 100%;
     color: var(--primary-color);
 
+}
+
+.errorMessage {
+    color: red;
+    margin-top: var(--margin);
+
+}
+
+.successMessage {
+    color: green;
+    margin-top: var(--margin);
 }
 
 .loginPrompt {
