@@ -93,3 +93,141 @@
   background-color: #000;
   color: white;
 }
+
+/* Footer.module.css */
+
+.footer {
+  width: 100vw;  /* Ensures the footer spans the full viewport width */
+  background-color: #333;
+  color: white;
+  padding: 20px 0;  /* Adds space inside the footer, removing the side padding */
+  box-sizing: border-box;  /* Ensures padding doesn't affect the width */
+  text-align: center;
+  position: relative;  /* Default position; change to 'absolute' if needed */
+  left: 0;  /* Aligns the footer to the left edge */
+  bottom: 0;  /* Sticks the footer to the bottom if position is 'absolute' */
+  margin-top: auto;
+}
+
+.footerLine1{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  max-width: 1200px;  /* Optional: constrain content width, but allow full stretch */
+  margin: 0 auto;  /* Center content horizontally within the max-width */
+  width: 100%;
+  padding: 0 20px;  /* Optional: add padding for internal content */
+}
+
+.footerLine1 {
+  margin-bottom: 60px;  /* Increase the gap after the first line */
+}
+
+.footerLine2 {
+  align-items: center;
+  justify-content: center;
+}
+
+/* Style for the Partners: text */
+.footerLine2 h2 {
+  font-size: 24px;  /* Increase the font size */
+  font-weight: bold;  /* Make the text bold */
+  margin: 0;  /* Remove any default margin */
+  align-items: center;
+  justify-content: center;
+}
+
+.footerLine3{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 30px;
+  max-width: 1200px;  /* Optional: constrain content width, but allow full stretch */
+  margin: 0 auto;  /* Center content horizontally within the max-width */
+  width: 100%;
+  padding: 0 20px;  /* Optional: add padding for internal content */
+  filter: invert();
+}
+
+.footerLine4{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 30px;
+  max-width: 1200px;  /* Optional: constrain content width, but allow full stretch */
+  margin: 0 auto;  /* Center content horizontally within the max-width */
+  width: 100%;
+  padding: 0 20px;  /* Optional: add padding for internal content */
+  filter: invert();
+}
+
+.footerLine5{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 30px;
+  max-width: 1200px;  /* Optional: constrain content width, but allow full stretch */
+  margin: 0 auto;  /* Center content horizontally within the max-width */
+  width: 100%;
+  padding: 0 20px;  /* Optional: add padding for internal content */
+}
+
+.footerLine6 {
+  align-items: center;
+  justify-content: center;
+}
+
+.footerLeft,
+.footerRight {
+  display: flex;
+}
+
+.footerLogo,
+.socialIcon {
+  width: 70px;
+  margin: 0 10px;
+}
+
+.partnersIcon1 {
+  width: 650px;  /* Increase the size of partner icons */
+  margin: 0 10px;
+}
+
+.partnersIcon2 {
+  width: 350px;  /* Increase the size of partner icons */
+  margin: 0 10px;
+}
+
+.partnersIcon3 {
+  width: 250px;  /* Increase the size of partner icons */
+  margin: 0 10px;
+}
+
+.partnersIcon4 {
+  width: 450px;  /* Increase the size of partner icons */
+  margin: 0 10px;
+}
+
+.partnersIcon5 {
+  width: 250px;  /* Increase the size of partner icons */
+  margin: 0 10px;
+}
+
+.partnersIcon6 {
+  width: 300px;  /* Increase the size of partner icons */
+  margin: 0 10px;
+}
+
+.partnersIcon7 {
+  width: 350px;  /* Increase the size of partner icons */
+  margin: 0 10px;
+}
+
+
+.customBackground {
+  background-color: #333;
+  color: white;
+
+}
+

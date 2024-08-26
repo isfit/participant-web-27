@@ -86,47 +86,50 @@ const HomePage: React.FC = () => {
       
 
       {/* Footer Section */}
-      <footer className="footer">
-        <div className="footerLine1">
-          <div className="footerLeft">
-            <a href="https://www.isfit.org" target="_blank" rel="noopener noreferrer">
-              <img src={'/isfit.jpg'} alt="ISFiT Logo" className="footerLogo" />
-            </a>
-            <a href="https://www.studentpeaceprize.org/" target="_blank" rel="noopener noreferrer">
-              <img src={'/spp.jpg'} alt="Student Peace Prize Logo" className="footerLogo" />
-            </a>
-          </div>
-          <div className="footerRight">
-            <a href="https://www.facebook.com/ISFiT" target="_blank" rel="noopener noreferrer">
-              <img src={'/facebook.png'} alt="Facebook" className="socialIcon" />
-            </a>
-            <a href="https://www.instagram.com/isfitfestival" target="_blank" rel="noopener noreferrer">
-              <img src={'/instagram.png'} alt="Instagram" className="socialIcon" />
-            </a>
-            <a href="https://twitter.com/ISFiT" target="_blank" rel="noopener noreferrer">
-              <img src={'/twitter.png'} alt="Twitter" className="socialIcon" />
-            </a>
-          </div>
+      <footer className={styles.footer}>
+      <div className={styles.footerLine1}>
+        <div className={styles.footerLeft}>
+          <a href="https://www.isfit.org" target="_blank" rel="noopener noreferrer">
+            <img src={'/isfit.jpg'} alt="ISFiT Logo" className={styles.footerLogo} />
+          </a>
+          <a href="https://www.studentpeaceprize.org/" target="_blank" rel="noopener noreferrer">
+            <img src={'/spp.jpg'} alt="Student Peace Prize Logo" className={styles.footerLogo} />
+          </a>
         </div>
-        <div className="footerLine2">
-          <h2><b>PARTNERS:</b></h2>
-          <img src={'/sit.png'} alt="sit" className="partnersIcon" />
-          <img src={'/kjeldsberg.png'} alt="kjelsberg" className="partnersIcon" />
-          <img src={'/ntnu.png'} alt="NTNU" className="partnersIcon" />
+        <div className={styles.footerRight}>
+          <a href="https://www.facebook.com/ISFiT" target="_blank" rel="noopener noreferrer">
+            <img src={'/facebook.png'} alt="Facebook" className={styles.socialIcon} />
+          </a>
+          <a href="https://www.instagram.com/isfitfestival" target="_blank" rel="noopener noreferrer">
+            <img src={'/instagram.png'} alt="Instagram" className={styles.socialIcon} />
+          </a>
+          <a href="https://twitter.com/ISFiT" target="_blank" rel="noopener noreferrer">
+            <img src={'/twitter.png'} alt="Twitter" className={styles.socialIcon} />
+          </a>
         </div>
-        <div className="footerLine3">
-          <img src={'/trøndelagkommune.png'} alt="Trøndelagkommune" className="partnersIcon" />
-          <img src={'/kommune.png'} alt="Trondheim Kommune" className="partnersIcon" />
-          <img src={'/moller.png'} alt="Moller" className="partnersIcon" />
-        </div>
-        <div className="footerLine4">        
-          <img src={'/vaernes.png'} alt="Vaernes" className="partnersIcon" />
-          <img src={'/Kilroy.png'} alt="Kilroy" className="partnersIcon" />
-        </div>
-        <div className="footerLine5">
-          <p>© 2025 ISFiT | All Rights Reserved</p>
-        </div>
-      </footer>
+      </div>
+      <div className={styles.footerLine2}>
+        <h2><b>PARTNERS:</b></h2>
+      </div>
+      <div className={styles.footerLine3}>
+        <img src={'/ntnu.png'} alt="NTNU" className={styles.partnersIcon3} />
+        <img src={'/sit.png'} alt="sit" className={styles.partnersIcon1} />
+        <img src={'/kjeldsberg.png'} alt="kjelsberg" className={styles.partnersIcon2} />
+      </div>
+      <div className={styles.footerLine4}>
+        <img src={'/moller.png'} alt="Moller" className={styles.partnersIcon6} />
+        <img src={'/trøndelagkommune.png'} alt="Trøndelagkommune" className={styles.partnersIcon4} />
+        <img src={'/kommune.png'} alt="Trondheim Kommune" className={styles.partnersIcon5} />
+      </div>
+      <div className={styles.footerLine5}>
+      <img src={'/Kilroy.png'} alt="Kilroy" className={styles.partnersIcon7} />
+        <img src={'/vaernes.png'} alt="Vaernes" className={styles.partnersIcon6} />
+        
+      </div>
+      <div className={styles.footerLine6}>
+        <p>© 2025 ISFiT | All Rights Reserved</p>
+      </div>
+    </footer>
     </div>
     );
 
