@@ -155,7 +155,7 @@ label {
     flex-direction: column;
     align-items: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 64px;
+    margin-bottom: 16px;
 }
 
 .formContainer {
@@ -243,6 +243,12 @@ label {
 
 .navigationButtons {
     display: flex;
+    margin: 20px 0;
+    gap: 48px;
+    justify-content: center;
+    }
+
+  .progressOverview {
     justify-content: space-between;
     margin-top: 20px;
     width: 100%;
@@ -273,8 +279,13 @@ label {
 
 .separator {
     margin: 0 5px;
-    color: #888;
-}
+    color: #888; /* Optional: style for the arrow separator */
+  }
+
+  .clickableStep {
+    cursor: pointer; /* Make visited steps clickable */
+  }
+  
 
 .clickableStep {
     cursor: pointer;
