@@ -65,7 +65,6 @@ const AdminPage: React.FC = () => {
         'Student Certificate',
         'University Website', 
         'Is English Speaker', 
-        'T-Shirt Size', 
         'Applying As', 
         'Theme Power Thoughts', 
         'Country Power Issue', 
@@ -101,7 +100,6 @@ const AdminPage: React.FC = () => {
         app.studentCertificate,
         app.universityWebsite || 'N/A',
         app.isEnglishSpeaker ? 'Yes' : 'No',
-        app.tShirtSize,
         app.applyingAs,
         app.themePowerThoughts,
         app.countryPowerIssue,
@@ -201,7 +199,6 @@ const AdminPage: React.FC = () => {
                 <th>Student Certificate</th>
                 <th>University Website</th>
                 <th>Is English Speaker</th>
-                <th>T-Shirt Size</th>
                 <th>Applying As</th>
                 <th>Theme Power Thoughts</th>
                 <th>Country Power Issue</th>
@@ -238,7 +235,6 @@ const AdminPage: React.FC = () => {
                   <td>{application.studentCertificate ? <button onClick={() => downloadPDF(application?._id)}>Download Certificate</button> : 'N/A'}</td>            
                   <td>{application.universityWebsite || 'N/A'}</td>
                   <td>{application.isEnglishSpeaker ? 'Yes' : 'No'}</td>
-                  <td>{application.tShirtSize}</td>
                   <td>{application.applyingAs}</td>
                   <td>{application.themePowerThoughts}</td>
                   <td>{application.countryPowerIssue}</td>

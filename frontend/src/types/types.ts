@@ -37,7 +37,6 @@ export interface IApplicationForm {
     universityWebsite?: string;
     studentCertificate?: Buffer;
     isEnglishSpeaker: boolean;
-    tShirtSize: string;
     applyingAs: string;
     themePowerThoughts: string;
     countryPowerIssue: string;

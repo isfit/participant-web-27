@@ -13,7 +13,6 @@ interface IApplication extends Document {
   universityWebsite?: string;
   studentCertificate?: Buffer;
   isEnglishSpeaker: boolean;
-  tShirtSize: string;
   applyingAs: string;
   themePowerThoughts: string;
   countryPowerIssue: string;
@@ -45,9 +44,8 @@ const ApplicationSchema: Schema = new Schema({
   studyField: { type: String, required: true },
   university: { type: String, required: true },
   universityWebsite: { type: String },
-  studentCertificate: { type: Buffer },
+  studentCertificate: { type: Buffer, required: true },
   isEnglishSpeaker: { type: Boolean, required: true },
-  tShirtSize: { type: String },
   applyingAs: { type: String, required: true },
   themePowerThoughts: { type: String, required: true },
   countryPowerIssue: { type: String, required: true },
