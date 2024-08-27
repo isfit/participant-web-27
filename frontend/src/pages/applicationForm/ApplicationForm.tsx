@@ -7,6 +7,7 @@ import { apply } from '../../api/application';
 import { Navigate } from 'react-router-dom';
 import { Information } from '@carbon/icons-react';
 import getSummary from '../../utils/summary.tsx';
+import CustomToast from './toast';
 
 const steps = [
   'Personal Details',
@@ -69,6 +70,10 @@ const ApplicationForm: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [visitedSteps, setVisitedSteps] = useState<number[]>([0]);
+  const [toastOpen, setToastOpen] = useState(false); // State for toast visibility
+  const [toastMessage, setToastMessage] = useState(['']); // State for toast message
+  const [toastTitle, setToastTitle] = useState(''); // State for toast title
+  let stepErrors: string[] = [];
 
   useEffect(() => {
     localStorage.setItem('applicationForm', JSON.stringify(formValues));
@@ -155,7 +160,7 @@ const ApplicationForm: React.FC = () => {
 
   const validateStep = () => {
     const currentFields = getCurrentFields();
-    const stepErrors: string[] = [];
+    stepErrors = [];
 
     currentFields.forEach((field) => {
       if (field.required && !formValues[field.name]) {
@@ -163,7 +168,14 @@ const ApplicationForm: React.FC = () => {
       }
     });
 
-    return stepErrors.length === 0;
+    if (stepErrors.length > 0) {
+      setToastTitle('Missing Required Fields');
+      setToastMessage(stepErrors);
+      setToastOpen(true); // Show the toast with the error message
+    } else {
+      setToastOpen(false); // Hide the toast if there are no errors
+      return stepErrors.length === 0;
+    }
   };
 
   const handleNext = () => {
@@ -1293,7 +1305,6 @@ const ApplicationForm: React.FC = () => {
               and inspire one another.
             </p>
           </div>
-
           <div className="progressOverview">
             {steps.map((step, index) => (
               <span key={index}>
@@ -1311,14 +1322,12 @@ const ApplicationForm: React.FC = () => {
               </span>
             ))}
           </div>
-
           <form id="applicationContainer">
             <div className="outerContainer">
               <h1 className="applicationSectionHeader">{steps[currentStep]}</h1>
               {renderStep()}
             </div>
           </form>
-
           <div className="navigationButtons">
             {currentStep > 0 && (
               <Button type="button" onClick={handlePrevious}>
@@ -1335,6 +1344,12 @@ const ApplicationForm: React.FC = () => {
               </Button>
             )}
           </div>
+          <CustomToast
+            open={toastOpen}
+            setOpen={setToastOpen}
+            title={toastTitle}
+            message={toastMessage}
+          />
         </>
       )}
     </div>
