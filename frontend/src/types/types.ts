@@ -57,4 +57,6 @@ export interface IApplicationForm {
     consentAttendance: boolean;
     consentMedia: boolean;
     createdAt?: string;
+    summary: string;
+    summaryCheck: boolean;
   }
