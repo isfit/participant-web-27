@@ -45,7 +45,6 @@ const ApplicationForm: React.FC = () => {
           universityWebsite: '',
           studentCertificate: undefined,
           isEnglishSpeaker: false,
-          tShirtSize: '',
           applyingAs: '',
           themePowerThoughts: '',
           countryPowerIssue: '',

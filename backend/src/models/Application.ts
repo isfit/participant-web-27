@@ -14,7 +14,6 @@ interface IApplication extends Document {
   universityWebsite?: string;
   studentCertificate?: Buffer;
   isEnglishSpeaker: boolean;
-  tShirtSize: string;
   applyingAs: string;
   themePowerThoughts: string;
   countryPowerIssue: string;
@@ -47,18 +46,17 @@ const ApplicationSchema: Schema = new Schema({
   studyField: { type: String, required: true },
   university: { type: String, required: true },
   universityWebsite: { type: String },
-  studentCertificate: { type: Buffer },
+  studentCertificate: { type: Buffer, required: true },
   isEnglishSpeaker: { type: Boolean, required: true },
-  tShirtSize: { type: String },
   applyingAs: { type: String, required: true },
   themePowerThoughts: { type: String, required: true },
   countryPowerIssue: { type: String, required: true },
   motivation: { type: String, required: true },
   financialSupportReason: { type: String },
   fullOrPartialFunding: { type: String },
-  dependents: { type: Number, required: true },
+  dependents: { type: Number },
   familyIncome: { type: String },
-  canParticipate: { type: String, required: true },
+  canParticipate: { type: String },
   countryTravelingFrom: { type: String },
   otherFundingInfo: { type: String },
   consentVisa: { type: Boolean, required: true },
@@ -67,7 +65,7 @@ const ApplicationSchema: Schema = new Schema({
   consentReturn: { type: Boolean, required: true },
   consentPersonalDetails: { type: Boolean, required: true },
   consentAttendance: { type: Boolean, required: true },
-  consentMedia: { type: Boolean, required: true },
+  consentMedia: { type: Boolean },
   createdAt: { type: Date, default: Date.now },
 });
 
