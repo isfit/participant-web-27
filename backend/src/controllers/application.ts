@@ -8,6 +8,7 @@ const submitApplication = async (req: Request, res: Response, next: NextFunction
       
       const {
         fullName,
+        phoneNumber,
         dateOfBirth,
         gender,
         nationality,
@@ -43,6 +44,7 @@ const submitApplication = async (req: Request, res: Response, next: NextFunction
   
       const newApplication = new Application({
         fullName,
+        phoneNumber,
         dateOfBirth,
         gender,
         nationality,

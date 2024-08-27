@@ -33,6 +33,7 @@ const ApplicationForm: React.FC = () => {
       ? JSON.parse(savedForm)
       : {
           fullName: '',
+          phoneNumber: '',
           dateOfBirth: '',
           gender: '',
           nationality: '',
@@ -827,6 +828,13 @@ const ApplicationForm: React.FC = () => {
       name: 'fullName',
       type: 'text',
       placeholder: 'John Doe',
+      required: true,
+    },
+    {
+      label: 'Phonenumber (with landcode)',
+      name: 'phoneNumber',
+      type: 'text',
+      placeholder: '+47 12345678',
       required: true,
     },
     {
