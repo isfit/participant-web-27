@@ -52,9 +52,9 @@ const ApplicationSchema: Schema = new Schema({
   motivation: { type: String, required: true },
   financialSupportReason: { type: String },
   fullOrPartialFunding: { type: String },
-  dependents: { type: Number, required: true },
+  dependents: { type: Number },
   familyIncome: { type: String },
-  canParticipate: { type: String, required: true },
+  canParticipate: { type: String },
   countryTravelingFrom: { type: String },
   otherFundingInfo: { type: String },
   consentVisa: { type: Boolean, required: true },
@@ -63,7 +63,7 @@ const ApplicationSchema: Schema = new Schema({
   consentReturn: { type: Boolean, required: true },
   consentPersonalDetails: { type: Boolean, required: true },
   consentAttendance: { type: Boolean, required: true },
-  consentMedia: { type: Boolean, required: true },
+  consentMedia: { type: Boolean },
   createdAt: { type: Date, default: Date.now },
 });
 
