@@ -26,6 +26,7 @@ export interface AuthContextType {
 export interface IApplicationForm {
     _id: string;
     fullName: string;
+    phoneNumber: string;
     dateOfBirth: string;
     gender: string;
     nationality: string;

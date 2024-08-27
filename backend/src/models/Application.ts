@@ -2,6 +2,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 interface IApplication extends Document {
   fullName: string;
+  phoneNumber: string;
   dateOfBirth: Date;
   gender: string;
   nationality: string;
@@ -36,6 +37,7 @@ interface IApplication extends Document {
 
 const ApplicationSchema: Schema = new Schema({
   fullName: { type: String, required: true },
+  phoneNumber: { type: String, required: true},
   dateOfBirth: { type: Date, required: true },
   gender: { type: String, required: true },
   nationality: { type: String, required: true },

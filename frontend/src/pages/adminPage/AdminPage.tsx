@@ -54,6 +54,7 @@ const AdminPage: React.FC = () => {
     const csvRows = [
       [
         'Full Name', 
+        'Phone number',
         'Date of Birth (DD/MM/YYYY)', 
         'Gender', 
         'Nationality', 
@@ -90,6 +91,7 @@ const AdminPage: React.FC = () => {
      
         return [
         app.fullName,
+        app.phoneNumber,
         new Date(app.dateOfBirth).toLocaleDateString('en-GB'),
         app.gender,
         app.nationality,
@@ -190,6 +192,7 @@ const AdminPage: React.FC = () => {
             <thead>
               <tr>
                 <th>Full Name</th>
+                <th>Phone number</th>
                 <th>Date of Birth</th>
                 <th>Gender</th>
                 <th>Nationality</th>
@@ -227,6 +230,7 @@ const AdminPage: React.FC = () => {
               {applications.map((application) => (
                 <tr key={application._id}>
                   <td>{application.fullName}</td>
+                  <td>{application.phoneNumber}</td>
                   <td>{new Date(application.dateOfBirth).toLocaleDateString()}</td>
                   <td>{application.gender}</td>
                   <td>{application.nationality}</td>
