@@ -901,10 +901,9 @@ const ApplicationForm: React.FC = () => {
     {
       labelElement: (
         <>
-          Please upload your student certificate as a PDF
-          <span className="info-icon">
+        <span className="info-icon">
             <Information />
-            <span className="tooltip-text">
+            <span className="tooltip-text infoStudentCertificate">
               The student certificate must confirm your student status for the
               academic year 2024-25 and must bear the official stamp/electronic
               signature of the institute/university. If the certificate is not
@@ -912,6 +911,8 @@ const ApplicationForm: React.FC = () => {
               Please upload as a pdf that is easily readable.
             </span>
           </span>
+          Please upload your student certificate as a PDF
+          
         </>
       ),
       label: 'Please upload your student certificate',
@@ -929,16 +930,16 @@ const ApplicationForm: React.FC = () => {
     {
       labelElement: (
         <>
-          I am applying as
-          <span className="info-icon">
+        <span className="info-icon">
             <Information />
-            <span className="tooltip-text">
+            <span className="tooltip-text infoApplyingAs">
               SOrCE (as a delegate selected by your own festival - already
               selected)
               <br />
               If you are not already selected, choose regular participant
             </span>
           </span>
+          I am applying as
         </>
       ),
       label: 'I am applying as',
