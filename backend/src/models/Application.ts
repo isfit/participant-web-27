@@ -25,13 +25,13 @@ interface IApplication extends Document {
   countryTravelingFrom: string;
   otherFundingInfo: string;
   canParticipate: string;
-  consentVisa: boolean;
+  consentVisa: string;
   consentFlight: boolean;
   consentNorwegianLaw: boolean;
   consentReturn: boolean;
   consentPersonalDetails: boolean;
   consentAttendance: boolean;
-  consentMedia: boolean;
+  consentMedia: string;
 }
 
 const ApplicationSchema: Schema = new Schema({
@@ -59,13 +59,13 @@ const ApplicationSchema: Schema = new Schema({
   canParticipate: { type: String },
   countryTravelingFrom: { type: String },
   otherFundingInfo: { type: String },
-  consentVisa: { type: Boolean, required: true },
+  consentVisa: { type: String, required: true },
   consentFlight: { type: Boolean, required: true },
   consentNorwegianLaw: { type: Boolean, required: true },
   consentReturn: { type: Boolean, required: true },
   consentPersonalDetails: { type: Boolean, required: true },
   consentAttendance: { type: Boolean, required: true },
-  consentMedia: { type: Boolean },
+  consentMedia: { type: String },
   createdAt: { type: Date, default: Date.now },
 });
 

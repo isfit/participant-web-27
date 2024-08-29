@@ -49,13 +49,13 @@ export interface IApplicationForm {
     canParticipate: string;
     countryTravelingFrom: string;
     otherFundingInfo: string;
-    consentVisa: boolean;
+    consentVisa: string;
     consentFlight: boolean;
     consentNorwegianLaw: boolean;
     consentReturn: boolean;
     consentPersonalDetails: boolean;
     consentAttendance: boolean;
-    consentMedia: boolean;
+    consentMedia: string;
     createdAt?: string;
     summary: string;
     summaryCheck: boolean;

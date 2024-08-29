@@ -56,13 +56,13 @@ const ApplicationForm: React.FC = () => {
           countryTravelingFrom: '',
           otherFundingInfo: '',
           canParticipate: '',
-          consentVisa: false,
+          consentVisa: '',
           consentFlight: false,
           consentNorwegianLaw: false,
           consentReturn: false,
           consentPersonalDetails: false,
           consentAttendance: false,
-          consentMedia: false,
+          consentMedia: '',
         };
   });
   const [redirect, setRedirect] = useState(false);
@@ -1053,7 +1053,11 @@ const ApplicationForm: React.FC = () => {
     {
       label: 'I have to apply for a visa if I get accepted as a participant',
       name: 'consentVisa',
-      type: 'checkbox',
+      type: 'select',
+      options: [
+        'Yes',
+        'No',
+      ],
       required: true,
     },
     {
@@ -1095,7 +1099,12 @@ const ApplicationForm: React.FC = () => {
       label:
         'I agree that ISFiT can share pictures and videos of me taken during the festival on social media',
       name: 'consentMedia',
-      type: 'checkbox',
+      type: 'select',
+      options: [
+        'Yes',
+        'No',
+        'Only in group photos'
+      ],
     },
   ];
 
@@ -1313,7 +1322,7 @@ const ApplicationForm: React.FC = () => {
           </div>
 
           <form id="applicationContainer">
-            <div className="outerContainer">
+            <div className="outerContainerSection">
               <h1 className="applicationSectionHeader">{steps[currentStep]}</h1>
               {renderStep()}
             </div>

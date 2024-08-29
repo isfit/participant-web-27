@@ -176,7 +176,7 @@ export function getSummary() {
             <td>
               <strong>Consent for Visa Application:</strong>
             </td>
-            <td>{formValues.consentVisa ? 'Yes' : 'No'}</td>
+            <td>{formValues.consentVisa}</td>
           </tr>
           <tr>
             <td>
@@ -215,7 +215,7 @@ export function getSummary() {
             <td>
               <strong>Consent for Media Use:</strong>
             </td>
-            <td>{formValues.consentMedia ? 'Yes' : 'No'}</td>
+            <td>{formValues.consentMedia}</td>
           </tr>
         </tbody>
       </table>
