@@ -54,9 +54,8 @@ const HomePage: React.FC = () => {
         <Link to="/login">Login</Link>
         {user && <Button onClick={handleLogout}>Logout</Button>}
       </div>
-
       <div className={styles.centerContainer}>
-        <img src={'/isfit_log.png'} alt="Logo" className={styles.logo} />
+        <img src={'./src/assets/Isfitlogo_power_white_version2.png'} alt="Logo" className={styles.logo} />
         <br />
         <Link to="/applicationForm" className={styles.applyButtonLink}>
           <Button className={styles.applyButton}>Apply now!</Button>
