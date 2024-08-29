@@ -403,7 +403,7 @@ label {
 
 .info-icon {
     display: inline-block;
-    margin-left: 8px;
+    margin-right: 8px;
     background-color: #602c2c9b;
     color: white;
     border-radius: 50%;
@@ -414,6 +414,14 @@ label {
     cursor: pointer;
     position: relative;
     font-size: 14px;
+  }
+
+  .infoApplyingAs{
+    margin-left: -20px !important;
+  }
+
+  .infoStudentCertificate{
+    margin-left: -20px !important;
   }
   
   .tooltip-text {
