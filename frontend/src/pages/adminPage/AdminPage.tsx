@@ -113,13 +113,13 @@ const AdminPage: React.FC = () => {
         app.canParticipate,
         app.countryTravelingFrom,
         app.otherFundingInfo,
-        app.consentVisa ? 'Yes' : 'No',
+        app.consentVisa,
         app.consentFlight ? 'Yes' : 'No',
         app.consentNorwegianLaw ? 'Yes' : 'No',
         app.consentReturn ? 'Yes' : 'No',
         app.consentPersonalDetails ? 'Yes' : 'No',
         app.consentAttendance ? 'Yes' : 'No',
-        app.consentMedia ? 'Yes' : 'No',
+        app.consentMedia,
         app.createdAt ? new Date(app.createdAt).toLocaleDateString('en-GB') : 'N/A'
       ];})
     ];
@@ -250,13 +250,13 @@ const AdminPage: React.FC = () => {
                   <td>{application.canParticipate}</td>
                   <td>{application.countryTravelingFrom}</td>
                   <td>{application.otherFundingInfo}</td>
-                  <td>{application.consentVisa ? 'Yes' : 'No'}</td>
+                  <td>{application.consentVisa}</td>
                   <td>{application.consentFlight ? 'Yes' : 'No'}</td>
                   <td>{application.consentNorwegianLaw ? 'Yes' : 'No'}</td>
                   <td>{application.consentReturn ? 'Yes' : 'No'}</td>
                   <td>{application.consentPersonalDetails ? 'Yes' : 'No'}</td>
                   <td>{application.consentAttendance ? 'Yes' : 'No'}</td>
-                  <td>{application.consentMedia ? 'Yes' : 'No'}</td>
+                  <td>{application.consentMedia}</td>
                   <td>{application.createdAt ? new Date(application.createdAt).toLocaleDateString() : 'N/A'}</td>
                 </tr>
               ))}
