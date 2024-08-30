@@ -5,8 +5,13 @@ import './ApplicationForm.css';
 import { IApplicationForm } from '../../types/types';
 import { apply } from '../../api/application';
 import { Navigate } from 'react-router-dom';
-import { getContinentFromNationality}  from './nationality';
-import { personalDetails, themeSection, financialSupportSection, consentSection } from './sections';
+import { getContinentFromNationality } from './nationality';
+import {
+  personalDetails,
+  themeSection,
+  financialSupportSection,
+  consentSection,
+} from './sections';
 import checkErrorField from './checkErrorField';
 import { Information } from '@carbon/icons-react';
 import getSummary from '../../utils/summary.tsx';
@@ -189,11 +194,11 @@ const ApplicationForm: React.FC = () => {
 
     console.log('Errors:', stepErrors);
 
-    return stepErrors.length === 0;
     if (stepErrors.length > 0) {
       setToastTitle('Missing Required Fields');
       setToastMessage(stepErrors);
       setToastOpen(true); // Show the toast with the error message
+      return stepErrors.length === 0;
     } else {
       setToastOpen(false); // Hide the toast if there are no errors
       return stepErrors.length === 0;
@@ -207,8 +212,6 @@ const ApplicationForm: React.FC = () => {
       if (currentStep < steps.length - 1) {
         setCurrentStep(currentStep + 1);
       }
-    } else {
-      alert('Please fill out all required fields: ' + stepErrors.join(', '));
     }
   };
 
