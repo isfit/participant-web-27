@@ -54,6 +54,7 @@ const AdminPage: React.FC = () => {
     const csvRows = [
       [
         'Full Name', 
+        'Phone number',
         'Date of Birth (DD/MM/YYYY)', 
         'Gender', 
         'Nationality', 
@@ -65,17 +66,21 @@ const AdminPage: React.FC = () => {
         'Student Certificate',
         'University Website', 
         'Is English Speaker', 
-        'T-Shirt Size', 
         'Applying As', 
         'Theme Power Thoughts', 
         'Country Power Issue', 
         'Motivation', 
         'Financial Support Reason', 
+        'Full or partial funding',
         'Dependents', 
         'Family Income', 
         'Can Participate', 
+        'Traveling to Trondheim from',
+        'Other funding info',
         'Consent Visa', 
         'Consent Flight', 
+        'Consent Norwegian law',
+        'Consent Return',
         'Consent Personal Details', 
         'Consent Attendance', 
         'Consent Media',
@@ -85,6 +90,7 @@ const AdminPage: React.FC = () => {
      
         return [
         app.fullName,
+        app.phoneNumber,
         new Date(app.dateOfBirth).toLocaleDateString('en-GB'),
         app.gender,
         app.nationality,
@@ -96,17 +102,21 @@ const AdminPage: React.FC = () => {
         app.studentCertificate,
         app.universityWebsite || 'N/A',
         app.isEnglishSpeaker ? 'Yes' : 'No',
-        app.tShirtSize,
         app.applyingAs,
         app.themePowerThoughts,
         app.countryPowerIssue,
         app.motivation,
         app.financialSupportReason,
+        app.fullOrPartialFunding,
         app.dependents.toString(),
         app.familyIncome,
         app.canParticipate,
+        app.countryTravelingFrom,
+        app.otherFundingInfo,
         app.consentVisa ? 'Yes' : 'No',
         app.consentFlight ? 'Yes' : 'No',
+        app.consentNorwegianLaw ? 'Yes' : 'No',
+        app.consentReturn ? 'Yes' : 'No',
         app.consentPersonalDetails ? 'Yes' : 'No',
         app.consentAttendance ? 'Yes' : 'No',
         app.consentMedia ? 'Yes' : 'No',
@@ -180,6 +190,7 @@ const AdminPage: React.FC = () => {
             <thead>
               <tr>
                 <th>Full Name</th>
+                <th>Phone number</th>
                 <th>Date of Birth</th>
                 <th>Gender</th>
                 <th>Nationality</th>
@@ -191,17 +202,21 @@ const AdminPage: React.FC = () => {
                 <th>Student Certificate</th>
                 <th>University Website</th>
                 <th>Is English Speaker</th>
-                <th>T-Shirt Size</th>
                 <th>Applying As</th>
                 <th>Theme Power Thoughts</th>
                 <th>Country Power Issue</th>
                 <th>Motivation</th>
                 <th>Financial Support Reason</th>
+                <th>Full or partial funding</th>
                 <th>Dependents</th>
                 <th>Family Income</th>
                 <th>Can Participate</th>
+                <th>Traveling to Trondheim from</th>
+                <th>Other funding info</th>
                 <th>Consent Visa</th>
                 <th>Consent Flight</th>
+                <th>Consent Norwegian law</th>
+                <th>Consent return</th>
                 <th>Consent Personal Details</th>
                 <th>Consent Attendance</th>
                 <th>Consent Media</th>
@@ -212,6 +227,7 @@ const AdminPage: React.FC = () => {
               {applications.map((application) => (
                 <tr key={application._id}>
                   <td>{application.fullName}</td>
+                  <td>{application.phoneNumber}</td>
                   <td>{new Date(application.dateOfBirth).toLocaleDateString()}</td>
                   <td>{application.gender}</td>
                   <td>{application.nationality}</td>
@@ -223,17 +239,21 @@ const AdminPage: React.FC = () => {
                   <td>{application.studentCertificate ? <button onClick={() => downloadPDF(application?._id)}>Download Certificate</button> : 'N/A'}</td>            
                   <td>{application.universityWebsite || 'N/A'}</td>
                   <td>{application.isEnglishSpeaker ? 'Yes' : 'No'}</td>
-                  <td>{application.tShirtSize}</td>
                   <td>{application.applyingAs}</td>
                   <td>{application.themePowerThoughts}</td>
                   <td>{application.countryPowerIssue}</td>
                   <td>{application.motivation}</td>
                   <td>{application.financialSupportReason}</td>
+                  <td>{application.fullOrPartialFunding}</td>
                   <td>{application.dependents}</td>
                   <td>{application.familyIncome}</td>
                   <td>{application.canParticipate}</td>
+                  <td>{application.countryTravelingFrom}</td>
+                  <td>{application.otherFundingInfo}</td>
                   <td>{application.consentVisa ? 'Yes' : 'No'}</td>
                   <td>{application.consentFlight ? 'Yes' : 'No'}</td>
+                  <td>{application.consentNorwegianLaw ? 'Yes' : 'No'}</td>
+                  <td>{application.consentReturn ? 'Yes' : 'No'}</td>
                   <td>{application.consentPersonalDetails ? 'Yes' : 'No'}</td>
                   <td>{application.consentAttendance ? 'Yes' : 'No'}</td>
                   <td>{application.consentMedia ? 'Yes' : 'No'}</td>

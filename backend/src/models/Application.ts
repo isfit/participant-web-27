@@ -2,6 +2,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 interface IApplication extends Document {
   fullName: string;
+  phoneNumber: string;
   dateOfBirth: Date;
   gender: string;
   nationality: string;
@@ -13,17 +14,21 @@ interface IApplication extends Document {
   universityWebsite?: string;
   studentCertificate?: Buffer;
   isEnglishSpeaker: boolean;
-  tShirtSize: string;
   applyingAs: string;
   themePowerThoughts: string;
   countryPowerIssue: string;
   motivation: string;
   financialSupportReason: string;
+  fullOrPartialFunding: string;
   dependents: number;
   familyIncome: string;
+  countryTravelingFrom: string;
+  otherFundingInfo: string;
   canParticipate: string;
   consentVisa: boolean;
   consentFlight: boolean;
+  consentNorwegianLaw: boolean;
+  consentReturn: boolean;
   consentPersonalDetails: boolean;
   consentAttendance: boolean;
   consentMedia: boolean;
@@ -31,6 +36,7 @@ interface IApplication extends Document {
 
 const ApplicationSchema: Schema = new Schema({
   fullName: { type: String, required: true },
+  phoneNumber: { type: String, required: true},
   dateOfBirth: { type: Date, required: true },
   gender: { type: String, required: true },
   nationality: { type: String, required: true },
@@ -40,22 +46,26 @@ const ApplicationSchema: Schema = new Schema({
   studyField: { type: String, required: true },
   university: { type: String, required: true },
   universityWebsite: { type: String },
-  studentCertificate: { type: Buffer },
+  studentCertificate: { type: Buffer, required: true },
   isEnglishSpeaker: { type: Boolean, required: true },
-  tShirtSize: { type: String, required: true },
   applyingAs: { type: String, required: true },
   themePowerThoughts: { type: String, required: true },
   countryPowerIssue: { type: String, required: true },
   motivation: { type: String, required: true },
   financialSupportReason: { type: String },
-  dependents: { type: Number, required: true },
-  familyIncome: { type: String, required: true },
-  canParticipate: { type: String, required: true },
+  fullOrPartialFunding: { type: String },
+  dependents: { type: Number },
+  familyIncome: { type: String },
+  canParticipate: { type: String },
+  countryTravelingFrom: { type: String },
+  otherFundingInfo: { type: String },
   consentVisa: { type: Boolean, required: true },
   consentFlight: { type: Boolean, required: true },
+  consentNorwegianLaw: { type: Boolean, required: true },
+  consentReturn: { type: Boolean, required: true },
   consentPersonalDetails: { type: Boolean, required: true },
   consentAttendance: { type: Boolean, required: true },
-  consentMedia: { type: Boolean, required: true },
+  consentMedia: { type: Boolean },
   createdAt: { type: Date, default: Date.now },
 });
 
