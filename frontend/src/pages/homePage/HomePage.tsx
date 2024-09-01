@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Heading, Text, Box, Button } from '@radix-ui/themes';
+import { Button, } from '@radix-ui/themes';
 import { Link } from 'react-router-dom';
 import styles from './HomePage.module.css';
 import { useAuth } from '../../context/AuthenticationContext';
 import { ROLES } from '../../config/roles';
+import cross from '../../../public/cross.svg';
 
 const HomePage: React.FC = () => {
   const { user } = useAuth();
@@ -38,10 +39,20 @@ const HomePage: React.FC = () => {
 
   return (
     <div className={styles.homePage}>
-      <div className={styles.hamburgerMenu} onClick={toggleMenu}>
-        <div className={styles.hamburgerIcon}></div>
-        <div className={styles.hamburgerIcon}></div>
-        <div className={styles.hamburgerIcon}></div>
+      <div className={styles.hamburgerMenu} onClick={!menuOpen ? toggleMenu : undefined}>
+        {!menuOpen ? (
+          <>
+          <div className={styles.hamburgerIconContainer}>
+            <div className={styles.hamburgerIcon}></div>
+            <div className={styles.hamburgerIcon}></div>
+            <div className={styles.hamburgerIcon}></div>
+          </div>
+          </>
+        ) : (
+          <div className={styles.hamburgerIconClose}>
+            <img src={cross} className={styles.hamburgerCross} alt="Close menu" />
+          </div>
+        )}
       </div>
 
       <div
