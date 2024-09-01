@@ -52,8 +52,8 @@ const CreateUser: React.FC = () => {
 
   return (
     <div className={styles.createUser}>
+      <Header linkTo="/homepage" />
       <div className={styles.outerContainer}>
-        <Header linkTo="/homepage" />
         <form onSubmit={handleSubmit} className={styles.formContainer}>
           {[
             {
@@ -82,7 +82,7 @@ const CreateUser: React.FC = () => {
             },
           ].map(({ label, name, type, placeholder }) => (
             <label key={name} className={styles.formSection}>
-              <p>{label}</p>
+              <p className={styles.label}>{label}</p>
               <input
                 type={type}
                 name={name}
