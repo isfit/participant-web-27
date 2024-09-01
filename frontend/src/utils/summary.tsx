@@ -18,11 +18,17 @@ export function getSummary() {
           </tr>
         </thead>
         <tbody>
-          <tr>
+        <tr>
             <td>
               <strong>Your name:</strong>
             </td>
             <td>{formValues.fullName || 'N/A'}</td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Your phone number:</strong>
+            </td>
+            <td>{formValues.phoneNumber || 'N/A'}</td>
           </tr>
           <tr>
             <td>
