@@ -11,7 +11,7 @@ const Header: React.FC<HeaderProps> = ({ linkTo = '/' }) => {
       src='./src/assets/Isfitlogo_power_red_version2.png'
       alt="Logo"
       style={{ 
-        width: '600px', 
+        width: '90%', 
         marginTop: '-100px', 
         marginBottom: '-100px' 
       }}
