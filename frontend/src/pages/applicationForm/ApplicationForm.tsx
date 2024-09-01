@@ -5,8 +5,17 @@ import './ApplicationForm.css';
 import { IApplicationForm } from '../../types/types';
 import { apply } from '../../api/application';
 import { Navigate } from 'react-router-dom';
+import { getContinentFromNationality } from './nationality';
+import {
+  personalDetails,
+  themeSection,
+  financialSupportSection,
+  consentSection,
+} from './sections';
+import checkErrorField from './checkErrorField';
 import { Information } from '@carbon/icons-react';
 import getSummary from '../../utils/summary.tsx';
+import CustomToast from './toast';
 
 const steps = [
   'Personal Details',
@@ -69,6 +78,10 @@ const ApplicationForm: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [visitedSteps, setVisitedSteps] = useState<number[]>([0]);
+  const [toastOpen, setToastOpen] = useState(false); // State for toast visibility
+  const [toastMessage, setToastMessage] = useState(['']); // State for toast message
+  const [toastTitle, setToastTitle] = useState(''); // State for toast title
+  let stepErrors: string[] = [];
 
   useEffect(() => {
     localStorage.setItem('applicationForm', JSON.stringify(formValues));
@@ -88,6 +101,20 @@ const ApplicationForm: React.FC = () => {
     const { name, value, type } = e.target;
     const isCheckbox = type === 'checkbox';
 
+    setFormValues((prevState) => {
+      const updatedValues = {
+        ...prevState,
+        [name]: isCheckbox ? (e.target as HTMLInputElement).checked : value,
+      };
+
+      // Update the continent field based on the selected nationality
+      if (name === 'nationality') {
+        const continent = getContinentFromNationality(value);
+        updatedValues['continent'] = continent;
+      }
+
+      return updatedValues;
+    });
     // Handling the "dependents" field
     if (name === 'dependents') {
       const numericValue = parseInt(value, 10);
@@ -140,11 +167,13 @@ const ApplicationForm: React.FC = () => {
     const file = e.target.files?.[0];
     if (file && !['application/pdf'].includes(file.type)) {
       alert('File must be a PDF.');
+      e.target.value = '';
       return;
     }
     if (file && file.size > 5 * 1024 * 1024) {
       // 5 MB limit
       alert('File size exceeds 5 MB');
+      e.target.value = '';
       return;
     }
     setFormValues((prevState) => ({
@@ -155,7 +184,7 @@ const ApplicationForm: React.FC = () => {
 
   const validateStep = () => {
     const currentFields = getCurrentFields();
-    const stepErrors: string[] = [];
+    stepErrors = [];
 
     currentFields.forEach((field) => {
       if (field.required && !formValues[field.name]) {
@@ -163,7 +192,17 @@ const ApplicationForm: React.FC = () => {
       }
     });
 
-    return stepErrors.length === 0;
+    console.log('Errors:', stepErrors);
+
+    if (stepErrors.length > 0) {
+      setToastTitle('Missing Required Fields');
+      setToastMessage(stepErrors);
+      setToastOpen(true); // Show the toast with the error message
+      return stepErrors.length === 0;
+    } else {
+      setToastOpen(false); // Hide the toast if there are no errors
+      return stepErrors.length === 0;
+    }
   };
 
   const handleNext = () => {
@@ -1303,7 +1342,6 @@ const ApplicationForm: React.FC = () => {
               and inspire one another.
             </p>
           </div>
-
           <div className="progressOverview">
             {steps.map((step, index) => (
               <span key={index}>
@@ -1321,14 +1359,12 @@ const ApplicationForm: React.FC = () => {
               </span>
             ))}
           </div>
-
           <form id="applicationContainer">
             <div className="outerContainerSection">
               <h1 className="applicationSectionHeader">{steps[currentStep]}</h1>
               {renderStep()}
             </div>
           </form>
-
           <div className="navigationButtons">
             {currentStep > 0 && (
               <Button type="button" onClick={handlePrevious}>
@@ -1345,6 +1381,12 @@ const ApplicationForm: React.FC = () => {
               </Button>
             )}
           </div>
+          <CustomToast
+            open={toastOpen}
+            setOpen={setToastOpen}
+            title={toastTitle}
+            message={toastMessage}
+          />
         </>
       )}
     </div>
