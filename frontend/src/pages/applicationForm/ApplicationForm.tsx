@@ -165,17 +165,20 @@ const ApplicationForm: React.FC = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name } = e.target;
     const file = e.target.files?.[0];
-    if (file && !['application/pdf'].includes(file.type)) {
-      alert('File must be a PDF.');
-      e.target.value = '';
-      return;
+    
+    if (file) {
+      if (!['application/pdf'].includes(file.type)) {
+        alert('File must be a PDF.');
+        e.target.value = '';
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) { // 5 MB limit
+        alert('File size exceeds 5 MB');
+        e.target.value = '';
+        return;
+      }
     }
-    if (file && file.size > 5 * 1024 * 1024) {
-      // 5 MB limit
-      alert('File size exceeds 5 MB');
-      e.target.value = '';
-      return;
-    }
+  
     setFormValues((prevState) => ({
       ...prevState,
       [name]: file || undefined,
@@ -231,18 +234,17 @@ const ApplicationForm: React.FC = () => {
     if (!validateStep()) {
       return;
     }
-
+  
     const formData = new FormData();
-
+  
     Object.entries(formValues).forEach(([key, value]) => {
-      //add the studentCertificate as a file if it exists
       if (key === 'studentCertificate' && value) {
         formData.append(key, value as File);
       } else {
         formData.append(key, String(value));
       }
     });
-
+  
     try {
       const response = await apply(formData);
       if (response.status === 201) {
@@ -1251,6 +1253,7 @@ const ApplicationForm: React.FC = () => {
             onChange={handleFileChange}
             className="formInput"
             required={required}
+            accept='.pdf'
           />
         )}
         {type === 'select' && (
