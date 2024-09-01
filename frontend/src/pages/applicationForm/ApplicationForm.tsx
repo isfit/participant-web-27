@@ -1247,14 +1247,24 @@ const ApplicationForm: React.FC = () => {
           />
         )}
         {type === 'file' && (
-          <input
-            type="file"
-            name={name}
-            onChange={handleFileChange}
-            className="formInput"
-            required={required}
-            accept='.pdf'
-          />
+          <div className="fileInputContainer">
+            <label className="customFileInputLabel">
+              <div className="customFileInputText">Choose File</div>
+              <input
+                type="file"
+                name={name}
+                onChange={handleFileChange}
+                className="fileInput"
+                required={required}
+                accept=".pdf"
+              />
+            </label>
+            {formValues[name] && formValues[name] instanceof File && (
+              <div className="fileInfo">
+                <p>Uploaded file: {formValues[name]?.name}</p>
+              </div>
+            )}
+          </div>
         )}
         {type === 'select' && (
           <select
