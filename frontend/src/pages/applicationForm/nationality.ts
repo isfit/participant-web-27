@@ -393,7 +393,7 @@ export const nationalities = [
     'Zimbabwean',
   ];
 
-export const nationalityToContinent: { [key: string]: string } = {
+const nationalityToContinent: { [key: string]: string } = {
     Afghan: 'Asia',
     Albanian: 'Europe',
     Algerian: 'Africa',
@@ -591,5 +591,5 @@ export const nationalityToContinent: { [key: string]: string } = {
   };
 
 export const getContinentFromNationality = (nationality: string): string => {
-    return nationalityToContinent[nationality] || 'Unknown';
+    return nationalityToContinent[nationality] || '';
   };

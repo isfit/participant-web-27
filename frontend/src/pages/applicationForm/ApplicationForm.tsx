@@ -6,6 +6,7 @@ import { IApplicationForm } from '../../types/types';
 import { apply } from '../../api/application';
 import { Navigate } from 'react-router-dom';
 import { getContinentFromNationality } from './nationality';
+import { countryCodes } from './countryCodes.ts';
 import {
   personalDetails,
   themeSection,
@@ -13,7 +14,6 @@ import {
   consentSection,
 } from './sections';
 import checkErrorField from './checkErrorField';
-import { Information } from '@carbon/icons-react';
 import getSummary from '../../utils/summary.tsx';
 import CustomToast from './toast';
 
@@ -81,6 +81,7 @@ const ApplicationForm: React.FC = () => {
   const [toastOpen, setToastOpen] = useState(false); // State for toast visibility
   const [toastMessage, setToastMessage] = useState(['']); // State for toast message
   const [toastTitle, setToastTitle] = useState(''); // State for toast title
+  const [countryCode, setCountryCode] = useState(''); // Default country code
   let stepErrors: string[] = [];
 
   useEffect(() => {
@@ -115,6 +116,7 @@ const ApplicationForm: React.FC = () => {
 
       return updatedValues;
     });
+
     // Handling the "dependents" field
     if (name === 'dependents') {
       const numericValue = parseInt(value, 10);
@@ -160,6 +162,28 @@ const ApplicationForm: React.FC = () => {
     }
 
     console.log(name, value, type);
+  };
+
+  const handlePhoneNumberChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const { name, value } = e.target;
+
+    if (name === 'countryCode') {
+      setCountryCode(value);
+
+      setFormValues((prevState) => ({
+        ...prevState,
+        phoneNumber: `${value}${prevState.phoneNumber.replace(countryCode, '')}`,
+      }));
+    }
+
+    if (name === 'phoneNumber') {
+      setFormValues((prevState) => ({
+        ...prevState,
+        phoneNumber: `${countryCode}${value.replace(countryCode, '')}`,
+      }));
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -264,890 +288,6 @@ const ApplicationForm: React.FC = () => {
     return <Navigate to="/homepage" />;
   }
 
-  const nations = [
-    'Afghanistan',
-    'Albania',
-    'Algeria',
-    'Andorra',
-    'Angola',
-    'Antigua & Deps',
-    'Argentina',
-    'Armenia',
-    'Australia',
-    'Austria',
-    'Azerbaijan',
-    'Bahamas',
-    'Bahrain',
-    'Bangladesh',
-    'Barbados',
-    'Belarus',
-    'Belgium',
-    'Belize',
-    'Benin',
-    'Bhutan',
-    'Bolivia',
-    'Bosnia Herzegovina',
-    'Botswana',
-    'Brazil',
-    'Brunei',
-    'Bulgaria',
-    'Burkina',
-    'Burundi',
-    'Cambodia',
-    'Cameroon',
-    'Canada',
-    'Cape Verde',
-    'Central African Rep',
-    'Chad',
-    'Chile',
-    'China',
-    'Colombia',
-    'Comoros',
-    'Congo',
-    'Congo {Democratic Rep}',
-    'Costa Rica',
-    'Croatia',
-    'Cuba',
-    'Cyprus',
-    'Czech Republic',
-    'Denmark',
-    'Djibouti',
-    'Dominica',
-    'Dominican Republic',
-    'East Timor',
-    'Ecuador',
-    'Egypt',
-    'El Salvador',
-    'Equatorial Guinea',
-    'Eritrea',
-    'Estonia',
-    'Ethiopia',
-    'Fiji',
-    'Finland',
-    'France',
-    'Gabon',
-    'Gambia',
-    'Georgia',
-    'Germany',
-    'Ghana',
-    'Greece',
-    'Grenada',
-    'Guatemala',
-    'Guinea',
-    'Guinea-Bissau',
-    'Guyana',
-    'Haiti',
-    'Honduras',
-    'Hungary',
-    'Iceland',
-    'India',
-    'Indonesia',
-    'Iran',
-    'Iraq',
-    'Ireland {Republic}',
-    'Israel',
-    'Italy',
-    'Ivory Coast',
-    'Jamaica',
-    'Japan',
-    'Jordan',
-    'Kazakhstan',
-    'Kenya',
-    'Kiribati',
-    'Korea North',
-    'Korea South',
-    'Kosovo',
-    'Kuwait',
-    'Kyrgyzstan',
-    'Laos',
-    'Latvia',
-    'Lebanon',
-    'Lesotho',
-    'Liberia',
-    'Libya',
-    'Liechtenstein',
-    'Lithuania',
-    'Luxembourg',
-    'Macedonia',
-    'Madagascar',
-    'Malawi',
-    'Malaysia',
-    'Maldives',
-    'Mali',
-    'Malta',
-    'Marshall Islands',
-    'Mauritania',
-    'Mauritius',
-    'Mexico',
-    'Micronesia',
-    'Moldova',
-    'Monaco',
-    'Mongolia',
-    'Montenegro',
-    'Morocco',
-    'Mozambique',
-    'Myanmar, {Burma}',
-    'Namibia',
-    'Nauru',
-    'Nepal',
-    'Netherlands',
-    'New Zealand',
-    'Nicaragua',
-    'Niger',
-    'Nigeria',
-    'Norway',
-    'Oman',
-    'Pakistan',
-    'Palau',
-    'Panama',
-    'Papua New Guinea',
-    'Paraguay',
-    'Peru',
-    'Philippines',
-    'Poland',
-    'Portugal',
-    'Qatar',
-    'Romania',
-    'Russian Federation',
-    'Rwanda',
-    'St Kitts & Nevis',
-    'St Lucia',
-    'Saint Vincent & the Grenadines',
-    'Samoa',
-    'San Marino',
-    'Sao Tome & Principe',
-    'Saudi Arabia',
-    'Senegal',
-    'Serbia',
-    'Seychelles',
-    'Sierra Leone',
-    'Singapore',
-    'Slovakia',
-    'Slovenia',
-    'Solomon Islands',
-    'Somalia',
-    'South Africa',
-    'South Sudan',
-    'Spain',
-    'Sri Lanka',
-    'Sudan',
-    'Suriname',
-    'Swaziland',
-    'Sweden',
-    'Switzerland',
-    'Syria',
-    'Taiwan',
-    'Tajikistan',
-    'Tanzania',
-    'Thailand',
-    'Togo',
-    'Tonga',
-    'Trinidad & Tobago',
-    'Tunisia',
-    'Turkey',
-    'Turkmenistan',
-    'Tuvalu',
-    'Uganda',
-    'Ukraine',
-    'United Arab Emirates',
-    'United Kingdom',
-    'United States',
-    'Uruguay',
-    'Uzbekistan',
-    'Vanuatu',
-    'Vatican City',
-    'Venezuela',
-    'Vietnam',
-    'Yemen',
-    'Zambia',
-    'Zimbabwe',
-  ];
-  const nationalities = [
-    'Afghan',
-    'Albanian',
-    'Algerian',
-    'American',
-    'Andorran',
-    'Angolan',
-    'Antiguan or Barbudan',
-    'Argentine',
-    'Armenian',
-    'Australian',
-    'Austrian',
-    'Azerbaijani',
-    'Bahamian',
-    'Bahraini',
-    'Bangladeshi',
-    'Barbadian',
-    'Belarusian',
-    'Belgian',
-    'Belizean',
-    'Beninese',
-    'Bhutanese',
-    'Bolivian',
-    'Bosnian or Herzegovinian',
-    'Botswanan',
-    'Brazilian',
-    'British',
-    'Bruneian',
-    'Bulgarian',
-    'Burkinabé',
-    'Burundian',
-    'Cabo Verdean',
-    'Cambodian',
-    'Cameroonian',
-    'Canadian',
-    'Central African',
-    'Chadian',
-    'Chilean',
-    'Chinese',
-    'Colombian',
-    'Comoran',
-    'Congolese (Congo-Brazzaville)',
-    'Congolese (Congo-Kinshasa)',
-    'Costa Rican',
-    'Croatian',
-    'Cuban',
-    'Cypriot',
-    'Czech',
-    'Danish',
-    'Djiboutian',
-    'Dominican',
-    'Dominican (Dominican Republic)',
-    'Dutch',
-    'East Timorese',
-    'Ecuadorean',
-    'Egyptian',
-    'Emirati',
-    'Equatorial Guinean',
-    'Eritrean',
-    'Estonian',
-    'Eswatini',
-    'Ethiopian',
-    'Fijian',
-    'Filipino',
-    'Finnish',
-    'French',
-    'Gabonese',
-    'Gambian',
-    'Georgian',
-    'German',
-    'Ghanaian',
-    'Greek',
-    'Grenadian',
-    'Guatemalan',
-    'Guinean',
-    'Guinea-Bissauan',
-    'Guyanese',
-    'Haitian',
-    'Honduran',
-    'Hungarian',
-    'Icelander',
-    'Indian',
-    'Indonesian',
-    'Iranian',
-    'Iraqi',
-    'Irish',
-    'Israeli',
-    'Italian',
-    'Ivorian',
-    'Jamaican',
-    'Japanese',
-    'Jordanian',
-    'Kazakh',
-    'Kenyan',
-    'Kiribati',
-    'Kuwaiti',
-    'Kyrgyz',
-    'Laotian',
-    'Latvian',
-    'Lebanese',
-    'Lesotho',
-    'Liberian',
-    'Libyan',
-    'Liechtenstein',
-    'Lithuanian',
-    'Luxembourgish',
-    'Macedonian',
-    'Malagasy',
-    'Malawian',
-    'Malaysian',
-    'Maldivian',
-    'Malian',
-    'Maltese',
-    'Marshallese',
-    'Mauritanian',
-    'Mauritian',
-    'Mexican',
-    'Micronesian',
-    'Moldovan',
-    'Monacan',
-    'Mongolian',
-    'Montenegrin',
-    'Moroccan',
-    'Mozambican',
-    'Namibian',
-    'Nauruan',
-    'Nepalese',
-    'New Zealander',
-    'Nicaraguan',
-    'Nigerien',
-    'Nigerian',
-    'North Korean',
-    'Norwegian',
-    'Omani',
-    'Pakistani',
-    'Palauan',
-    'Palestinian',
-    'Panamanian',
-    'Papua New Guinean',
-    'Paraguayan',
-    'Peruvian',
-    'Polish',
-    'Portuguese',
-    'Qatari',
-    'Romanian',
-    'Russian',
-    'Rwandan',
-    'Saint Kitts and Nevis',
-    'Saint Lucian',
-    'Saint Vincentian',
-    'Samoan',
-    'San Marinese',
-    'Sao Tomean',
-    'Saudi',
-    'Senegalese',
-    'Serbian',
-    'Seychellois',
-    'Sierra Leonean',
-    'Singaporean',
-    'Slovak',
-    'Slovenian',
-    'Solomon Islander',
-    'Somali',
-    'South African',
-    'South Korean',
-    'South Sudanese',
-    'Spanish',
-    'Sri Lankan',
-    'Sudanese',
-    'Surinamese',
-    'Swazi',
-    'Swedish',
-    'Swiss',
-    'Syrian',
-    'Taiwanese',
-    'Tajik',
-    'Tanzanian',
-    'Thai',
-    'Togolese',
-    'Tongan',
-    'Trinidadian or Tobagonian',
-    'Tunisian',
-    'Turkish',
-    'Turkmen',
-    'Tuvaluan',
-    'Ugandan',
-    'Ukrainian',
-    'Uruguayan',
-    'Uzbek',
-    'Vanuatuan',
-    'Venezuelan',
-    'Vietnamese',
-    'Yemeni',
-    'Zambian',
-    'Zimbabwean',
-  ];
-
-  const nationalityToContinent: { [key: string]: string } = {
-    Afghan: 'Asia',
-    Albanian: 'Europe',
-    Algerian: 'Africa',
-    American: 'North America',
-    Andorran: 'Europe',
-    Angolan: 'Africa',
-    'Antiguan or Barbudan': 'North America',
-    Argentine: 'South America',
-    Armenian: 'Asia',
-    Australian: 'Australia',
-    Austrian: 'Europe',
-    Azerbaijani: 'Asia',
-    Bahamian: 'North America',
-    Bahraini: 'Asia',
-    Bangladeshi: 'Asia',
-    Barbadian: 'North America',
-    Belarusian: 'Europe',
-    Belgian: 'Europe',
-    Belizean: 'North America',
-    Beninese: 'Africa',
-    Bhutanese: 'Asia',
-    Bolivian: 'South America',
-    'Bosnian or Herzegovinian': 'Europe',
-    Botswanan: 'Africa',
-    Brazilian: 'South America',
-    British: 'Europe',
-    Bruneian: 'Asia',
-    Bulgarian: 'Europe',
-    Burkinabé: 'Africa',
-    Burundian: 'Africa',
-    'Cabo Verdean': 'Africa',
-    Cambodian: 'Asia',
-    Cameroonian: 'Africa',
-    Canadian: 'North America',
-    'Central African': 'Africa',
-    Chadian: 'Africa',
-    Chilean: 'South America',
-    Chinese: 'Asia',
-    Colombian: 'South America',
-    Comoran: 'Africa',
-    'Congolese (Congo-Brazzaville)': 'Africa',
-    'Congolese (Congo-Kinshasa)': 'Africa',
-    'Costa Rican': 'North America',
-    Croatian: 'Europe',
-    Cuban: 'North America',
-    Cypriot: 'Asia',
-    Czech: 'Europe',
-    Danish: 'Europe',
-    Djiboutian: 'Africa',
-    Dominican: 'North America',
-    'Dominican (Dominican Republic)': 'North America',
-    Dutch: 'Europe',
-    'East Timorese': 'Asia',
-    Ecuadorean: 'South America',
-    Egyptian: 'Africa',
-    Emirati: 'Asia',
-    'Equatorial Guinean': 'Africa',
-    Eritrean: 'Africa',
-    Estonian: 'Europe',
-    Eswatini: 'Africa',
-    Ethiopian: 'Africa',
-    Fijian: 'Australia',
-    Filipino: 'Asia',
-    Finnish: 'Europe',
-    French: 'Europe',
-    Gabonese: 'Africa',
-    Gambian: 'Africa',
-    Georgian: 'Asia',
-    German: 'Europe',
-    Ghanaian: 'Africa',
-    Greek: 'Europe',
-    Grenadian: 'North America',
-    Guatemalan: 'North America',
-    Guinean: 'Africa',
-    'Guinea-Bissauan': 'Africa',
-    Guyanese: 'South America',
-    Haitian: 'North America',
-    Honduran: 'North America',
-    Hungarian: 'Europe',
-    Icelander: 'Europe',
-    Indian: 'Asia',
-    Indonesian: 'Asia',
-    Iranian: 'Asia',
-    Iraqi: 'Asia',
-    Irish: 'Europe',
-    Israeli: 'Asia',
-    Italian: 'Europe',
-    Ivorian: 'Africa',
-    Jamaican: 'North America',
-    Japanese: 'Asia',
-    Jordanian: 'Asia',
-    Kazakh: 'Asia',
-    Kenyan: 'Africa',
-    Kiribati: 'Australia',
-    Kuwaiti: 'Asia',
-    Kyrgyz: 'Asia',
-    Laotian: 'Asia',
-    Latvian: 'Europe',
-    Lebanese: 'Asia',
-    Lesotho: 'Africa',
-    Liberian: 'Africa',
-    Libyan: 'Africa',
-    Liechtenstein: 'Europe',
-    Lithuanian: 'Europe',
-    Luxembourgish: 'Europe',
-    Macedonian: 'Europe',
-    Malagasy: 'Africa',
-    Malawian: 'Africa',
-    Malaysian: 'Asia',
-    Maldivian: 'Asia',
-    Malian: 'Africa',
-    Maltese: 'Europe',
-    Marshallese: 'Australia',
-    Mauritanian: 'Africa',
-    Mauritian: 'Africa',
-    Mexican: 'North America',
-    Micronesian: 'Australia',
-    Moldovan: 'Europe',
-    Monacan: 'Europe',
-    Mongolian: 'Asia',
-    Montenegrin: 'Europe',
-    Moroccan: 'Africa',
-    Mozambican: 'Africa',
-    Namibian: 'Africa',
-    Nauruan: 'Australia',
-    Nepalese: 'Asia',
-    'New Zealander': 'Australia',
-    Nicaraguan: 'North America',
-    Nigerien: 'Africa',
-    Nigerian: 'Africa',
-    'North Korean': 'Asia',
-    Norwegian: 'Europe',
-    Omani: 'Asia',
-    Pakistani: 'Asia',
-    Palauan: 'Australia',
-    Palestinian: 'Asia',
-    Panamanian: 'North America',
-    'Papua New Guinean': 'Australia',
-    Paraguayan: 'South America',
-    Peruvian: 'South America',
-    Polish: 'Europe',
-    Portuguese: 'Europe',
-    Qatari: 'Asia',
-    Romanian: 'Europe',
-    Russian: 'Europe',
-    Rwandan: 'Africa',
-    'Saint Kitts and Nevis': 'North America',
-    'Saint Lucian': 'North America',
-    'Saint Vincentian': 'North America',
-    Samoan: 'Australia',
-    'San Marinese': 'Europe',
-    'Sao Tomean': 'Africa',
-    Saudi: 'Asia',
-    Senegalese: 'Africa',
-    Serbian: 'Europe',
-    Seychellois: 'Africa',
-    'Sierra Leonean': 'Africa',
-    Singaporean: 'Asia',
-    Slovak: 'Europe',
-    Slovenian: 'Europe',
-    'Solomon Islander': 'Australia',
-    Somali: 'Africa',
-    'South African': 'Africa',
-    'South Korean': 'Asia',
-    'South Sudanese': 'Africa',
-    Spanish: 'Europe',
-    'Sri Lankan': 'Asia',
-    Sudanese: 'Africa',
-    Surinamese: 'South America',
-    Swazi: 'Africa',
-    Swedish: 'Europe',
-    Swiss: 'Europe',
-    Syrian: 'Asia',
-    Taiwanese: 'Asia',
-    Tajik: 'Asia',
-    Tanzanian: 'Africa',
-    Thai: 'Asia',
-    Togolese: 'Africa',
-    Tongan: 'Australia',
-    'Trinidadian or Tobagonian': 'North America',
-    Tunisian: 'Africa',
-    Turkish: 'Asia',
-    Turkmen: 'Asia',
-    Tuvaluan: 'Australia',
-    Ugandan: 'Africa',
-    Ukrainian: 'Europe',
-    Uruguayan: 'South America',
-    Uzbek: 'Asia',
-    Vanuatuan: 'Australia',
-    Venezuelan: 'South America',
-    Vietnamese: 'Asia',
-    Yemeni: 'Asia',
-    Zambian: 'Africa',
-    Zimbabwean: 'Africa',
-  };
-
-  const getContinentFromNationality = (nationality: string): string => {
-    return nationalityToContinent[nationality] || 'Unknown';
-  };
-
-  const personalDetails: FormField[] = [
-    {
-      label: 'Full Name (as per passport)',
-      name: 'fullName',
-      type: 'text',
-      placeholder: 'John Doe',
-      required: true,
-    },
-    {
-      label: 'Phonenumber (with landcode)',
-      name: 'phoneNumber',
-      type: 'text',
-      placeholder: '+47 12345678',
-      required: true,
-    },
-    {
-      label: 'Date of Birth',
-      name: 'dateOfBirth',
-      type: 'date',
-      placeholder: 'YYYY-MM-DD',
-      required: true,
-    },
-    {
-      label: 'Gender',
-      name: 'gender',
-      type: 'select',
-      options: ['Male', 'Female', 'Other'],
-      required: true,
-    },
-    {
-      label: 'Nationality',
-      name: 'nationality',
-      type: 'select',
-      options: nationalities,
-      required: true,
-    },
-    {
-      label: 'Continent of Nationality',
-      name: 'continent',
-      type: 'text',
-      placeholder: 'ex: Europe',
-      required: true,
-    },
-    {
-      label: 'Country of Residence',
-      name: 'residenceCountry',
-      type: 'select',
-      options: nations,
-      required: true,
-    },
-    {
-      label:
-        'By checking this box, I confirm I am a student throughout the academic year 2024-2025',
-      name: 'isStudent',
-      type: 'checkbox',
-      required: true,
-    },
-    {
-      label: 'What do you study?',
-      name: 'studyField',
-      type: 'text',
-      placeholder: 'ex. Infomatics',
-      required: true,
-    },
-    {
-      label: 'Name of your University/Institute',
-      name: 'university',
-      type: 'text',
-      placeholder: 'ex. Norwegian University of Science and Technology',
-      required: true,
-    },
-    {
-      label: 'Your University/Institute website address (optional)',
-      name: 'universityWebsite',
-      type: 'text',
-      placeholder: 'ex. https://youruniversity.edu',
-    },
-    {
-      labelElement: (
-        <>
-        <span className="info-icon">
-            <Information />
-            <span className="tooltip-text infoStudentCertificate">
-              The student certificate must confirm your student status for the
-              academic year 2024-25 and must bear the official stamp/electronic
-              signature of the institute/university. If the certificate is not
-              in English, please upload an unofficial English translation of it.
-              Please upload as a pdf that is easily readable.
-            </span>
-          </span>
-          Please upload your student certificate as a PDF
-          
-        </>
-      ),
-      label: 'Please upload your student certificate',
-      name: 'studentCertificate',
-      type: 'file',
-      required: true,
-    },
-    {
-      label:
-        'By checking this box, I confirm I am able to communicate in English',
-      name: 'isEnglishSpeaker',
-      type: 'checkbox',
-      required: true,
-    },
-    {
-      labelElement: (
-        <>
-        <span className="info-icon">
-            <Information />
-            <span className="tooltip-text infoApplyingAs">
-              SOrCE (as a delegate selected by your own festival - already
-              selected)
-              <br />
-              If you are not already selected, choose regular participant
-            </span>
-          </span>
-          I am applying as
-        </>
-      ),
-      label: 'I am applying as',
-      name: 'applyingAs',
-      type: 'select',
-      options: ['SOrCE', 'Regular participant'],
-      required: true,
-    },
-  ];
-
-  const themeSection: FormField[] = [
-    {
-      label:
-        "Every time ISFiT is arranged, we explore a new theme that affects students across the globe. The theme for ISFiT25 is ‘POWER’. When considering the theme of 'POWER' for ISFiT25, what aspects or dimensions of power come to your mind first? (max 100 words)",
-      name: 'themePowerThoughts',
-      type: 'textarea',
-      placeholder: 'When I think of power I think of ...',
-      required: true,
-    },
-    {
-      label:
-        "Reflecting on your country's context, can you identify a specific power issue? How does this issue manifest, and what are its consequences? (max 300 words)",
-      name: 'countryPowerIssue',
-      type: 'textarea',
-      placeholder:
-        "When reflecting on my country's context, an issue regarding power is ...",
-      required: true,
-    },
-    {
-      label:
-        'What is your motivation for attending ISFiT25? How do you envision contributing to discussions and activities surrounding this theme during the festival? (max 300 words)',
-      name: 'motivation',
-      type: 'textarea',
-      placeholder: 'My motivation for attending ISFiT25 is ...',
-      required: true,
-    },
-  ];
-
-  const financialSupportSection: FormField[] = [
-    {
-      labelElement: (
-        <>
-          ISFiT seeks to bring together students from around the globe, and we
-          are committed to making the journey to Trondheim accessible for those
-          who may not otherwise afford it. To support this, we offer full or
-          partial funding to selected students. However, we encourage you to
-          thoughtfully consider your financial need before applying, so that we
-          can assist those who need it most. Why do you think that you should be
-          considered for financial support to attend ISFiT25?{' '}
-          <span className="info-icon">
-            <Information />
-            <span className="tooltip-text">
-              Why do you believe you should receive financial assistance over
-              other applicants? How would receiving this funding impact your
-              ability to attend ISFiT and contribute to its goals?
-            </span>
-          </span>
-        </>
-      ),
-      label:
-        'ISFiT seeks to bring together students from around the globe, and we are committed to making the journey to Trondheim accessible for those who may not otherwise afford it. To support this, we offer full or partial funding to selected students. However, we encourage you to thoughtfully consider your financial need before applying, so that we can assist those who need it most. Why do you think that you should be considered for financial support to attend ISFiT25?',
-      name: 'financialSupportReason',
-      type: 'textarea',
-      placeholder:
-        'I should be considered to get financial support because ...',
-    },
-    {
-      label: 'Are you applying for full or partial funding?',
-      name: 'fullOrPartialFunding',
-      type: 'select',
-      options: ['Full funding', 'Partial funding', 'No funding'],
-    },
-    {
-      label:
-        'How many people do you financially support (e.g., children, spouse, elderly parents)?',
-      name: 'dependents',
-      type: 'number',
-      placeholder: 'Number of dependents',
-    },
-    {
-      label: 'What is your family´s monthly income? (approximately in Euros)',
-      name: 'familyIncome',
-      type: 'text',
-      placeholder: '',
-    },
-    {
-      label: 'I can participate in ISFiT25',
-      name: 'canParticipate',
-      type: 'select',
-      options: [
-        'without any financial support',
-        'if I get partial financial support',
-        'if I get full financial support',
-      ],
-    },
-    {
-      label: 'What country will you be traveling to Trondheim from?',
-      name: 'countryTravelingFrom',
-      type: 'text',
-      placeholder: 'ex. India',
-    },
-    {
-      label:
-        'Is there any other information you would like us to consider when reviewing your application for travel funds?',
-      name: 'otherFundingInfo',
-      type: 'textarea',
-      placeholder: '...',
-    },
-  ];
-
-  const consentSection: FormField[] = [
-    {
-      label: 'I have to apply for a visa if I get accepted as a participant',
-      name: 'consentVisa',
-      type: 'select',
-      options: [
-        'Yes',
-        'No',
-      ],
-      required: true,
-    },
-    {
-      label:
-        'I am aware that I have to book a flight to Norway on my own even if I get financial support',
-      name: 'consentFlight',
-      type: 'checkbox',
-      required: true,
-    },
-    {
-      label:
-        'I agree to comply with Norwegian law and to conduct myself with respect and decency during my stay in Trondheim.',
-      name: 'consentNorwegianLaw',
-      type: 'checkbox',
-      required: true,
-    },
-    {
-      label:
-        'I agree that I will return to my country of residence after the festival has ended.',
-      name: 'consentReturn',
-      type: 'checkbox',
-      required: true,
-    },
-    {
-      label:
-        'I agree that ISFiT can keep my personal details to be used later in the festival',
-      name: 'consentPersonalDetails',
-      type: 'checkbox',
-      required: true,
-    },
-    {
-      label:
-        'I am aware that a participation certificate will be given only if I attend all days of the workshop and mandatory events',
-      name: 'consentAttendance',
-      type: 'checkbox',
-      required: true,
-    },
-    {
-      label:
-        'I agree that ISFiT can share pictures and videos of me taken during the festival on social media',
-      name: 'consentMedia',
-      type: 'select',
-      options: [
-        'Yes',
-        'No',
-        'Only in group photos'
-      ],
-    },
-  ];
-
   const summarySection: Array<{
     label: string;
     name: keyof IApplicationForm;
@@ -1189,6 +329,43 @@ const ApplicationForm: React.FC = () => {
             placeholder={placeholder}
             disabled
           />
+        </label>
+      );
+    }
+
+    if (name === 'phoneNumber') {
+      return (
+        <label key={name} className="formSection">
+          <p>{label}</p>
+          <div className="phoneInputContainer">
+            <select
+              name="countryCode"
+              value={countryCode}
+              onChange={handlePhoneNumberChange}
+              className="countryCodeSelect formInput"
+            >
+              <option value="" disabled>
+                Select an option
+              </option>
+              {countryCodes.map((country) => (
+                <option
+                  key={`${country.name}-${country.code}`} // Ensure uniqueness
+                  value={country.code}
+                >
+                  {country.name} ({country.code})
+                </option>
+              ))}
+            </select>
+            <input
+              type="text"
+              name={name}
+              value={formValues[name].replace(countryCode, '')}
+              onChange={handlePhoneNumberChange}
+              className="formInput phoneNumberInput"
+              required={required}
+              placeholder={placeholder}
+            />
+          </div>
         </label>
       );
     }
