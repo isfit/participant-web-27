@@ -61,7 +61,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 40px;
+  margin-top: 60px;
   margin-bottom: 40px;
   padding-top: 40px;
   padding-bottom: 10px;
@@ -84,7 +84,7 @@
 }
 
 .logo {
-  max-width: 800px;
+  max-width: 100%;
   height: auto;
   margin-top: -150px;
   margin-bottom: -150px;
@@ -99,4 +99,19 @@
 .applyButton {
   background-color: #000;
   color: white;
+}
+
+
+@media (max-width: 768px) {
+  .logo{
+      margin-top: -100px;
+      margin-bottom: -100px; 
+  }
+}
+
+@media (max-width: 480px) {
+  .logo{
+      margin-top: -50px;
+      margin-bottom: -50px; 
+  }
 }
