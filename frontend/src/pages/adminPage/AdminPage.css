@@ -1,6 +1,6 @@
 /*variables*/
 :root {
-  --primary-background-color: rgba(37, 37, 37, 0.431);
+  --primary-background-color: #88242c;
 }
 
 .tableContainer {
@@ -8,7 +8,7 @@
     width: 100%;
     overflow-x: auto;
     border-radius: 10px;
-    background-color: rgba(77, 58, 58, 0.1);
+    background-color: #88242c;
   }
 
 table {
@@ -22,11 +22,11 @@ table {
   }
   
   th {
-    background-color: #29292976;
+    background-color: #88242c;
   }
   
   tbody tr:nth-child(even) {
-    background-color: #2020201d;
+    background-color: #98343c;
   }
 
   .topRight {

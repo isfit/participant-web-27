@@ -1,13 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import "./Header.css";
 
 interface HeaderProps {
   linkTo?: string;
 }
 
 const Header: React.FC<HeaderProps> = ({ linkTo = '/' }) => {
-  const logo = <img src='/isfit_log.png' alt="Logo" style={{ width: '150px' }} />;
-
+  const logo = (
+    <img
+      src='./src/assets/Isfitlogo_power_red_version2.png'
+      alt="Logo"
+      className="headerLogo"
+    />
+  );
+  
   return (
     <header>
       <Link to={linkTo}>{logo}</Link>

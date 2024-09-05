@@ -5,8 +5,12 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: rgb(201, 35, 50);
 
+  /* Replace background-color with a background-image */
+  background-image: url('./assets/isfit_opptak_facebanner.png');
+  background-size: cover; /* Ensures the image covers the entire area */
+  background-repeat: repeat; /* Prevents the image from repeating */
+  background-position: center center; /* Centers the background image */
 }
 
 a {

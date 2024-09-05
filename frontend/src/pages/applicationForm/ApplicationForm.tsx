@@ -5,13 +5,35 @@ import './ApplicationForm.css';
 import { IApplicationForm } from '../../types/types';
 import { apply } from '../../api/application';
 import { Navigate } from 'react-router-dom';
+import { getContinentFromNationality } from './nationality';
+import { countryCodes } from './countryCodes.ts';
+import {
+  personalDetails,
+  themeSection,
+  financialSupportSection,
+  consentSection,
+} from './sections';
+import checkErrorField from './checkErrorField';
+import getSummary from '../../utils/summary.tsx';
+import CustomToast from './toast';
 
 const steps = [
   'Personal Details',
   'Theme',
   'Financial Support',
   'Consent',
+  'Summary',
 ];
+
+interface FormField {
+  label: string;
+  labelElement?: JSX.Element;
+  name: keyof IApplicationForm;
+  type: string;
+  options?: string[];
+  placeholder?: string;
+  required?: boolean;
+}
 
 const ApplicationForm: React.FC = () => {
   const [formValues, setFormValues] = useState<IApplicationForm>(() => {
@@ -20,6 +42,7 @@ const ApplicationForm: React.FC = () => {
       ? JSON.parse(savedForm)
       : {
           fullName: '',
+          phoneNumber: '',
           dateOfBirth: '',
           gender: '',
           nationality: '',
@@ -31,26 +54,35 @@ const ApplicationForm: React.FC = () => {
           universityWebsite: '',
           studentCertificate: undefined,
           isEnglishSpeaker: false,
-          tShirtSize: '',
           applyingAs: '',
           themePowerThoughts: '',
           countryPowerIssue: '',
           motivation: '',
           financialSupportReason: '',
+          fullOrPartialFunding: '',
           dependents: 0,
           familyIncome: '',
+          countryTravelingFrom: '',
+          otherFundingInfo: '',
           canParticipate: '',
-          consentVisa: false,
+          consentVisa: '',
           consentFlight: false,
+          consentNorwegianLaw: false,
+          consentReturn: false,
           consentPersonalDetails: false,
           consentAttendance: false,
-          consentMedia: false,
+          consentMedia: '',
         };
   });
   const [redirect, setRedirect] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [visitedSteps, setVisitedSteps] = useState<number[]>([0]);
+  const [toastOpen, setToastOpen] = useState(false); // State for toast visibility
+  const [toastMessage, setToastMessage] = useState(['']); // State for toast message
+  const [toastTitle, setToastTitle] = useState(''); // State for toast title
+  const [countryCode, setCountryCode] = useState(''); // Default country code
+  let stepErrors: string[] = [];
 
   useEffect(() => {
     localStorage.setItem('applicationForm', JSON.stringify(formValues));
@@ -63,17 +95,95 @@ const ApplicationForm: React.FC = () => {
   }, [currentStep, visitedSteps]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
   ) => {
     const { name, value, type } = e.target;
     const isCheckbox = type === 'checkbox';
-  
-    setFormValues((prevState) => ({
-      ...prevState,
-      [name]: isCheckbox
-        ? (e.target as HTMLInputElement).checked 
-        : value,
-    }));
+
+    setFormValues((prevState) => {
+      const updatedValues = {
+        ...prevState,
+        [name]: isCheckbox ? (e.target as HTMLInputElement).checked : value,
+      };
+
+      // Update the continent field based on the selected nationality
+      if (name === 'nationality') {
+        const continent = getContinentFromNationality(value);
+        updatedValues['continent'] = continent;
+      }
+
+      return updatedValues;
+    });
+
+    // Handling the "dependents" field
+    if (name === 'dependents') {
+      const numericValue = parseInt(value, 10);
+      if (numericValue < 0) {
+        setFormValues((prevState) => ({
+          ...prevState,
+          [name]: 0,
+        }));
+        return;
+      }
+    }
+
+    // Updating text areas with word limit constraints
+    if (type === 'textarea') {
+      const wordCount = value.trim().split(/\s+/).length;
+      if (
+        ((name === 'themePowerThoughts' || name === 'otherFundingInfo') &&
+          wordCount <= 100) ||
+        ((name === 'countryPowerIssue' ||
+          name === 'motivation' ||
+          name === 'financialSupportReason') &&
+          wordCount <= 300)
+      ) {
+        setFormValues((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+      }
+    } else {
+      setFormValues((prevState) => ({
+        ...prevState,
+        [name]: isCheckbox ? (e.target as HTMLInputElement).checked : value,
+      }));
+    }
+
+    // Separate state update for nationality/continent logic
+    if (name === 'nationality') {
+      const continent = getContinentFromNationality(value);
+      setFormValues((prevState) => ({
+        ...prevState,
+        continent,
+      }));
+    }
+
+    console.log(name, value, type);
+  };
+
+  const handlePhoneNumberChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const { name, value } = e.target;
+
+    if (name === 'countryCode') {
+      setCountryCode(value);
+
+      setFormValues((prevState) => ({
+        ...prevState,
+        phoneNumber: `${value}${prevState.phoneNumber.replace(countryCode, '')}`,
+      }));
+    }
+
+    if (name === 'phoneNumber') {
+      setFormValues((prevState) => ({
+        ...prevState,
+        phoneNumber: `${countryCode}${value.replace(countryCode, '')}`,
+      }));
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,10 +191,13 @@ const ApplicationForm: React.FC = () => {
     const file = e.target.files?.[0];
     if (file && !['application/pdf'].includes(file.type)) {
       alert('File must be a PDF.');
+      e.target.value = '';
       return;
     }
-    if (file && file.size > 5 * 1024 * 1024) { // 5 MB limit
+    if (file && file.size > 5 * 1024 * 1024) {
+      // 5 MB limit
       alert('File size exceeds 5 MB');
+      e.target.value = '';
       return;
     }
     setFormValues((prevState) => ({
@@ -95,7 +208,7 @@ const ApplicationForm: React.FC = () => {
 
   const validateStep = () => {
     const currentFields = getCurrentFields();
-    const stepErrors: string[] = [];
+    stepErrors = [];
 
     currentFields.forEach((field) => {
       if (field.required && !formValues[field.name]) {
@@ -103,11 +216,22 @@ const ApplicationForm: React.FC = () => {
       }
     });
 
-    return stepErrors.length === 0;
+    console.log('Errors:', stepErrors);
+
+    if (stepErrors.length > 0) {
+      setToastTitle('Missing Required Fields');
+      setToastMessage(stepErrors);
+      setToastOpen(true); // Show the toast with the error message
+      return stepErrors.length === 0;
+    } else {
+      setToastOpen(false); // Hide the toast if there are no errors
+      return stepErrors.length === 0;
+    }
   };
 
   const handleNext = () => {
-    console.log(currentStep)
+    console.log(currentStep);
+    console.log(formValues);
     if (validateStep()) {
       if (currentStep < steps.length - 1) {
         setCurrentStep(currentStep + 1);
@@ -128,22 +252,21 @@ const ApplicationForm: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    
     if (!validateStep()) {
       return;
     }
 
     const formData = new FormData();
-    
+
     Object.entries(formValues).forEach(([key, value]) => {
       //add the studentCertificate as a file if it exists
       if (key === 'studentCertificate' && value) {
-        formData.append(key, value as File); 
+        formData.append(key, value as File);
       } else {
-        formData.append(key, String(value)); 
+        formData.append(key, String(value));
       }
     });
-  
+
     try {
       const response = await apply(formData);
       if (response.status === 201) {
@@ -165,59 +288,106 @@ const ApplicationForm: React.FC = () => {
     return <Navigate to="/homepage" />;
   }
 
-  const personalDetails: Array<{ label: string; name: keyof IApplicationForm; type: string; options?: string[]; placeholder?: string; required?: boolean }> = [
-    { label: 'Full Name', name: 'fullName', type: 'text', placeholder: 'John Doe', required: true },
-    { label: 'Date of Birth', name: 'dateOfBirth', type: 'date', placeholder: 'YYYY-MM-DD', required: true },
-    { label: 'Gender', name: 'gender', type: 'select', options: ['Male', 'Female', 'Other'], required: true },
-    { label: 'Nationality', name: 'nationality', type: 'text', placeholder: 'ex. Norwegian', required: true },
-    { label: 'Continent of Nationality', name: 'continent', type: 'text', placeholder: 'ex. Europe', required: true },
-    { label: 'Country of Residence', name: 'residenceCountry', type: 'text', placeholder: 'ex. Norway', required: true },
-    { label: 'By checking this box, I confirm I am a student throughout the academic year 2024-2025', name: 'isStudent', type: 'checkbox', required: true },
-    { label: 'What do you study?', name: 'studyField', type: 'text', placeholder: 'ex. Infomatics', required: true },
-    { label: 'Name of your University/Institute', name: 'university', type: 'text', placeholder: 'ex. Norwegian University of Science and Technology', required: true },
-    { label: 'Your University/Institute website address (optional)', name: 'universityWebsite', type: 'text', placeholder: 'ex. https://youruniversity.edu' },
-    { label: 'Please upload your student certificate as a PDF', name: 'studentCertificate', type: 'file', required: true },
-    { label: 'By checking this box, I confirm I am able to communicate in English', name: 'isEnglishSpeaker', type: 'checkbox', required: true },
-    { label: 'What is your T-Shirt size?', name: 'tShirtSize', type: 'select', options: ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'], required: true },
-    { label: 'I am applying as', name: 'applyingAs', type: 'select', options: ['Regular participant', 'SOrCE', 'Coastal Carolina University', 'Dialogue Project'], required: true },
-  ];
-
-  const themeSection: Array<{ label: string; name: keyof IApplicationForm; type: string; placeholder?: string; required?: boolean }> = [
-    { label: "When considering the theme of 'POWER' for ISFiT25, what aspects or dimensions of power come to your mind first?", name: 'themePowerThoughts', type: 'textarea', placeholder: 'When I think of power I think of ...', required: true },
-    { label: "Reflecting on your country's context, can you identify a specific power issue? How does this issue manifest, and what are its consequences?", name: 'countryPowerIssue', type: 'textarea', placeholder: 'When reflecting on my country\'s context, an issue regarding power is ...', required: true },
-    { label: 'What is your motivation for attending ISFiT25? How do you envision contributing to discussions and activities surrounding this theme during the festival?', name: 'motivation', type: 'textarea', placeholder: 'My motivation for attending ISFiT25 is ...', required: true },
-  ];
-
-  const financialSupportSection: Array<{ label: string; name: keyof IApplicationForm; type: string; options?: string[]; placeholder?: string; required?: boolean }> = [
-    { label: 'Some of the participants get financial support for their trip to participate in ISFiT25. Why do you think that you should be considered for this financial support?', name: 'financialSupportReason', type: 'textarea', placeholder: 'I should be considered to get financial support because ...' },
-    { label: 'How many dependents do you have?', name: 'dependents', type: 'number', placeholder: 'Number of dependents' },
-    { label: 'What is your family´s monthly income?', name: 'familyIncome', type: 'text', placeholder: 'Your family income' },
-    { label: 'I can participate in ISFiT25', name: 'canParticipate', type: 'select', options: ['without any financial support', 'if I get partial financial support', 'if I get full financial support'] },
-  ];
-
-  const consentSection: Array<{ label: string; name: keyof IApplicationForm; type: string; placeholder?: string; required?: boolean }> = [
-    { label: 'I have to apply for a visa if I get accepted as a participant', name: 'consentVisa', type: 'checkbox', required: true },
-    { label: 'I am aware that I have to book a flight to Norway on my own even if I get financial support', name: 'consentFlight', type: 'checkbox', required: true },
-    { label: 'I agree that ISFiT can keep my personal details to be used later in the festival', name: 'consentPersonalDetails', type: 'checkbox', required: true },
-    { label: 'I am aware that a participation certificate will be given only if I attend all days of the workshop and mandatory events', name: 'consentAttendance', type: 'checkbox', required: true },
-    { label: 'I agree that ISFiT can share pictures and videos of me taken during the festival on social media', name: 'consentMedia', type: 'checkbox', required: true },
+  const summarySection: Array<{
+    label: string;
+    name: keyof IApplicationForm;
+    type: string;
+    placeholder?: string;
+    required?: boolean;
+  }> = [
+    { label: 'Summary', name: 'summary', type: 'summary' },
+    {
+      label: 'I agree that this information is correct.',
+      name: 'summaryCheck',
+      type: 'checkbox',
+      required: true,
+    },
   ];
 
   const renderInput = ({
     label,
+    labelElement,
     name,
     type,
     options,
     placeholder,
     required,
-  }: {
-    label: string;
-    name: keyof IApplicationForm;
-    type: string;
-    options?: string[];
-    placeholder?: string;
-    required?: boolean;
-  }) => {
+  }: FormField) => {
+    if (name === 'continent') {
+      const nationality = formValues['nationality'];
+      const continent = getContinentFromNationality(nationality);
+      return (
+        <label key={name} className="formSection">
+          <p>{label}</p>
+          <input
+            type={type}
+            name={name}
+            value={continent}
+            onChange={handleChange}
+            className="formInput"
+            required={required}
+            placeholder={placeholder}
+            disabled
+          />
+        </label>
+      );
+    }
+
+    if (name === 'phoneNumber') {
+      return (
+        <label key={name} className="formSection">
+          <p>{label}</p>
+          <div className="phoneInputContainer">
+            <select
+              name="countryCode"
+              value={countryCode}
+              onChange={handlePhoneNumberChange}
+              className="countryCodeSelect formInput"
+            >
+              <option value="" disabled>
+                Select an option
+              </option>
+              {countryCodes.map((country) => (
+                <option
+                  key={`${country.name}-${country.code}`} // Ensure uniqueness
+                  value={country.code}
+                >
+                  {country.name} ({country.code})
+                </option>
+              ))}
+            </select>
+            <input
+              type="text"
+              name={name}
+              value={formValues[name].replace(countryCode, '')}
+              onChange={handlePhoneNumberChange}
+              className="formInput phoneNumberInput"
+              required={required}
+              placeholder={placeholder}
+            />
+          </div>
+        </label>
+      );
+    }
+
+    if (type === 'checkbox') {
+      return (
+        <label key={name} className="formSection">
+          <div className="checkboxContainer">
+            <input
+              type="checkbox"
+              name={name}
+              checked={Boolean(formValues[name])}
+              onChange={handleChange}
+              className="checkboxInput"
+              required={required}
+            />
+            <span className="checkboxLabel">{labelElement || label}</span>
+          </div>
+        </label>
+      );
+    }
+
     if (type === 'textarea') {
       return (
         <label key={name} className="formSection">
@@ -233,10 +403,25 @@ const ApplicationForm: React.FC = () => {
         </label>
       );
     }
-    if (type === 'file') {
-      return (
-        <label key={name} className="formSection">
-          <p>{label}</p>
+
+    if (type === 'summary') {
+      return getSummary();
+    }
+
+    return (
+      <label key={name} className="formSection">
+        <p>{labelElement || label}</p>
+        {type === 'textarea' && (
+          <textarea
+            name={name}
+            value={formValues[name] as string}
+            onChange={handleChange}
+            className="formInput"
+            required={required}
+            placeholder={placeholder}
+          />
+        )}
+        {type === 'file' && (
           <input
             type="file"
             name={name}
@@ -244,13 +429,8 @@ const ApplicationForm: React.FC = () => {
             className="formInput"
             required={required}
           />
-        </label>
-      );
-    }
-    if (type === 'select') {
-      return (
-        <label key={name} className="formSection">
-          <p>{label}</p>
+        )}
+        {type === 'select' && (
           <select
             name={name}
             value={formValues[name] as string}
@@ -267,38 +447,22 @@ const ApplicationForm: React.FC = () => {
               </option>
             ))}
           </select>
-        </label>
-      );
-    }
-    if (type === 'checkbox') {
-      return (
-        <label key={name} className="formSection">
-          <div className="checkboxContainer">
+        )}
+        {/* Default case for other input types */}
+        {type !== 'textarea' &&
+          type !== 'file' &&
+          type !== 'select' &&
+          type !== 'checkbox' && (
             <input
               type={type}
               name={name}
-              checked={Boolean(formValues[name])}
+              value={formValues[name] as string | number | undefined}
               onChange={handleChange}
-              className="checkboxInput"
+              className="formInput"
               required={required}
+              placeholder={placeholder}
             />
-            <span className="checkboxLabel">{label}</span>
-          </div>
-        </label>
-      );
-    }
-    return (
-      <label key={name} className="formSection">
-        <p>{label}</p>
-        <input
-          type={type}
-          name={name}
-          value={formValues[name] as string | number | undefined}
-          onChange={handleChange}
-          className="formInput"
-          required={required}
-          placeholder={placeholder}
-        />
+          )}
       </label>
     );
   };
@@ -313,6 +477,8 @@ const ApplicationForm: React.FC = () => {
         return financialSupportSection;
       case 3:
         return consentSection;
+      case 4:
+        return summarySection;
       default:
         return [];
     }
@@ -325,7 +491,7 @@ const ApplicationForm: React.FC = () => {
   return (
     <div className="applicationFormContainer">
       <Header linkTo="/homepage" />
-  
+
       {submitted ? (
         <div className="outerContainer">
           <h1 className="applicationSectionHeader">Application submitted</h1>
@@ -334,13 +500,25 @@ const ApplicationForm: React.FC = () => {
       ) : (
         <>
           <div className="outerContainer">
-            <h1 className="applicationSectionHeader">Application Form</h1>
+            <h1 className="applicationSectionHeader">
+              Welcome to the ISFiT 2025 Participant Application!
+            </h1>
             <p>
-              Hey! Awesome that you want to apply for ISFiT 2025, please fill out
-              all required fields.
+              ISFiT, the world’s largest international student festival, is held
+              biennially in Trondheim, Norway, during the spring semester. Since
+              its inception in 1990, ISFiT has brought together students from
+              diverse national and cultural backgrounds, fostering dialogue and
+              connection through stimulating discussions on important global
+              issues.
+            </p>
+            <p>
+              Each festival centers around a unique theme, and for 2025, we will
+              be exploring the theme of POWER. We invite you to join us from
+              March 13th to 23rd, 2025, for this exciting event, where students
+              from across the globe will gather in Trondheim to engage, learn,
+              and inspire one another.
             </p>
           </div>
-  
           <div className="progressOverview">
             {steps.map((step, index) => (
               <span key={index}>
@@ -358,14 +536,12 @@ const ApplicationForm: React.FC = () => {
               </span>
             ))}
           </div>
-
           <form id="applicationContainer">
-            <div className="outerContainer">
+            <div className="outerContainerSection">
               <h1 className="applicationSectionHeader">{steps[currentStep]}</h1>
               {renderStep()}
             </div>
           </form>
-  
           <div className="navigationButtons">
             {currentStep > 0 && (
               <Button type="button" onClick={handlePrevious}>
@@ -382,10 +558,16 @@ const ApplicationForm: React.FC = () => {
               </Button>
             )}
           </div>
+          <CustomToast
+            open={toastOpen}
+            setOpen={setToastOpen}
+            title={toastTitle}
+            message={toastMessage}
+          />
         </>
       )}
     </div>
-  )
-}
+  );
+};
 
 export default ApplicationForm;

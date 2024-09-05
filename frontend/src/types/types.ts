@@ -26,6 +26,7 @@ export interface AuthContextType {
 export interface IApplicationForm {
     _id: string;
     fullName: string;
+    phoneNumber: string;
     dateOfBirth: string;
     gender: string;
     nationality: string;
@@ -37,19 +38,25 @@ export interface IApplicationForm {
     universityWebsite?: string;
     studentCertificate?: Buffer;
     isEnglishSpeaker: boolean;
-    tShirtSize: string;
     applyingAs: string;
     themePowerThoughts: string;
     countryPowerIssue: string;
     motivation: string;
     financialSupportReason: string;
+    fullOrPartialFunding: string;
     dependents: number;
     familyIncome: string;
     canParticipate: string;
-    consentVisa: boolean;
+    countryTravelingFrom: string;
+    otherFundingInfo: string;
+    consentVisa: string;
     consentFlight: boolean;
+    consentNorwegianLaw: boolean;
+    consentReturn: boolean;
     consentPersonalDetails: boolean;
     consentAttendance: boolean;
-    consentMedia: boolean;
+    consentMedia: string;
     createdAt?: string;
+    summary: string;
+    summaryCheck: boolean;
   }
