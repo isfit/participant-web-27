@@ -1,4 +1,4 @@
-name: Build and deploy Node.js app to Azure Web App - participant-web-25
+name: Build and deploy Node.js app to Azure Web App - participant-web-25-backend
 
 on:
   push:
@@ -68,6 +68,6 @@ jobs:
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'participant-web-25'
+          app-name: 'participant-web-25-backend'
           slot-name: 'Production'
           package: .
