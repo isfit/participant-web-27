@@ -200,6 +200,28 @@ label {
     margin-bottom: 16px;
 }
 
+.dobContainer {
+    display: flex;
+    align-items: center;  /* Align items vertically */
+    justify-content: space-between;  /* Add space between the fields */
+    width: 100%;  /* Ensure the container takes the full width */
+}
+
+.dobInput {
+    margin-right: 8px;
+    padding: 10px;
+    width: 30%;  /* Control the width of each select */
+    border-radius: var(--border-radius);
+    border: 1px solid var(--primary-color);
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    font-size: 0.8em;
+}
+
+.dobInput:last-child {
+    margin-right: 0;
+}
+
 .outerContainerSection {
     width: 100%;
     background-color: #88242c;
