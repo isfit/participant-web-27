@@ -11,13 +11,13 @@ dotenv.config();
 
 const app: Express = express();
 
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+app.use(cors({ origin: 'https://participant-web-25-backend-fxc0baateneje3f0.norwayeast-01.azurewebsites.net/', credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const uri: string =
-    process.env.MONGODB_URI || 'mongodb://localhost:27017';
+    process.env.MONGODB_URI || 'mongodb://participant-web-25-server:9KnBdV0x9XR8caPKd4qIk8vsNT7q8PkdsHySm5x62QmKCA72nV8evp6WBL0UIum3LU0eQRIZyYigACDbyAqbvA==@participant-web-25-server.mongo.cosmos.azure.com:10255/participant-web-25-database?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@participant-web-25-server@';
 
 (async () => {
     try {
