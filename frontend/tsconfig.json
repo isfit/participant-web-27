@@ -7,13 +7,15 @@
     "skipLibCheck": true,
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
+    "moduleResolution": "bundler",  // Keep bundler mode if using a bundler like Vite
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
     "jsx": "react-jsx",
+    "outDir": "./dist",  // Specify the output directory
 
+    /* Emit JavaScript */
+    "noEmit": false,  // Ensure JavaScript is emitted
+    
     /* Linting */
     "strict": true,
     "noUnusedLocals": false,  // Allow unused locals for now
