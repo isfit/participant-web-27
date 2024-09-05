@@ -94,6 +94,9 @@ const submitApplication = async (req: Request, res: Response, next: NextFunction
       }
       if (endDate) {
         dateFilter.$lte = new Date(endDate as string);
+        let adjustedEndDate = new Date(endDate as string);
+        adjustedEndDate.setHours(23, 59, 59, 999);
+        dateFilter.$lte = adjustedEndDate;
       }
 
       const query = startDate || endDate ? { createdAt: dateFilter } : {};
