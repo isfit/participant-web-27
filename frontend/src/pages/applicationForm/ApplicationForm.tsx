@@ -17,6 +17,7 @@ import checkErrorField from './checkErrorField';
 import getSummary from '../../utils/summary.tsx';
 import CustomToast from './toast';
 
+// Define the steps for the form
 const steps = [
   'Personal Details',
   'Theme',
@@ -25,6 +26,7 @@ const steps = [
   'Summary',
 ];
 
+// Define the FormField interface
 interface FormField {
   label: string;
   labelElement?: JSX.Element;
@@ -74,15 +76,39 @@ const ApplicationForm: React.FC = () => {
           consentMedia: '',
         };
   });
+
   const [redirect, setRedirect] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [visitedSteps, setVisitedSteps] = useState<number[]>([0]);
-  const [toastOpen, setToastOpen] = useState(false); // State for toast visibility
-  const [toastMessage, setToastMessage] = useState(['']); // State for toast message
-  const [toastTitle, setToastTitle] = useState(''); // State for toast title
-  const [countryCode, setCountryCode] = useState(''); // Default country code
-  let stepErrors: string[] = [];
+  const [toastOpen, setToastOpen] = useState(false); 
+  const [toastMessage, setToastMessage] = useState(['']);
+  const [toastTitle, setToastTitle] = useState('');
+  const [countryCode, setCountryCode] = useState('');
+
+  const [selectedDay, setSelectedDay] = useState('');
+  const [selectedMonth, setSelectedMonth] = useState('');
+  const [selectedYear, setSelectedYear] = useState('');
+
+  useEffect(() => {
+    if (selectedDay && selectedMonth && selectedYear) {
+      setFormValues((prevState) => ({
+        ...prevState,
+        dateOfBirth: `${selectedYear}-${selectedMonth.padStart(2, '0')}-${selectedDay.padStart(2, '0')}`,
+      }));
+    }
+  }, [selectedDay, selectedMonth, selectedYear]);
+
+  const daysInMonth = (month: number, year: number) => {
+    return new Date(year, month, 0).getDate();
+  };
+
+  const days = Array.from(
+    { length: selectedMonth && selectedYear ? daysInMonth(parseInt(selectedMonth), parseInt(selectedYear)) : 31 },
+    (_, i) => i + 1
+  );
+  const months = Array.from({ length: 12 }, (_, i) => i + 1);
+  const years = Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i);
 
   useEffect(() => {
     localStorage.setItem('applicationForm', JSON.stringify(formValues));
@@ -95,64 +121,16 @@ const ApplicationForm: React.FC = () => {
   }, [currentStep, visitedSteps]);
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
+    e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value, type } = e.target;
     const isCheckbox = type === 'checkbox';
 
-    setFormValues((prevState) => {
-      const updatedValues = {
-        ...prevState,
-        [name]: isCheckbox ? (e.target as HTMLInputElement).checked : value,
-      };
+    setFormValues((prevState) => ({
+      ...prevState,
+      [name]: isCheckbox ? (e.target as HTMLInputElement).checked : value,
+    }));
 
-      // Update the continent field based on the selected nationality
-      if (name === 'nationality') {
-        const continent = getContinentFromNationality(value);
-        updatedValues['continent'] = continent;
-      }
-
-      return updatedValues;
-    });
-
-    // Handling the "dependents" field
-    if (name === 'dependents') {
-      const numericValue = parseInt(value, 10);
-      if (numericValue < 0) {
-        setFormValues((prevState) => ({
-          ...prevState,
-          [name]: 0,
-        }));
-        return;
-      }
-    }
-
-    // Updating text areas with word limit constraints
-    if (type === 'textarea') {
-      const wordCount = value.trim().split(/\s+/).length;
-      if (
-        ((name === 'themePowerThoughts' || name === 'otherFundingInfo') &&
-          wordCount <= 100) ||
-        ((name === 'countryPowerIssue' ||
-          name === 'motivation' ||
-          name === 'financialSupportReason') &&
-          wordCount <= 300)
-      ) {
-        setFormValues((prevState) => ({
-          ...prevState,
-          [name]: value,
-        }));
-      }
-    } else {
-      setFormValues((prevState) => ({
-        ...prevState,
-        [name]: isCheckbox ? (e.target as HTMLInputElement).checked : value,
-      }));
-    }
-
-    // Separate state update for nationality/continent logic
     if (name === 'nationality') {
       const continent = getContinentFromNationality(value);
       setFormValues((prevState) => ({
@@ -161,23 +139,26 @@ const ApplicationForm: React.FC = () => {
       }));
     }
 
-    console.log(name, value, type);
+    if (name === 'dependents') {
+      const numericValue = parseInt(value, 10);
+      setFormValues((prevState) => ({
+        ...prevState,
+        [name]: numericValue >= 0 ? numericValue : 0,
+      }));
+    }
   };
 
   const handlePhoneNumberChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
-
     if (name === 'countryCode') {
       setCountryCode(value);
-
       setFormValues((prevState) => ({
         ...prevState,
         phoneNumber: `${value}${prevState.phoneNumber.replace(countryCode, '')}`,
       }));
     }
-
     if (name === 'phoneNumber') {
       setFormValues((prevState) => ({
         ...prevState,
@@ -191,13 +172,10 @@ const ApplicationForm: React.FC = () => {
     const file = e.target.files?.[0];
     if (file && !['application/pdf'].includes(file.type)) {
       alert('File must be a PDF.');
-      e.target.value = '';
       return;
     }
     if (file && file.size > 5 * 1024 * 1024) {
-      // 5 MB limit
       alert('File size exceeds 5 MB');
-      e.target.value = '';
       return;
     }
     setFormValues((prevState) => ({
@@ -208,30 +186,27 @@ const ApplicationForm: React.FC = () => {
 
   const validateStep = () => {
     const currentFields = getCurrentFields();
-    stepErrors = [];
-
-    currentFields.forEach((field) => {
-      if (field.required && !formValues[field.name]) {
+    const stepErrors: string[] = [];
+  
+    // Explicitly typing field as FormField
+    currentFields.forEach((field: FormField) => {
+      // Ensure field.name is correctly typed as a key of formValues (IApplicationForm)
+      if (field.required && !formValues[field.name as keyof IApplicationForm]) {
         stepErrors.push(field.label);
       }
     });
 
-    console.log('Errors:', stepErrors);
-
     if (stepErrors.length > 0) {
       setToastTitle('Missing Required Fields');
       setToastMessage(stepErrors);
-      setToastOpen(true); // Show the toast with the error message
-      return stepErrors.length === 0;
-    } else {
-      setToastOpen(false); // Hide the toast if there are no errors
-      return stepErrors.length === 0;
+      setToastOpen(true);
+      return false;
     }
+    setToastOpen(false);
+    return true;
   };
 
   const handleNext = () => {
-    console.log(currentStep);
-    console.log(formValues);
     if (validateStep()) {
       if (currentStep < steps.length - 1) {
         setCurrentStep(currentStep + 1);
@@ -255,11 +230,8 @@ const ApplicationForm: React.FC = () => {
     if (!validateStep()) {
       return;
     }
-
     const formData = new FormData();
-
     Object.entries(formValues).forEach(([key, value]) => {
-      //add the studentCertificate as a file if it exists
       if (key === 'studentCertificate' && value) {
         formData.append(key, value as File);
       } else {
@@ -271,13 +243,10 @@ const ApplicationForm: React.FC = () => {
       const response = await apply(formData);
       if (response.status === 201) {
         setSubmitted(true);
-        console.log('Application submitted:', response.data.message);
         localStorage.removeItem('applicationForm');
         setTimeout(() => {
           setRedirect(true);
         }, 5000);
-      } else {
-        console.log('Error submitting application:', response.data.message);
       }
     } catch (error) {
       console.error('Error submitting application:', error);
@@ -313,105 +282,69 @@ const ApplicationForm: React.FC = () => {
     placeholder,
     required,
   }: FormField) => {
-    if (name === 'continent') {
-      const nationality = formValues['nationality'];
-      const continent = getContinentFromNationality(nationality);
+    if (name === 'dateOfBirth') {
       return (
         <label key={name} className="formSection">
           <p>{label}</p>
-          <input
-            type={type}
-            name={name}
-            value={continent}
-            onChange={handleChange}
-            className="formInput"
-            required={required}
-            placeholder={placeholder}
-            disabled
-          />
-        </label>
-      );
-    }
-
-    if (name === 'phoneNumber') {
-      return (
-        <label key={name} className="formSection">
-          <p>{label}</p>
-          <div className="phoneInputContainer">
+          <div className="dobContainer">
             <select
-              name="countryCode"
-              value={countryCode}
-              onChange={handlePhoneNumberChange}
-              className="countryCodeSelect formInput"
+              name="day"
+              value={selectedDay}
+              onChange={(e) => setSelectedDay(e.target.value)}
+              required
+              className="dobInput formInput"
             >
               <option value="" disabled>
-                Select an option
+                Day
               </option>
-              {countryCodes.map((country) => (
-                <option
-                  key={`${country.name}-${country.code}`} // Ensure uniqueness
-                  value={country.code}
-                >
-                  {country.name} ({country.code})
+              {days.map((day) => (
+                <option key={day} value={String(day)}>
+                  {day}
                 </option>
               ))}
             </select>
-            <input
-              type="text"
-              name={name}
-              value={formValues[name].replace(countryCode, '')}
-              onChange={handlePhoneNumberChange}
-              className="formInput phoneNumberInput"
-              required={required}
-              placeholder={placeholder}
-            />
+            <select
+              name="month"
+              value={selectedMonth}
+              onChange={(e) => setSelectedMonth(e.target.value)}
+              required
+              className="dobInput formInput"
+            >
+              <option value="" disabled>
+                Month
+              </option>
+              {months.map((month) => (
+                <option key={month} value={String(month).padStart(2, '0')}>
+                  {new Date(0, month - 1).toLocaleString('default', { month: 'long' })}
+                </option>
+              ))}
+            </select>
+            <select
+              name="year"
+              value={selectedYear}
+              onChange={(e) => setSelectedYear(e.target.value)}
+              required
+              className="dobInput formInput"
+            >
+              <option value="" disabled>
+                Year
+              </option>
+              {years.map((year) => (
+                <option key={year} value={String(year)}>
+                  {year}
+                </option>
+              ))}
+            </select>
           </div>
         </label>
       );
     }
-
-    if (type === 'checkbox') {
-      return (
-        <label key={name} className="formSection">
-          <div className="checkboxContainer">
-            <input
-              type="checkbox"
-              name={name}
-              checked={Boolean(formValues[name])}
-              onChange={handleChange}
-              className="checkboxInput"
-              required={required}
-            />
-            <span className="checkboxLabel">{labelElement || label}</span>
-          </div>
-        </label>
-      );
-    }
-
-    if (type === 'textarea') {
-      return (
-        <label key={name} className="formSection">
-          <p>{label}</p>
-          <textarea
-            name={name}
-            value={formValues[name] as string}
-            onChange={handleChange}
-            className="formInput"
-            required={required}
-            placeholder={placeholder}
-          />
-        </label>
-      );
-    }
-
-    if (type === 'summary') {
-      return getSummary();
-    }
-
+    
+    // Handle other fields normally
     return (
       <label key={name} className="formSection">
         <p>{labelElement || label}</p>
-        {type === 'textarea' && (
+        {type === 'textarea' ? (
           <textarea
             name={name}
             value={formValues[name] as string}
@@ -420,17 +353,7 @@ const ApplicationForm: React.FC = () => {
             required={required}
             placeholder={placeholder}
           />
-        )}
-        {type === 'file' && (
-          <input
-            type="file"
-            name={name}
-            onChange={handleFileChange}
-            className="formInput"
-            required={required}
-          />
-        )}
-        {type === 'select' && (
+        ) : type === 'select' ? (
           <select
             name={name}
             value={formValues[name] as string}
@@ -447,22 +370,17 @@ const ApplicationForm: React.FC = () => {
               </option>
             ))}
           </select>
+        ) : (
+          <input
+            type={type}
+            name={name}
+            value={formValues[name] as string}
+            onChange={handleChange}
+            className="formInput"
+            required={required}
+            placeholder={placeholder}
+          />
         )}
-        {/* Default case for other input types */}
-        {type !== 'textarea' &&
-          type !== 'file' &&
-          type !== 'select' &&
-          type !== 'checkbox' && (
-            <input
-              type={type}
-              name={name}
-              value={formValues[name] as string | number | undefined}
-              onChange={handleChange}
-              className="formInput"
-              required={required}
-              placeholder={placeholder}
-            />
-          )}
       </label>
     );
   };
