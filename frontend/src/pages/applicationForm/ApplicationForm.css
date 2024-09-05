@@ -487,3 +487,20 @@ label {
     opacity: 1;
   }
   
+
+
+  .phoneInputContainer {
+    display: flex;
+    align-items: center;
+  }
+  
+  .countryCodeSelect {
+    margin-right: 8px;
+    padding: 10px;
+    width: 50% !important;
+  }
+  
+  .phoneNumberInput {
+    flex: 1;
+  }
+  

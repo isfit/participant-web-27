@@ -50,8 +50,8 @@ const Login: React.FC = () => {
 
   return (
     <div className={styles.login}>
+      <Header linkTo="/homepage" />
       <div className={styles.outerContainer}>
-        <Header linkTo="/homepage" />
         <form onSubmit={handleSubmit} className={styles.formContainer}>
           {[
             {

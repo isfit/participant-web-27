@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Heading, Text, Box, Button } from '@radix-ui/themes';
+import { Button, } from '@radix-ui/themes';
 import { Link } from 'react-router-dom';
 import styles from './HomePage.module.css';
 import { useAuth } from '../../context/AuthenticationContext';
 import { ROLES } from '../../config/roles';
+import cross from '../../../public/cross.svg';
 
 const HomePage: React.FC = () => {
   const { user } = useAuth();
@@ -38,10 +39,20 @@ const HomePage: React.FC = () => {
 
   return (
     <div className={styles.homePage}>
-      <div className={styles.hamburgerMenu} onClick={toggleMenu}>
-        <div className={styles.hamburgerIcon}></div>
-        <div className={styles.hamburgerIcon}></div>
-        <div className={styles.hamburgerIcon}></div>
+      <div className={styles.hamburgerMenu} onClick={!menuOpen ? toggleMenu : undefined}>
+        {!menuOpen ? (
+          <>
+          <div className={styles.hamburgerIconContainer}>
+            <div className={styles.hamburgerIcon}></div>
+            <div className={styles.hamburgerIcon}></div>
+            <div className={styles.hamburgerIcon}></div>
+          </div>
+          </>
+        ) : (
+          <div className={styles.hamburgerIconClose}>
+            <img src={cross} className={styles.hamburgerCross} alt="Close menu" />
+          </div>
+        )}
       </div>
 
       <div
@@ -81,8 +92,68 @@ const HomePage: React.FC = () => {
           </p>
         </div>
       </div>
+
+      
+
+      {/* Footer Section */}
+      <footer className={styles.footer}>
+      <img
+      src='./src/assets/Isfitlogo_power_white_version2.png'
+      alt="Logo"
+      className={styles.footerLogo}
+    />
+      <div className={styles.footerLine1}>
+        <div className={styles.footerLeft}>
+          <a href="https://www.isfit.org" className={styles.footerLink} target="_blank" rel="noopener noreferrer">
+            Homepage - isfit.org
+          </a>
+          <a href="https://www.studentpeaceprize.org/" className={styles.footerLink} target="_blank" rel="noopener noreferrer">
+            SPP homepage - studentpeaceprize.org
+          </a>
+          <div className={styles.footerEmail}>
+            <span>Find any bugs? Send it to </span>
+            <a href="mailto:or.it.leaderteam@isfit.no" className={styles.footerEmailLink}>
+              or.it.leaderteam@isfit.no
+            </a>!
+          </div>
+        </div>
+        <div className={styles.footerRight}>
+          <a href="https://www.facebook.com/ISFiT" className={styles.footerLink} target="_blank" rel="noopener noreferrer">
+            <img src={'./src/assets/facebook.png'} alt="Facebook" className={styles.socialIcon} /> Facebook
+          </a>
+          <a href="https://www.instagram.com/isfitfestival" className={styles.footerLink} target="_blank" rel="noopener noreferrer">
+            <img src={'./src/assets/instagram.png'} alt="Instagram" className={styles.socialIcon} /> Instagram
+          </a>
+          <a href="https://twitter.com/ISFiT" className={styles.footerLink} target="_blank" rel="noopener noreferrer">
+            <img src={'./src/assets/x-logo.jpg'} alt="Twitter" className={styles.socialIcon} /> X
+          </a>
+        </div>
+      </div>
+      <div className={styles.footerLine2}>
+        <h2><b>PARTNERS:</b></h2>
+      </div>
+      <div className={styles.footerLine3}>
+        <img src={'./src/assets/ntnu.png'} alt="NTNU" className={styles.partnersIcon} />
+        <img src={'./src/assets/sit.png'} alt="sit" className={styles.partnersIcon} />
+        <img src={'./src/assets/kjeldsberg.png'} alt="kjelsberg" className={styles.partnersIcon} />
+      </div>
+      <div className={styles.footerLine4}>
+        <img src={'./src/assets/moller.png'} alt="Moller" className={styles.partnersIcon} />
+        <img src={'./src/assets/trøndelagkommune.png'} alt="Trøndelagkommune" className={styles.partnersIcon} />
+        <img src={'./src/assets/kommune.png'} alt="Trondheim Kommune" className={styles.partnersIcon} />
+      </div>
+      <div className={styles.footerLine5}>
+      <img src={'./src/assets/Kilroy.png'} alt="Kilroy" className={styles.partnersIcon} />
+        <img src={'./src/assets/vaernes.png'} alt="Vaernes" className={styles.partnersIcon} />
+        
+      </div>
+      <div className={styles.footerLine6}>
+        <p>© 2025 ISFiT | All Rights Reserved</p>
+      </div>
+    </footer>
     </div>
-  );
+    );
+
 };
 
 export default HomePage;
