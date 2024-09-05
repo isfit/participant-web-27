@@ -273,9 +273,6 @@ const ApplicationForm: React.FC = () => {
         setSubmitted(true);
         console.log('Application submitted:', response.data.message);
         localStorage.removeItem('applicationForm');
-        setTimeout(() => {
-          setRedirect(true);
-        }, 5000);
       } else {
         console.log('Error submitting application:', response.data.message);
       }
@@ -496,6 +493,11 @@ const ApplicationForm: React.FC = () => {
         <div className="outerContainer">
           <h1 className="applicationSectionHeader">Application submitted</h1>
           <p>Thank you for applying to ISFiT!</p>
+          <div className="navigationButtons">
+            <Button type="button" onClick={() => setRedirect(true)}>
+              Back to Homepage
+            </Button>
+          </div>
         </div>
       ) : (
         <>
