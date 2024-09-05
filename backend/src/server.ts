@@ -13,7 +13,7 @@ const app: Express = express();
 
 // CORS configuration
 const allowedOrigins = [
-  'https://participant-web-25-dwgcdgbbd3d4cmd6.norwayeast-01.azurewebsites.net',  // Your frontend URL
+  'https://participant-web-25-dwgcdgbbd3d4cmd6.norwayeast-01.azurewebsites.net',  // Production frontend URL
   'http://localhost:5173',  // Local development URL
 ];
 
@@ -29,9 +29,11 @@ const corsOptions = {
   credentials: true,  // Allow credentials (cookies, etc.)
 };
 
-
 // Use CORS middleware
 app.use(cors(corsOptions));
+
+// Handle preflight requests for all routes
+app.options('*', cors(corsOptions));
 
 // Middleware for parsing requests
 app.use(express.json());
