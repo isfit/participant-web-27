@@ -97,24 +97,35 @@ const HomePage: React.FC = () => {
 
       {/* Footer Section */}
       <footer className={styles.footer}>
+      <img
+      src='./src/assets/Isfitlogo_power_white_version2.png'
+      alt="Logo"
+      className={styles.footerLogo}
+    />
       <div className={styles.footerLine1}>
         <div className={styles.footerLeft}>
-          <a href="https://www.isfit.org" target="_blank" rel="noopener noreferrer">
-            <img src={'/isfit.jpg'} alt="ISFiT Logo" className={styles.footerLogo} />
+          <a href="https://www.isfit.org" className={styles.footerLink} target="_blank" rel="noopener noreferrer">
+            Homepage - isfit.org
           </a>
-          <a href="https://www.studentpeaceprize.org/" target="_blank" rel="noopener noreferrer">
-            <img src={'/spp.jpg'} alt="Student Peace Prize Logo" className={styles.footerLogo} />
+          <a href="https://www.studentpeaceprize.org/" className={styles.footerLink} target="_blank" rel="noopener noreferrer">
+            SPP homepage - studentpeaceprize.org
           </a>
+          <div className={styles.footerEmail}>
+            <span>Find any bugs? Send it to </span>
+            <a href="mailto:or.it.leaderteam@isfit.no" className={styles.footerEmailLink}>
+              or.it.leaderteam@isfit.no
+            </a>!
+          </div>
         </div>
         <div className={styles.footerRight}>
-          <a href="https://www.facebook.com/ISFiT" target="_blank" rel="noopener noreferrer">
-            <img src={'/facebook.png'} alt="Facebook" className={styles.socialIcon} />
+          <a href="https://www.facebook.com/ISFiT" className={styles.footerLink} target="_blank" rel="noopener noreferrer">
+            <img src={'./src/assets/facebook.png'} alt="Facebook" className={styles.socialIcon} /> Facebook
           </a>
-          <a href="https://www.instagram.com/isfitfestival" target="_blank" rel="noopener noreferrer">
-            <img src={'/instagram.png'} alt="Instagram" className={styles.socialIcon} />
+          <a href="https://www.instagram.com/isfitfestival" className={styles.footerLink} target="_blank" rel="noopener noreferrer">
+            <img src={'./src/assets/instagram.png'} alt="Instagram" className={styles.socialIcon} /> Instagram
           </a>
-          <a href="https://twitter.com/ISFiT" target="_blank" rel="noopener noreferrer">
-            <img src={'/twitter.png'} alt="Twitter" className={styles.socialIcon} />
+          <a href="https://twitter.com/ISFiT" className={styles.footerLink} target="_blank" rel="noopener noreferrer">
+            <img src={'./src/assets/x-logo.jpg'} alt="Twitter" className={styles.socialIcon} /> X
           </a>
         </div>
       </div>
@@ -122,18 +133,18 @@ const HomePage: React.FC = () => {
         <h2><b>PARTNERS:</b></h2>
       </div>
       <div className={styles.footerLine3}>
-        <img src={'/ntnu.png'} alt="NTNU" className={styles.partnersIcon3} />
-        <img src={'/sit.png'} alt="sit" className={styles.partnersIcon1} />
-        <img src={'/kjeldsberg.png'} alt="kjelsberg" className={styles.partnersIcon2} />
+        <img src={'./src/assets/ntnu.png'} alt="NTNU" className={styles.partnersIcon} />
+        <img src={'./src/assets/sit.png'} alt="sit" className={styles.partnersIcon} />
+        <img src={'./src/assets/kjeldsberg.png'} alt="kjelsberg" className={styles.partnersIcon} />
       </div>
       <div className={styles.footerLine4}>
-        <img src={'/moller.png'} alt="Moller" className={styles.partnersIcon6} />
-        <img src={'/trøndelagkommune.png'} alt="Trøndelagkommune" className={styles.partnersIcon4} />
-        <img src={'/kommune.png'} alt="Trondheim Kommune" className={styles.partnersIcon5} />
+        <img src={'./src/assets/moller.png'} alt="Moller" className={styles.partnersIcon} />
+        <img src={'./src/assets/trøndelagkommune.png'} alt="Trøndelagkommune" className={styles.partnersIcon} />
+        <img src={'./src/assets/kommune.png'} alt="Trondheim Kommune" className={styles.partnersIcon} />
       </div>
       <div className={styles.footerLine5}>
-      <img src={'/Kilroy.png'} alt="Kilroy" className={styles.partnersIcon7} />
-        <img src={'/vaernes.png'} alt="Vaernes" className={styles.partnersIcon6} />
+      <img src={'./src/assets/Kilroy.png'} alt="Kilroy" className={styles.partnersIcon} />
+        <img src={'./src/assets/vaernes.png'} alt="Vaernes" className={styles.partnersIcon} />
         
       </div>
       <div className={styles.footerLine6}>
