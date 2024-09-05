@@ -17,7 +17,6 @@ import checkErrorField from './checkErrorField';
 import getSummary from '../../utils/summary.tsx';
 import CustomToast from './toast';
 
-// Define the steps for the form
 const steps = [
   'Personal Details',
   'Theme',
@@ -26,7 +25,6 @@ const steps = [
   'Summary',
 ];
 
-// Define the FormField interface
 interface FormField {
   label: string;
   labelElement?: JSX.Element;
@@ -76,20 +74,20 @@ const ApplicationForm: React.FC = () => {
           consentMedia: '',
         };
   });
-
   const [redirect, setRedirect] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [visitedSteps, setVisitedSteps] = useState<number[]>([0]);
-  const [toastOpen, setToastOpen] = useState(false); 
-  const [toastMessage, setToastMessage] = useState(['']);
-  const [toastTitle, setToastTitle] = useState('');
-  const [countryCode, setCountryCode] = useState('');
+  const [toastOpen, setToastOpen] = useState(false); // State for toast visibility
+  const [toastMessage, setToastMessage] = useState(['']); // State for toast message
+  const [toastTitle, setToastTitle] = useState(''); // State for toast title
+  const [countryCode, setCountryCode] = useState(''); // Default country code
+
 
   const [selectedDay, setSelectedDay] = useState('');
   const [selectedMonth, setSelectedMonth] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
-
+  
   useEffect(() => {
     if (selectedDay && selectedMonth && selectedYear) {
       setFormValues((prevState) => ({
@@ -121,16 +119,64 @@ const ApplicationForm: React.FC = () => {
   }, [currentStep, visitedSteps]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
   ) => {
     const { name, value, type } = e.target;
     const isCheckbox = type === 'checkbox';
 
-    setFormValues((prevState) => ({
-      ...prevState,
-      [name]: isCheckbox ? (e.target as HTMLInputElement).checked : value,
-    }));
+    setFormValues((prevState) => {
+      const updatedValues = {
+        ...prevState,
+        [name]: isCheckbox ? (e.target as HTMLInputElement).checked : value,
+      };
+    
+      // Update the continent field based on the selected nationality
+      if (name === 'nationality') {
+        const continent = getContinentFromNationality(value);
+        updatedValues['continent'] = continent;
+      }
+    
+      return updatedValues;
+    });
 
+    // Handling the "dependents" field
+    if (name === 'dependents') {
+      const numericValue = parseInt(value, 10);
+      if (numericValue < 0) {
+        setFormValues((prevState) => ({
+          ...prevState,
+          [name]: 0,
+        }));
+        return;
+      }
+    }
+
+    // Updating text areas with word limit constraints
+    if (type === 'textarea') {
+      const wordCount = value.trim().split(/\s+/).length;
+      if (
+        ((name === 'themePowerThoughts' || name === 'otherFundingInfo') &&
+          wordCount <= 100) ||
+        ((name === 'countryPowerIssue' ||
+          name === 'motivation' ||
+          name === 'financialSupportReason') &&
+          wordCount <= 300)
+      ) {
+        setFormValues((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+      }
+    } else {
+      setFormValues((prevState) => ({
+        ...prevState,
+        [name]: isCheckbox ? (e.target as HTMLInputElement).checked : value,
+      }));
+    }
+
+    // Separate state update for nationality/continent logic
     if (name === 'nationality') {
       const continent = getContinentFromNationality(value);
       setFormValues((prevState) => ({
@@ -139,26 +185,23 @@ const ApplicationForm: React.FC = () => {
       }));
     }
 
-    if (name === 'dependents') {
-      const numericValue = parseInt(value, 10);
-      setFormValues((prevState) => ({
-        ...prevState,
-        [name]: numericValue >= 0 ? numericValue : 0,
-      }));
-    }
+    console.log(name, value, type);
   };
 
   const handlePhoneNumberChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
+
     if (name === 'countryCode') {
       setCountryCode(value);
+
       setFormValues((prevState) => ({
         ...prevState,
         phoneNumber: `${value}${prevState.phoneNumber.replace(countryCode, '')}`,
       }));
     }
+
     if (name === 'phoneNumber') {
       setFormValues((prevState) => ({
         ...prevState,
@@ -172,10 +215,13 @@ const ApplicationForm: React.FC = () => {
     const file = e.target.files?.[0];
     if (file && !['application/pdf'].includes(file.type)) {
       alert('File must be a PDF.');
+      e.target.value = '';
       return;
     }
     if (file && file.size > 5 * 1024 * 1024) {
+      // 5 MB limit
       alert('File size exceeds 5 MB');
+      e.target.value = '';
       return;
     }
     setFormValues((prevState) => ({
@@ -187,11 +233,8 @@ const ApplicationForm: React.FC = () => {
   const validateStep = () => {
     const currentFields = getCurrentFields();
     const stepErrors: string[] = [];
-  
-    // Explicitly typing field as FormField
-    currentFields.forEach((field: FormField) => {
-      // Ensure field.name is correctly typed as a key of formValues (IApplicationForm)
-      if (field.required && !formValues[field.name as keyof IApplicationForm]) {
+    currentFields.forEach((field) => {
+      if (field.required && !formValues[field.name]) {
         stepErrors.push(field.label);
       }
     });
@@ -207,6 +250,8 @@ const ApplicationForm: React.FC = () => {
   };
 
   const handleNext = () => {
+    console.log(currentStep);
+    console.log(formValues);
     if (validateStep()) {
       if (currentStep < steps.length - 1) {
         setCurrentStep(currentStep + 1);
@@ -230,8 +275,11 @@ const ApplicationForm: React.FC = () => {
     if (!validateStep()) {
       return;
     }
+
     const formData = new FormData();
+
     Object.entries(formValues).forEach(([key, value]) => {
+      //add the studentCertificate as a file if it exists
       if (key === 'studentCertificate' && value) {
         formData.append(key, value as File);
       } else {
@@ -243,10 +291,13 @@ const ApplicationForm: React.FC = () => {
       const response = await apply(formData);
       if (response.status === 201) {
         setSubmitted(true);
+        console.log('Application submitted:', response.data.message);
         localStorage.removeItem('applicationForm');
         setTimeout(() => {
           setRedirect(true);
         }, 5000);
+      } else {
+        console.log('Error submitting application:', response.data.message);
       }
     } catch (error) {
       console.error('Error submitting application:', error);
@@ -292,7 +343,7 @@ const ApplicationForm: React.FC = () => {
               value={selectedDay}
               onChange={(e) => setSelectedDay(e.target.value)}
               required
-              className="dobInput formInput"
+              className="dobInput"
             >
               <option value="" disabled>
                 Day
@@ -308,7 +359,7 @@ const ApplicationForm: React.FC = () => {
               value={selectedMonth}
               onChange={(e) => setSelectedMonth(e.target.value)}
               required
-              className="dobInput formInput"
+              className="dobInput"
             >
               <option value="" disabled>
                 Month
@@ -324,7 +375,7 @@ const ApplicationForm: React.FC = () => {
               value={selectedYear}
               onChange={(e) => setSelectedYear(e.target.value)}
               required
-              className="dobInput formInput"
+              className="dobInput"
             >
               <option value="" disabled>
                 Year
@@ -339,12 +390,85 @@ const ApplicationForm: React.FC = () => {
         </label>
       );
     }
-    
-    // Handle other fields normally
-    return (
-      <label key={name} className="formSection">
-        <p>{labelElement || label}</p>
-        {type === 'textarea' ? (
+    if (name === 'continent') {
+      const nationality = formValues['nationality'];
+      const continent = getContinentFromNationality(nationality);
+      return (
+        <label key={name} className="formSection">
+          <p>{label}</p>
+          <input
+            type={type}
+            name={name}
+            value={continent}
+            onChange={handleChange}
+            className="formInput"
+            required={required}
+            placeholder={placeholder}
+            disabled
+          />
+        </label>
+      );
+    }
+
+    if (name === 'phoneNumber') {
+      return (
+        <label key={name} className="formSection">
+          <p>{label}</p>
+          <div className="phoneInputContainer">
+            <select
+              name="countryCode"
+              value={countryCode}
+              onChange={handlePhoneNumberChange}
+              className="countryCodeSelect formInput"
+            >
+              <option value="" disabled>
+                Select an option
+              </option>
+              {countryCodes.map((country) => (
+                <option
+                  key={`${country.name}-${country.code}`} // Ensure uniqueness
+                  value={country.code}
+                >
+                  {country.name} ({country.code})
+                </option>
+              ))}
+            </select>
+            <input
+              type="text"
+              name={name}
+              value={formValues[name].replace(countryCode, '')}
+              onChange={handlePhoneNumberChange}
+              className="formInput phoneNumberInput"
+              required={required}
+              placeholder={placeholder}
+            />
+          </div>
+        </label>
+      );
+    }
+
+    if (type === 'checkbox') {
+      return (
+        <label key={name} className="formSection">
+          <div className="checkboxContainer">
+            <input
+              type="checkbox"
+              name={name}
+              checked={Boolean(formValues[name])}
+              onChange={handleChange}
+              className="checkboxInput"
+              required={required}
+            />
+            <span className="checkboxLabel">{labelElement || label}</span>
+          </div>
+        </label>
+      );
+    }
+
+    if (type === 'textarea') {
+      return (
+        <label key={name} className="formSection">
+          <p>{label}</p>
           <textarea
             name={name}
             value={formValues[name] as string}
@@ -353,7 +477,37 @@ const ApplicationForm: React.FC = () => {
             required={required}
             placeholder={placeholder}
           />
-        ) : type === 'select' ? (
+        </label>
+      );
+    }
+
+    if (type === 'summary') {
+      return getSummary();
+    }
+
+    return (
+      <label key={name} className="formSection">
+        <p>{labelElement || label}</p>
+        {type === 'textarea' && (
+          <textarea
+            name={name}
+            value={formValues[name] as string}
+            onChange={handleChange}
+            className="formInput"
+            required={required}
+            placeholder={placeholder}
+          />
+        )}
+        {type === 'file' && (
+          <input
+            type="file"
+            name={name}
+            onChange={handleFileChange}
+            className="formInput"
+            required={required}
+          />
+        )}
+        {type === 'select' && (
           <select
             name={name}
             value={formValues[name] as string}
@@ -370,17 +524,22 @@ const ApplicationForm: React.FC = () => {
               </option>
             ))}
           </select>
-        ) : (
-          <input
-            type={type}
-            name={name}
-            value={formValues[name] as string}
-            onChange={handleChange}
-            className="formInput"
-            required={required}
-            placeholder={placeholder}
-          />
         )}
+        {/* Default case for other input types */}
+        {type !== 'textarea' &&
+          type !== 'file' &&
+          type !== 'select' &&
+          type !== 'checkbox' && (
+            <input
+              type={type}
+              name={name}
+              value={formValues[name] as string | number | undefined}
+              onChange={handleChange}
+              className="formInput"
+              required={required}
+              placeholder={placeholder}
+            />
+          )}
       </label>
     );
   };
