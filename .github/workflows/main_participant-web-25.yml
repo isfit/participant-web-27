@@ -60,5 +60,5 @@ jobs:
         with:
           app-name: 'participant-web-25'
           slot-name: 'Production'
-          package: .
+          package: './frontend'
           
