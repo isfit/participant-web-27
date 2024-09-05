@@ -1,4 +1,4 @@
-name: Build and deploy Node.js backend to Azure Web App - participant-web-25
+name: Build and deploy Node.js backend to Azure Web App - participant-web-25-backend
 
 on:
   push:
@@ -25,17 +25,12 @@ jobs:
         run: npm install
         working-directory: ./backend
 
-      # Step 4: Compile TypeScript code
-      - name: Build backend (Compile TypeScript)
+      # Step 4: Build the backend (TypeScript compilation)
+      - name: Build backend
         run: npm run build
         working-directory: ./backend
 
-      # Step 5: Ensure the TypeScript build process exits with an error if the build fails
-      - name: Compile TypeScript code directly
-        run: npx tsc || exit 1  # Run tsc directly and stop if there's an error
-        working-directory: ./backend
-
-      # Step 6: List the backend directory to verify that the dist folder exists
+      # Step 5: List the backend directory to verify that the dist folder exists
       - name: List backend directory after build
         run: |
           echo "Listing backend folder contents"
@@ -44,36 +39,41 @@ jobs:
           ls ./backend/dist
         working-directory: ./
 
-      # Step 7: Upload the dist folder as an artifact for deployment
+      # Step 6: Upload the dist folder for deployment
       - name: Upload artifact for backend deployment
         uses: actions/upload-artifact@v4
         with:
           name: backend-artifact
-          path: ./backend/dist  # Ensure the dist folder is uploaded for deployment
+          path: ./backend/dist  # Upload the dist folder
 
   deploy_backend:
     runs-on: ubuntu-latest
     needs: build_backend
 
+    permissions:
+      id-token: write  # Make sure the workflow has id-token: write permissions
+      contents: read   # This is necessary to read the repository contents
+
     steps:
-      # Step 8: Download the artifact from the build job
+      # Step 7: Download the artifact from the build job
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: backend-artifact
 
-      # Step 9: Log in to Azure
+      # Step 8: Log in to Azure using OpenID Connect (OIDC)
       - name: Login to Azure
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_FC599DD607174723A66F9EFBB47E0DAC }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_55487918B3224FB3A0FA6A9E83E2498D }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_051F9C2D47DD440AAA7EB18EED1E4986 }}
+          auth-type: 'oidc'  # Ensure you're using OIDC for authentication
 
-      # Step 10: Deploy to Azure Web App
+      # Step 9: Deploy to Azure Web App
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'participant-web-25'  # Your Azure Web App name for backend
+          app-name: 'participant-web-25-backend'  # Azure Web App name for backend
           slot-name: 'Production'
-          package: backend/dist  # Use the correct path for the artifact that was uploaded
+          package: backend/dist  # Ensure this is the correct path for the artifact

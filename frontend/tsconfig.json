@@ -7,19 +7,19 @@
     "skipLibCheck": true,
 
     /* Bundler mode */
-    "moduleResolution": "bundler",  // Keep bundler mode if using a bundler like Vite
+    "moduleResolution": "bundler",  // Ensure this is correct
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "outDir": "./dist",  // Specify the output directory
+    "outDir": "./dist",  // Output the compiled JavaScript
 
     /* Emit JavaScript */
-    "noEmit": false,  // Ensure JavaScript is emitted
+    "noEmit": false,  // Ensure that TypeScript emits JavaScript files
     
     /* Linting */
     "strict": true,
-    "noUnusedLocals": false,  // Allow unused locals for now
-    "noUnusedParameters": false,  // Allow unused function parameters
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],
