@@ -28,9 +28,9 @@ jobs:
       - name: Build backend (Compile TypeScript)
         run: |
           cd backend
-          npm run build  # This should generate the dist folder
+          npm run build  # Ensure this builds the dist folder
 
-      # List the backend directory to check if 'dist' exists
+      # List the backend directory to verify dist folder exists
       - name: List backend directory after build
         run: |
           ls backend
@@ -41,7 +41,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: app-backend
-          path: backend/dist  # Correct the path to point to backend/dist
+          path: backend/dist  # Upload the dist folder
 
   deploy_backend:
     runs-on: ubuntu-latest
@@ -58,7 +58,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: app-backend
-      
+
       # Log in to Azure
       - name: Login to Azure
         uses: azure/login@v2
@@ -72,6 +72,6 @@ jobs:
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'participant-web-25'  # Your Azure Web App name for backend
+          app-name: 'participant-web-25'  # Azure Web App name for backend
           slot-name: 'Production'
-          package: backend/dist  # Deploy the dist folder
+          package: backend/dist  # Ensure this is the correct path for deployment
