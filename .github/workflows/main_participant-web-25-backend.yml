@@ -28,20 +28,20 @@ jobs:
       - name: Build backend (Compile TypeScript)
         run: |
           cd backend
-          npm run build  # Ensure this builds the dist folder
+          npm run build  # This should generate the dist folder
 
-      # List the backend directory to verify dist folder exists
+      # List the backend directory to verify that the dist folder exists
       - name: List backend directory after build
         run: |
           ls backend
-          ls backend/dist
+          ls backend/dist  # Check if the dist folder exists
 
       # Upload the dist folder for deployment
       - name: Upload artifact for backend deployment
         uses: actions/upload-artifact@v4
         with:
           name: app-backend
-          path: backend/dist  # Upload the dist folder
+          path: backend/dist  # Ensure the dist folder is uploaded for deployment
 
   deploy_backend:
     runs-on: ubuntu-latest
@@ -58,12 +58,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: app-backend
-
+      
       # Log in to Azure
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_FC599DD607174723A66F9EFBB47E0DAC }}
+           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_FC599DD607174723A66F9EFBB47E0DAC }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_55487918B3224FB3A0FA6A9E83E2498D }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_051F9C2D47DD440AAA7EB18EED1E4986 }}
 
@@ -72,6 +72,6 @@ jobs:
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'participant-web-25'  # Azure Web App name for backend
+          app-name: 'participant-web-25'  # Your Azure Web App name for backend
           slot-name: 'Production'
           package: backend/dist  # Ensure this is the correct path for deployment

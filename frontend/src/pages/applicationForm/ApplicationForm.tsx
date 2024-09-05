@@ -435,7 +435,7 @@ const ApplicationForm: React.FC = () => {
             </label>
             {formValues[name] && formValues[name] instanceof File && (
               <div className="fileInfo">
-                <p>Uploaded file: {(formValues[name] as File).name}</p>
+                <p>Uploaded file: {(formValues[name] as unknown as File).name}</p>
               </div>
             )}
           </div>
