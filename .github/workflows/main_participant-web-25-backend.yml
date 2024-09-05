@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy Node.js app to Azure Web App - participant-web-25-backend
+name: Build and deploy Node.js app to Azure Web App - participant-web-25
 
 on:
   push:
@@ -25,13 +25,12 @@ jobs:
         run: |
           npm install
           npm run build --if-present
-          npm run test --if-present
       
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: .
+          path: ./backend
 
   deploy:
     runs-on: ubuntu-latest
@@ -51,15 +50,15 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_AEBFCA92A46E4988A768E1ADFD4EE2E9 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_8F01AB4AEAC243CCA489703199DCDEAE }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_A05054AB079A4D44B424A1D4659E2844 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_FC599DD607174723A66F9EFBB47E0DAC }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_55487918B3224FB3A0FA6A9E83E2498D }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_051F9C2D47DD440AAA7EB18EED1E4986 }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'participant-web-25-backend'
+          app-name: 'participant-web-25'
           slot-name: 'Production'
           package: .
           
