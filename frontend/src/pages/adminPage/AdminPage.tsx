@@ -20,7 +20,7 @@ const AdminPage: React.FC = () => {
 
   const fetchApplications = async (): Promise<IApplicationForm[]> => {
     try {
-      const response = await axios.get('http://localhost:4000/api/application/applications', {
+      const response = await axios.get('https://participant-web-25-backend-fxc0baateneje3f0.norwayeast-01.azurewebsites.net/api/application/applications', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -136,7 +136,7 @@ const AdminPage: React.FC = () => {
 
   const downloadPDF = async (id: string) => {
     try {
-      const response = await axios.get(`http://localhost:4000/api/application/certificate/${id}`, {
+      const response = await axios.get(`https://participant-web-25-backend-fxc0baateneje3f0.norwayeast-01.azurewebsites.net/api/application/certificate/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
