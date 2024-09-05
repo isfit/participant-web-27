@@ -43,7 +43,7 @@ const Login: React.FC = () => {
           setErrorMessage('Invalid email or password');
         }
       })
-      .catch((error) => {
+      .catch(() => {
         setErrorMessage('Something went wrong. Please try again later.');
       });
   };

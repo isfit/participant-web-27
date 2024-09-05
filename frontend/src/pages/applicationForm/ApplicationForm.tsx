@@ -13,7 +13,6 @@ import {
   financialSupportSection,
   consentSection,
 } from './sections';
-import checkErrorField from './checkErrorField';
 import getSummary from '../../utils/summary.tsx';
 import CustomToast from './toast';
 
