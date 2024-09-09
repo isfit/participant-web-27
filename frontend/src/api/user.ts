@@ -12,7 +12,7 @@ export const register = async (fullName: string, email: string, password: string
     const config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'http://localhost:4000/auth/register',
+        url: 'https://participant-web-25-backend-fxc0baateneje3f0.norwayeast-01.azurewebsites.net/auth/register',
         headers: {
             'Content-Type': 'application/json'
         },

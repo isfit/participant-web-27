@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: 'http://localhost:4000/auth/login',
+      url: 'https://participant-web-25-backend-fxc0baateneje3f0.norwayeast-01.azurewebsites.net/auth/login',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: 'localhost:4000/auth/refresh',
+      url: 'https://participant-web-25-backend-fxc0baateneje3f0.norwayeast-01.azurewebsites.net/auth/refresh',
       withCredentials: true,
     };
     return axios

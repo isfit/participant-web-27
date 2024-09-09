@@ -1,10 +1,10 @@
 {
     "compilerOptions": {
         "target": "es2016",
-        "jsx": "preserve",
+        "jsx": "react",                        
         "module": "commonjs",
-        "allowJs": true,
-        "outDir": "./dist",
+        "allowJs": true,                       // Change to `false` if no JavaScript files are used
+        "outDir": "./dist",                    // The compiled JavaScript files will go here
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "strict": true,
