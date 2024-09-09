@@ -81,7 +81,31 @@ const ApplicationForm: React.FC = () => {
   const [toastMessage, setToastMessage] = useState(['']); // State for toast message
   const [toastTitle, setToastTitle] = useState(''); // State for toast title
   const [countryCode, setCountryCode] = useState(''); // Default country code
-  let stepErrors: string[] = [];
+
+
+  const [selectedDay, setSelectedDay] = useState('');
+  const [selectedMonth, setSelectedMonth] = useState('');
+  const [selectedYear, setSelectedYear] = useState('');
+  
+  useEffect(() => {
+    if (selectedDay && selectedMonth && selectedYear) {
+      setFormValues((prevState) => ({
+        ...prevState,
+        dateOfBirth: `${selectedYear}-${selectedMonth.padStart(2, '0')}-${selectedDay.padStart(2, '0')}`,
+      }));
+    }
+  }, [selectedDay, selectedMonth, selectedYear]);
+
+  const daysInMonth = (month: number, year: number) => {
+    return new Date(year, month, 0).getDate();
+  };
+
+  const days = Array.from(
+    { length: selectedMonth && selectedYear ? daysInMonth(parseInt(selectedMonth), parseInt(selectedYear)) : 31 },
+    (_, i) => i + 1
+  );
+  const months = Array.from({ length: 12 }, (_, i) => i + 1);
+  const years = Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i);
 
   useEffect(() => {
     localStorage.setItem('applicationForm', JSON.stringify(formValues));
@@ -106,13 +130,13 @@ const ApplicationForm: React.FC = () => {
         ...prevState,
         [name]: isCheckbox ? (e.target as HTMLInputElement).checked : value,
       };
-
+    
       // Update the continent field based on the selected nationality
       if (name === 'nationality') {
         const continent = getContinentFromNationality(value);
         updatedValues['continent'] = continent;
       }
-
+    
       return updatedValues;
     });
 
@@ -210,25 +234,21 @@ const ApplicationForm: React.FC = () => {
 
   const validateStep = () => {
     const currentFields = getCurrentFields();
-    stepErrors = [];
-
+    const stepErrors: string[] = [];
     currentFields.forEach((field) => {
       if (field.required && !formValues[field.name]) {
         stepErrors.push(field.label);
       }
     });
 
-    console.log('Errors:', stepErrors);
-
     if (stepErrors.length > 0) {
       setToastTitle('Missing Required Fields');
       setToastMessage(stepErrors);
-      setToastOpen(true); // Show the toast with the error message
-      return stepErrors.length === 0;
-    } else {
-      setToastOpen(false); // Hide the toast if there are no errors
-      return stepErrors.length === 0;
+      setToastOpen(true);
+      return false;
     }
+    setToastOpen(false);
+    return true;
   };
 
   const handleNext = () => {
@@ -311,6 +331,63 @@ const ApplicationForm: React.FC = () => {
     placeholder,
     required,
   }: FormField) => {
+    if (name === 'dateOfBirth') {
+      return (
+        <label key={name} className="formSection">
+          <p>{label}</p>
+          <div className="dobContainer">
+            <select
+              name="day"
+              value={selectedDay}
+              onChange={(e) => setSelectedDay(e.target.value)}
+              required
+              className="dobInput"
+            >
+              <option value="" disabled>
+                Day
+              </option>
+              {days.map((day) => (
+                <option key={day} value={String(day)}>
+                  {day}
+                </option>
+              ))}
+            </select>
+            <select
+              name="month"
+              value={selectedMonth}
+              onChange={(e) => setSelectedMonth(e.target.value)}
+              required
+              className="dobInput"
+            >
+              <option value="" disabled>
+                Month
+              </option>
+              {months.map((month) => (
+                <option key={month} value={String(month).padStart(2, '0')}>
+                  {new Date(0, month - 1).toLocaleString('default', { month: 'long' })}
+                </option>
+              ))}
+            </select>
+            <select
+              name="year"
+              value={selectedYear}
+              onChange={(e) => setSelectedYear(e.target.value)}
+              required
+              className="dobInput"
+            >
+              <option value="" disabled>
+                Year
+              </option>
+              {years.map((year) => (
+                <option key={year} value={String(year)}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
+        </label>
+      );
+    }
     if (name === 'continent') {
       const nationality = formValues['nationality'];
       const continent = getContinentFromNationality(nationality);
