@@ -19,6 +19,16 @@
     box-shadow: 0 0 10px 0 rgba(68, 68, 68, 0.388);
 }
 
+.emailLink{
+    color: white;
+    padding: 8px;
+    font-weight: 300;
+  }
+  
+  .emailLink:hover{
+    text-decoration: underline;
+  }
+
 .sectionSubtext {
     font-size: 1em;
     color: #ddd;

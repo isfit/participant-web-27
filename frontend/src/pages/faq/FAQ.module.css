@@ -1,0 +1,297 @@
+/* HomePage.module.css */
+
+.homePage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: auto 0;
+}
+
+.hamburgerMenu {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.hamburgerIconContainer {
+  background-color: rgba(50, 50, 50, 0.7);
+  padding: 10px;
+  border-radius: 50px;
+}
+
+.hamburgerIcon {
+  width: 30px;
+  height: 3px;
+  background-color: #ffffff;
+  margin: 5px 0;
+  transition: 0.4s;
+}
+
+.hamburgerIconClose {
+  transition: 0.4s;
+  padding: 10px;
+}
+
+.hamburgerCross {
+  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+}
+
+.sideMenu {
+  position: fixed;
+  top: 0;
+  left: -250px; /* Hidden by default */
+  width: 250px;
+  height: 100%;
+  background-color: #88242c;
+  z-index: 999;
+  padding-top: 60px; /* Space for the hamburger menu */
+  transition: left 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.sideMenu.open {
+  left: 0; /* Slide in the menu */
+}
+
+.sideMenu a {
+  color: white;
+  padding: 15px 25px;
+  text-decoration: none;
+  display: block;
+  transition: background 0.3s ease;
+}
+
+.sideMenu a:hover {
+  background-color: #98343c;
+}
+
+.centerContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 60px;
+  margin-bottom: 40px;
+  padding-top: 40px;
+  padding-bottom: 10px;
+  background-color: #88242c;
+  border-radius: 20px;
+}
+
+.container {
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.homePageHeader {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.logo {
+  max-width: 100%;
+  height: auto;
+  margin-top: -150px;
+  margin-bottom: -150px;
+}
+
+.applyButtonLink {
+  display: block;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.applyButton {
+  background-color: #000;
+  color: white;
+}
+
+/* Footer.module.css */
+
+.footer {
+  width: 100vw; /* Ensures the footer spans the full viewport width */
+  background-color: #111;
+  color: white;
+  box-sizing: border-box; /* Ensures padding doesn't affect the width */
+  text-align: center;
+  position: relative; /* Default position; change to 'absolute' if needed */
+  left: 0; /* Aligns the footer to the left edge */
+  margin-top: 80px;
+}
+
+.footerLine1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  max-width: 1200px; /* Optional: constrain content width, but allow full stretch */
+  margin: 0 auto; /* Center content horizontally within the max-width */
+  width: 100%;
+}
+
+.footerLine1 {
+  margin-bottom: 60px; /* Increase the gap after the first line */
+}
+
+.footerLine2 {
+  align-items: center;
+  justify-content: center;
+}
+
+/* Style for the Partners: text */
+.footerLine2 h2 {
+  font-size: 24px; /* Increase the font size */
+  font-weight: bold; /* Make the text bold */
+  margin: 0; /* Remove any default margin */
+  align-items: center;
+  justify-content: center;
+}
+
+.footerLine3,
+.footerLine4,
+.footerLine5 {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  filter: invert();
+}
+
+.footerLine6 {
+  align-items: center;
+  justify-content: center;
+}
+
+.footerLeft,
+.footerRight {
+  display: flex;
+  flex-direction: column;
+}
+
+.footerLogo,
+.socialIcon {
+  width: 20px;
+  margin: 0 10px;
+  border-radius: 20px;
+}
+
+.footerLink{
+  color: white;
+  padding: 8px;
+  font-weight: 400;
+}
+
+.footerEmail{
+  color: white;
+  padding: 8px;
+  font-weight: 300;
+}
+
+.footerEmailLink{
+  color: white;
+  font-weight: 600;
+}
+
+.footerEmailLink:hover{
+  text-decoration: underline;
+}
+
+.footerLink:hover{
+  text-decoration: underline;
+}
+
+.footerLogo{
+  width: 50%;
+  margin-bottom: -50px;
+  margin-top: -50px;
+}
+
+.partnersIcon {
+  width: 200px; /* Increase the size of partner icons */
+}
+
+
+.customBackground {
+  background-color: #333;
+  color: white;
+}
+
+/* Responsive styles for tablets */
+@media (max-width: 768px) {
+  .footerLine1 {
+    flex-direction: column;
+    margin-bottom: 30px;
+  }
+  .footerLogo{
+    width: 80%;
+    margin-bottom: -50px;
+    margin-top: -50px;
+  }
+
+  .footerLeft, .footerRight {
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .socialIcon {
+    width: 20px; /* Reduce icon size */
+  }
+
+  .partnersIcon {
+    width: 100px;
+  }
+
+  .logo {
+    margin-top: -100px;
+    margin-bottom: -100px;
+  }
+}
+
+/* Responsive styles for mobile phones */
+@media (max-width: 480px) {
+  .footerLine1 {
+    flex-direction: column;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .footerLeft, .footerRight {
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+
+  .socialIcon {
+    width: 20px; /* Further reduce icon size */
+  }
+
+  .footerLine3, .footerLine4, .footerLine5 {
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .partnersIcon {
+    width: 80px;
+  }
+
+  .footerLine6 p {
+    font-size: 12px;
+  }
+
+  .logo {
+    margin-top: -50px;
+    margin-bottom: -50px;
+  }
+}
