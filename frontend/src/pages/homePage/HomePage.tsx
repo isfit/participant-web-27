@@ -62,13 +62,14 @@ const HomePage: React.FC = () => {
         {user?.role === ROLES.ADMIN && (
           <Link to="/admin">Admin</Link>
         )}
+        <Link to="/faq">FAQ</Link>
         <Link to="/login">Login</Link>
         {user && <Button onClick={handleLogout}>Logout</Button>}
       </div>
       <div className={styles.centerContainer}>
         <img src={'images/Isfitlogo_power_white_version2.png'} alt="Logo" className={styles.logo} />
         <br />
-        <Link to="/applicationForm" className={styles.applyButtonLink}>
+        <Link to="/applicationForm">
           <Button className={styles.applyButton}>Apply now!</Button>
         </Link>
         <div className={styles.container}>
