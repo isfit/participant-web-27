@@ -62,6 +62,7 @@ const HomePage: React.FC = () => {
         {user?.role === ROLES.ADMIN && (
           <Link to="/admin">Admin</Link>
         )}
+        <Link to="/faq">FAQ</Link>
         <Link to="/login">Login</Link>
         {user && <Button onClick={handleLogout}>Logout</Button>}
       </div>

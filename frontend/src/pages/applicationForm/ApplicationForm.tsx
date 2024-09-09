@@ -15,6 +15,8 @@ import {
 } from './sections';
 import getSummary from '../../utils/summary.tsx';
 import CustomToast from './toast';
+import { Link } from 'react-router-dom';
+
 
 const steps = [
   'Personal Details',
@@ -595,20 +597,18 @@ const ApplicationForm: React.FC = () => {
               Welcome to the ISFiT 2025 Participant Application!
             </h1>
             <p>
-              ISFiT, the world’s largest international student festival, is held
-              biennially in Trondheim, Norway, during the spring semester. Since
-              its inception in 1990, ISFiT has brought together students from
-              diverse national and cultural backgrounds, fostering dialogue and
-              connection through stimulating discussions on important global
-              issues.
+            Welcome to the ISFiT 2025 Participant Application! ISFiT, the world’s largest international student festival, is held biennially in Trondheim, Norway, during the spring semester. Since its inception in 1990, ISFiT has brought together students from diverse national and cultural backgrounds, fostering dialogue and connection through stimulating discussions on important global issues. Each festival centers around a unique theme, and for 2025, we will be exploring the theme of POWER. We invite you to join us from March 13th to 23rd, 2025, for this exciting event, where students from across the globe will gather in Trondheim to engage, learn, and inspire one another.
             </p>
             <p>
-              Each festival centers around a unique theme, and for 2025, we will
-              be exploring the theme of POWER. We invite you to join us from
-              March 13th to 23rd, 2025, for this exciting event, where students
-              from across the globe will gather in Trondheim to engage, learn,
-              and inspire one another.
+            ​We are currently accepting participant applications, and you can apply up until October 13th! 
             </p>
+            <p>
+            As a participant, you will be part of a community of international students passionate about creating positive change in the world. You will have the opportunity to engage in thought-provoking workshops, attend insightful debates, and participate in dynamic cultural exchange activities. Being a participant means more than just attending events and concerts — it means actively contributing your ideas, experiences, and perspectives to the discussions and debates that shape our understanding of the theme of POWER.             </p>
+            <p>
+            We in ISFiT will provide food and accomodation while you are here, and you may also apply for additional funds if you need so to attend the festival. 
+            </p>
+            <p>
+            So what are you waiting for? Fill in the form to apply, do you have any questions? Please check the Frequently Asked Questions<Link to="/faq" className="emailLink">(FAQ)</Link>section to see if your question has already been answered, or ask us at this information-email:<a href="mailto:question@isfit.no" className="emailLink">question@isfit.no</a>!</p>
           </div>
           <div className="progressOverview">
             {steps.map((step, index) => (
