@@ -33,7 +33,7 @@ jobs:
             # Step 5: Build the frontend (if applicable)
             - name: Build frontend
               env:
-                  VITE_API_URL: particpant-web-25-backend-afbrfcb7d8e7hdcq.norwayeast-01.azurewebsites.net
+                  VITE_API_URL: https://particpant-web-25-backend-afbrfcb7d8e7hdcq.norwayeast-01.azurewebsites.net
               run: |
                   cd frontend
                   npm run build --if-present
