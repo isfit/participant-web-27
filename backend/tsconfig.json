@@ -10,5 +10,5 @@
         "strict": true,
         "skipLibCheck": true
     },
-    "exclude": ["node_modules", "dist", "client"]
+    "exclude": ["node_modules", "client"]
 }
