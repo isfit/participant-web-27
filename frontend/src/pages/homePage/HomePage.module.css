@@ -125,7 +125,7 @@
   background-size: 400% 400%; /* Make the gradient large to animate across the border */
   z-index: -1;
   border-radius: 15px; /* Add border-radius here */
-  animation: animate-border 4s linear infinite; /* Add smooth animation */
+  animation: animate-border 1.5s linear infinite; /* Add smooth animation */
 }
 
 .applyButton::after {
