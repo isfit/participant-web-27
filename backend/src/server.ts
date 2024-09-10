@@ -41,3 +41,7 @@ const PORT: string | number = process.env.PORT || 4000;
 app.listen(PORT, () => {
     console.log(`Server is running on PORT: ${PORT}`);
 });
+
+setInterval(() => {
+    console.log('Server health check. Server is running on port:' + PORT);
+  }, 60000);
