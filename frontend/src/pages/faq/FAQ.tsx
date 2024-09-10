@@ -58,9 +58,12 @@ const FAQ: React.FC = () => {
       </div>
 
       <div ref={menuRef} className={`${styles.sideMenu} ${menuOpen ? styles.open : ''}`}>
-        {user?.role === ROLES.ADMIN && <Link to="/admin">Admin</Link>}
-        <Link to="/homePage">Homepage</Link>
-        <Link to="/login">Login</Link>
+      <Link to="/faq">FAQ</Link>
+      <Link to="/homePage">Homepage</Link>
+        {user?.role === ROLES.ADMIN && (
+          <Link to="/admin">Admin</Link>
+        )}
+        {!user && <Link to="/login">Login</Link>}
         {user && <Button onClick={handleLogout}>Logout</Button>}
       </div>
 
