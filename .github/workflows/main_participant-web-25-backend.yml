@@ -22,9 +22,7 @@ jobs:
 
       # Step 3: Install dependencies in the root directory and build (if necessary)
       - name: Install dependencies in root
-        run: |
-          npm install
-          npm run build --if-present
+        run: npm install
 
       # Step 4: Install dependencies in the backend directory
       - name: Install dependencies in backend
@@ -32,7 +30,13 @@ jobs:
           cd backend
           npm install
 
-      # Step 5: Upload backend folder as an artifact for deployment
+      # Step 5: Build the backend
+      - name: Build backend
+        run: |
+          cd backend
+          npm run build --if-present
+
+      # Step 6: Upload backend folder as an artifact for deployment
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
@@ -49,13 +53,13 @@ jobs:
       id-token: write  # Required for requesting the JWT
 
     steps:
-      # Step 6: Download the artifact from the build job
+      # Step 7: Download the artifact from the build job
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: app-backend
       
-      # Step 7: Log in to Azure
+      # Step 8: Log in to Azure
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -63,7 +67,7 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_8F01AB4AEAC243CCA489703199DCDEAE }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_A05054AB079A4D44B424A1D4659E2844 }}
 
-      # Step 8: Deploy to Azure Web App
+      # Step 9: Deploy to Azure Web App
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
