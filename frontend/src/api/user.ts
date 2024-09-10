@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { ROLES } from '../config/roles';
 
+const api_url: string = import.meta.env.VITE_API_URL;
+
 
 export const register = async (fullName: string, email: string, password: string) => {
     const data = JSON.stringify({
@@ -12,7 +14,7 @@ export const register = async (fullName: string, email: string, password: string
     const config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'http://localhost:4000/auth/register',
+        url: `${api_url}/auth/register`,
         headers: {
             'Content-Type': 'application/json'
         },

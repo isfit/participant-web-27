@@ -5,6 +5,8 @@ import axios from 'axios';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const api_url: string = import.meta.env.VITE_API_URL;
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [authTokens, setAuthTokens] = useState<AuthTokens | null>(() => {
     const token = localStorage.getItem('authTokens');
@@ -24,7 +26,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: 'http://localhost:4000/auth/login',
+      url: `${api_url}/auth/login`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -53,7 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: 'localhost:4000/auth/refresh',
+      url: `${api_url}/auth/refresh`,
       withCredentials: true,
     };
     return axios

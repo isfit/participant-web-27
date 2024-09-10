@@ -9,6 +9,7 @@ import { ROLES } from '../../config/roles';
 import { Button } from '@radix-ui/themes';
 import cross from '../../../public/cross.svg';
 
+const api_url: string = import.meta.env.VITE_API_URL;
 
 const AdminPage: React.FC = () => {
   const [applications, setApplications] = useState<IApplicationForm[]>([]);
@@ -46,15 +47,18 @@ const AdminPage: React.FC = () => {
 
   const fetchApplications = async (): Promise<IApplicationForm[]> => {
     try {
-      const response = await axios.get('http://localhost:4000/api/application/applications', {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await axios.get(
+        `${api_url}/api/application/applications`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            startDate,
+            endDate,
+          },
         },
-        params: {
-          startDate,
-          endDate,
-        },
-      });
+      );
 
       const applications = response.data;
       return applications;
@@ -110,7 +114,7 @@ const AdminPage: React.FC = () => {
         'Consent Media',
         'Application Date (DD/MM/YYYY)',
       ],
-      ...applications.map(app => {
+      ...applications.map((app) => {
         return [
           app.fullName,
           app.phoneNumber,
@@ -143,12 +147,16 @@ const AdminPage: React.FC = () => {
           app.consentPersonalDetails ? 'Yes' : 'No',
           app.consentAttendance ? 'Yes' : 'No',
           app.consentMedia,
-          app.createdAt ? new Date(app.createdAt).toLocaleDateString('en-GB') : 'N/A',
+          app.createdAt
+            ? new Date(app.createdAt).toLocaleDateString('en-GB')
+            : 'N/A',
         ];
       }),
     ];
 
-    const csvContent = 'data:text/csv;charset=utf-8,' + csvRows.map(e => e.join(',')).join('\n');
+    const csvContent =
+      'data:text/csv;charset=utf-8,' +
+      csvRows.map((e) => e.join(',')).join('\n');
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
@@ -160,14 +168,19 @@ const AdminPage: React.FC = () => {
 
   const downloadPDF = async (id: string) => {
     try {
-      const response = await axios.get(`http://localhost:4000/api/application/certificate/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await axios.get(
+        `${api_url}/api/application/certificate/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          responseType: 'blob',
         },
-        responseType: 'blob',
-      });
+      );
 
-      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+      const url = window.URL.createObjectURL(
+        new Blob([response.data], { type: 'application/pdf' }),
+      );
       const link = document.createElement('a');
       link.href = url;
       link.setAttribute('download', 'student_certificate.pdf');
@@ -181,7 +194,10 @@ const AdminPage: React.FC = () => {
 
   return (
     <div className={styles.adminOuter}>
-      <div className={styles.hamburgerMenu} onClick={!menuOpen ? toggleMenu : undefined}>
+      <div
+        className={styles.hamburgerMenu}
+        onClick={!menuOpen ? toggleMenu : undefined}
+      >
         {!menuOpen ? (
           <>
             <div className={styles.hamburgerIconContainer}>
@@ -192,14 +208,21 @@ const AdminPage: React.FC = () => {
           </>
         ) : (
           <div className={styles.hamburgerIconClose}>
-            <img src={cross} className={styles.hamburgerCross} alt="Close menu" />
+            <img
+              src={cross}
+              className={styles.hamburgerCross}
+              alt="Close menu"
+            />
           </div>
         )}
       </div>
-      <div ref={menuRef} className={`${styles.sideMenu} ${menuOpen ? styles.open : ''}`}>
-      <Link to="/faq">FAQ</Link>
-      <Link to="/homePage">HomePage</Link>
-      {user?.role === ROLES.ADMIN && <Link to="/admin">Admin</Link>}
+      <div
+        ref={menuRef}
+        className={`${styles.sideMenu} ${menuOpen ? styles.open : ''}`}
+      >
+        <Link to="/faq">FAQ</Link>
+        <Link to="/homePage">HomePage</Link>
+        {user?.role === ROLES.ADMIN && <Link to="/admin">Admin</Link>}
         {!user && <Link to="/login">Login</Link>}
         {user && <Button onClick={handleLogout}>Logout</Button>}
       </div>
@@ -274,7 +297,9 @@ const AdminPage: React.FC = () => {
                 <tr key={application._id}>
                   <td>{application.fullName}</td>
                   <td>{application.phoneNumber}</td>
-                  <td>{new Date(application.dateOfBirth).toLocaleDateString()}</td>
+                  <td>
+                    {new Date(application.dateOfBirth).toLocaleDateString()}
+                  </td>
                   <td>{application.gender}</td>
                   <td>{application.nationality}</td>
                   <td>{application.continent}</td>
@@ -284,7 +309,9 @@ const AdminPage: React.FC = () => {
                   <td>{application.university}</td>
                   <td>
                     {application.studentCertificate ? (
-                      <button onClick={() => downloadPDF(application?._id)}>Download Certificate</button>
+                      <button onClick={() => downloadPDF(application?._id)}>
+                        Download Certificate
+                      </button>
                     ) : (
                       'N/A'
                     )}
@@ -309,7 +336,11 @@ const AdminPage: React.FC = () => {
                   <td>{application.consentPersonalDetails ? 'Yes' : 'No'}</td>
                   <td>{application.consentAttendance ? 'Yes' : 'No'}</td>
                   <td>{application.consentMedia}</td>
-                  <td>{application.createdAt ? new Date(application.createdAt).toLocaleDateString() : 'N/A'}</td>
+                  <td>
+                    {application.createdAt
+                      ? new Date(application.createdAt).toLocaleDateString()
+                      : 'N/A'}
+                  </td>
                 </tr>
               ))}
             </tbody>
