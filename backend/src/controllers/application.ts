@@ -118,7 +118,7 @@ const submitApplication = async (req: Request, res: Response, next: NextFunction
         return res.status(404).json({ message: 'File not found' });
       }
 
-      const fileName = `certificate_${application.fullName.replace(/\s/g, '_')}.pdf`;
+      const fileName = `certificate_${application.fullName.replace(/\s/g, '_').replace(/[^\x00-\x7F]/g, '')}.pdf`;
   
       res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
       res.setHeader('Content-Type', 'application/pdf');
