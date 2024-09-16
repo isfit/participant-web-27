@@ -92,8 +92,8 @@ const FAQ: React.FC = () => {
             <h3>Q: How much financial support can I apply for, and what are the requirements?</h3>
             <p>A: We do not have the funds to support everyone, so only apply for financial support if you need it in order to be able to participate in the festival. We have volunteers dedicated to allocating funds to the participants who require them, so apply to however much you require to be able to participate.</p>
             <br /><br />
-            <h3>Q: How can I apply for financial support?</h3>
-            <p>A: In the application, there is a section where you can apply for financial support.</p>
+            <h3>Q: Can I get financial support, and how do I apply for it?</h3>
+            <p>A: Yes, we offer limited financial support to help participants who might not otherwise be able to afford the trip to Trondheim. However, funding is not available for everyone, so we ask that you carefully assess your need before applying. You can request financial support when filling out your application—no documentation is required at that stage. If you are selected, we will contact you for more details.</p>
             <br /><br />
             <h3>Q: Central America is not in the drop down folder, what do I select?</h3>
             <p>A: Central America is not its own continent, and is a part of North America geographically. This is only to map out a geographic diversity amongst our participants.</p>
@@ -106,6 +106,16 @@ const FAQ: React.FC = () => {
             <br /><br />
             <h3>Q: Can I use AI to write my application?</h3>
             <p>A: No. Any application we suspect AI to be of use in writing will be discounted in the reviewing process.</p>
+            <h3>Q: Can I apply even if I graduate before the festival?</h3>
+            <p>A: Yes, recent graduates are welcome to apply. We understand that academic schedules vary across regions, so students graduating in 2024 are still eligible to attend ISFiT 2025.</p>
+            <h3>Q: Is there anything I can do to increase my chances of being selected?</h3>
+            <p>A: To increase your chances, focus on answering the application questions thoroughly and thoughtfully. We're looking for participants who are genuinely interested in attending ISFiT and engaging in meaningful discussions on the theme of "Power." Show us that you can reflect on the theme and share unique experiences and perspectives from your background.</p>
+            <h3>Q: When will you know if you've been selected as a participant?</h3>
+            <p>A: Invitation letters will be sent out around November 17th. Selected participants will have until November 26th to accept the invitation. If a participant can no longer attend, their spot will be offered to someone on the waiting list, who will be notified via email. Rejection letters will be sent after November 26th.</p>
+            <h3>Q: I already filled out the Google Form to apply, do I need to apply on this website as well?</h3>
+            <p>A: If you have already filled out the Google Form, you don't have to apply here.</p>
+            <h3>Q: I see there's also a Google Form I can use to apply, do I have to fill out that and apply on this website?</h3>
+            <p>A: No, you don't have to do both. One of them, either Google Form or applying through the website, is enough.</p>
           </div>
         </div>
       </div>
