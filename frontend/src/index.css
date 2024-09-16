@@ -7,7 +7,7 @@
   color: rgba(255, 255, 255, 0.87);
 
   /* Replace background-color with a background-image */
-  background-image: url('../public/images/isfit_opptak_facebanner.png');
+  background-image: url('../public/images/opptak_bakgrunn2.png');
   background-size: cover; /* Ensures the image covers the entire area */
   background-repeat: repeat; /* Prevents the image from repeating */
   background-position: center center; /* Centers the background image */
