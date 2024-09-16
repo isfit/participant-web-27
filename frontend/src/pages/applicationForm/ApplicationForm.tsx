@@ -221,8 +221,8 @@ const ApplicationForm: React.FC = () => {
         e.target.value = '';
         return;
       }
-      if (file.size > 5 * 1024 * 1024) { // 5 MB limit
-        alert('File size exceeds 5 MB');
+      if (file.size > 2 * 1024 * 1024) { // 5 MB limit
+        alert('File size exceeds 2 MB');
         e.target.value = '';
         return;
       }
