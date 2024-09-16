@@ -6,11 +6,10 @@
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
 
-  /* Replace background-color with a background-image */
   background-image: url('../public/images/opptak_bakgrunn2.png');
-  background-size: cover; /* Ensures the image covers the entire area */
-  background-repeat: repeat; /* Prevents the image from repeating */
-  background-position: center center; /* Centers the background image */
+  background-size: cover; 
+  background-repeat: repeat; 
+  background-position: center center; 
 }
 
 a {

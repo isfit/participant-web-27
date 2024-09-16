@@ -43,19 +43,19 @@
 .sideMenu {
   position: fixed;
   top: 0;
-  left: -250px; /* Hidden by default */
+  left: -250px; 
   width: 250px;
   height: 100%;
   background-color: #88242c;
   z-index: 999;
-  padding-top: 60px; /* Space for the hamburger menu */
+  padding-top: 60px; 
   transition: left 0.3s ease;
   display: flex;
   flex-direction: column;
 }
 
 .sideMenu.open {
-  left: 0; /* Slide in the menu */
+  left: 0; 
 }
 
 .sideMenu a {
@@ -105,13 +105,13 @@
 
 .applyButton {
   position: relative;
-  background-color: #000; /* Black background */
-  color: white; /* White text */
-  font-size: 20px; /* Text size */
+  background-color: #000; 
+  color: white; 
+  font-size: 20px; 
   padding: 20px 45px;
-  border-radius: 10px; /* Rounded corners for the button itself */
+  border-radius: 10px; 
   z-index: 1;
-  overflow: hidden; /* To prevent the pseudo-element from spilling out */
+  overflow: hidden; 
 }
 
 .applyButton::before {
@@ -122,10 +122,10 @@
   right: -5px;
   bottom: -5px;
   background: linear-gradient(270deg, red, orange, yellow, green, blue, indigo, violet);
-  background-size: 400% 400%; /* Make the gradient large to animate across the border */
+  background-size: 400% 400%; 
   z-index: -1;
-  border-radius: 15px; /* Add border-radius here */
-  animation: animate-border 1.5s linear infinite; /* Add smooth animation */
+  border-radius: 15px; 
+  animation: animate-border 1.5s linear infinite;
 }
 
 .applyButton::after {
@@ -135,12 +135,11 @@
   left: 5px;
   right: 5px;
   bottom: 5px;
-  background-color: #000; /* Ensure the inside remains black */
+  background-color: #000; 
   z-index: -1;
-  border-radius: 10px; /* Match the main button's border-radius */
+  border-radius: 10px; 
 }
 
-/* Keyframe animation for moving the gradient */
 @keyframes animate-border {
   0% {
     background-position: 0% 0%;

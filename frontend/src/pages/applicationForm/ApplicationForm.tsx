@@ -79,10 +79,10 @@ const ApplicationForm: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [visitedSteps, setVisitedSteps] = useState<number[]>([0]);
-  const [toastOpen, setToastOpen] = useState(false); // State for toast visibility
-  const [toastMessage, setToastMessage] = useState(['']); // State for toast message
-  const [toastTitle, setToastTitle] = useState(''); // State for toast title
-  const [countryCode, setCountryCode] = useState(''); // Default country code
+  const [toastOpen, setToastOpen] = useState(false); 
+  const [toastMessage, setToastMessage] = useState(['']); 
+  const [toastTitle, setToastTitle] = useState(''); 
+  const [countryCode, setCountryCode] = useState(''); 
 
 
   const [selectedDay, setSelectedDay] = useState('');
@@ -185,8 +185,6 @@ const ApplicationForm: React.FC = () => {
         continent,
       }));
     }
-
-    console.log(name, value, type);
   };
 
   const handlePhoneNumberChange = (
@@ -254,8 +252,6 @@ const ApplicationForm: React.FC = () => {
   };
 
   const handleNext = () => {
-    console.log(currentStep);
-    console.log(formValues);
     if (validateStep()) {
       if (currentStep < steps.length - 1) {
         setCurrentStep(currentStep + 1);
@@ -536,7 +532,6 @@ const ApplicationForm: React.FC = () => {
             ))}
           </select>
         )}
-        {/* Default case for other input types */}
         {type !== 'textarea' &&
           type !== 'file' &&
           type !== 'select' &&

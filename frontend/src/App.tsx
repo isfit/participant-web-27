@@ -10,7 +10,6 @@ import PrivateRoute from './components/Routing/PrivateRoutes';
 import AdminPage from './pages/adminPage/AdminPage';
 import FAQ from './pages/faq/FAQ';
 import ProtectedAdminRoute from './components/Routing/AdminRoutes';
-//import NotFoundPage from './pages/NotFoundPage';
 
 const App: React.FC = () => {
   return (
@@ -30,8 +29,6 @@ const App: React.FC = () => {
               </PrivateRoute>
             }
           />
-          {/* Add more routes here if needed */}
-          {/* <Route path="*" element={<NotFoundPage />} /> */}
           <Route
             path="/admin"
             element={
