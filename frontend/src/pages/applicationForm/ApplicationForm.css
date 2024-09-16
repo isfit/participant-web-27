@@ -212,15 +212,15 @@ label {
 
 .dobContainer {
     display: flex;
-    align-items: center;  /* Align items vertically */
-    justify-content: space-between;  /* Add space between the fields */
-    width: 100%;  /* Ensure the container takes the full width */
+    align-items: center; 
+    justify-content: space-between; 
+    width: 100%; 
 }
 
 .dobInput {
     margin-right: 8px;
     padding: 10px;
-    width: 30%;  /* Control the width of each select */
+    width: 30%;  
     border-radius: var(--border-radius);
     border: 1px solid var(--primary-color);
     background-color: var(--input-bg);
@@ -369,11 +369,11 @@ label {
 
 .separator {
     margin: 0 5px;
-    color: #888; /* Optional: style for the arrow separator */
+    color: #888;
   }
 
   .clickableStep {
-    cursor: pointer; /* Make visited steps clickable */
+    cursor: pointer; 
   }
   
 
@@ -386,7 +386,6 @@ label {
     text-align: center;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .formContainer {
         padding: 15px 30px;

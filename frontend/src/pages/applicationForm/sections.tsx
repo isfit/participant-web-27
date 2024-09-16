@@ -1,6 +1,6 @@
 import { IApplicationForm } from "../../types/types";
 import { nationalities, nations } from "./nationality";
-import { Information } from '@carbon/icons-react'; // Import the icon
+import { Information } from '@carbon/icons-react'; 
 
 interface FormField {
   label: string;

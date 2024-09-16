@@ -3,8 +3,8 @@
         "target": "es2016",
         "jsx": "react",                        
         "module": "commonjs",
-        "allowJs": true,                       // Change to `false` if no JavaScript files are used
-        "outDir": "./dist",                    // The compiled JavaScript files will go here
+        "allowJs": true,                       
+        "outDir": "./dist",                    
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "strict": true,
