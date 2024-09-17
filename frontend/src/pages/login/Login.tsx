@@ -33,10 +33,7 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    // Handle login logic here
-    console.log(
-      `Logging in with email: ${user.email} and password: ${user.password}`,
-    );
+    // Handle login logic her
 
     await login(user.email, user.password)
       .then((success) => {
