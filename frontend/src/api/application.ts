@@ -18,7 +18,6 @@ export const apply = async (applicationForm: FormData) => {
 };
 
 export const getApplications = async () => {
-  const token = JSON.parse(localStorage.getItem('authTokens') || '');
   const config = {
     method: 'post',
     maxBodyLength: Infinity,
