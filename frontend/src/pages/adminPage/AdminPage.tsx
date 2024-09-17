@@ -8,6 +8,7 @@ import styles from './AdminPage.module.css';
 import { ROLES } from '../../config/roles';
 import { Button } from '@radix-ui/themes';
 import cross from '../../../public/cross.svg';
+import axiosInstance from '../../api/axios';
 
 const api_url: string = import.meta.env.VITE_API_URL;
 
@@ -47,7 +48,7 @@ const AdminPage: React.FC = () => {
 
   const fetchApplications = async (): Promise<IApplicationForm[]> => {
     try {
-      const response = await axios.get(
+      const response = await axiosInstance.get(
         `${api_url}/api/application/applications`,
         {
           headers: {

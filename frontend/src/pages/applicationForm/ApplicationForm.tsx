@@ -17,7 +17,6 @@ import getSummary from '../../utils/summary.tsx';
 import CustomToast from './toast';
 import { Link } from 'react-router-dom';
 
-
 const steps = [
   'Personal Details',
   'Theme',
@@ -79,16 +78,15 @@ const ApplicationForm: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [visitedSteps, setVisitedSteps] = useState<number[]>([0]);
-  const [toastOpen, setToastOpen] = useState(false); 
-  const [toastMessage, setToastMessage] = useState(['']); 
-  const [toastTitle, setToastTitle] = useState(''); 
-  const [countryCode, setCountryCode] = useState(''); 
-
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState(['']);
+  const [toastTitle, setToastTitle] = useState('');
+  const [countryCode, setCountryCode] = useState('');
 
   const [selectedDay, setSelectedDay] = useState('');
   const [selectedMonth, setSelectedMonth] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
-  
+
   useEffect(() => {
     if (selectedDay && selectedMonth && selectedYear) {
       setFormValues((prevState) => ({
@@ -103,11 +101,19 @@ const ApplicationForm: React.FC = () => {
   };
 
   const days = Array.from(
-    { length: selectedMonth && selectedYear ? daysInMonth(parseInt(selectedMonth), parseInt(selectedYear)) : 31 },
-    (_, i) => i + 1
+    {
+      length:
+        selectedMonth && selectedYear
+          ? daysInMonth(parseInt(selectedMonth), parseInt(selectedYear))
+          : 31,
+    },
+    (_, i) => i + 1,
   );
   const months = Array.from({ length: 12 }, (_, i) => i + 1);
-  const years = Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i);
+  const years = Array.from(
+    { length: 100 },
+    (_, i) => new Date().getFullYear() - i,
+  );
 
   useEffect(() => {
     localStorage.setItem('applicationForm', JSON.stringify(formValues));
@@ -132,13 +138,13 @@ const ApplicationForm: React.FC = () => {
         ...prevState,
         [name]: isCheckbox ? (e.target as HTMLInputElement).checked : value,
       };
-    
+
       // Update the continent field based on the selected nationality
       if (name === 'nationality') {
         const continent = getContinentFromNationality(value);
         updatedValues['continent'] = continent;
       }
-    
+
       return updatedValues;
     });
 
@@ -212,20 +218,21 @@ const ApplicationForm: React.FC = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name } = e.target;
     const file = e.target.files?.[0];
-    
+
     if (file) {
       if (!['application/pdf'].includes(file.type)) {
         alert('File must be a PDF.');
         e.target.value = '';
         return;
       }
-      if (file.size > 1.8 * 1024 * 1024) { // 1.8 MB limit
+      if (file.size > 1.8 * 1024 * 1024) {
+        // 1.8 MB limit
         alert('File size exceeds 1.8 MB');
         e.target.value = '';
         return;
       }
     }
-  
+
     setFormValues((prevState) => ({
       ...prevState,
       [name]: file || undefined,
@@ -275,9 +282,9 @@ const ApplicationForm: React.FC = () => {
     if (!validateStep()) {
       return;
     }
-  
+
     const formData = new FormData();
-  
+
     Object.entries(formValues).forEach(([key, value]) => {
       if (key === 'studentCertificate' && value) {
         formData.append(key, value as File);
@@ -285,15 +292,12 @@ const ApplicationForm: React.FC = () => {
         formData.append(key, String(value));
       }
     });
-  
+
     try {
       const response = await apply(formData);
       if (response.status === 201) {
         setSubmitted(true);
-        console.log('Application submitted:', response.data.message);
         localStorage.removeItem('applicationForm');
-      } else {
-        console.log('Error submitting application:', response.data.message);
       }
     } catch (error) {
       console.error('Error submitting application:', error);
@@ -362,7 +366,9 @@ const ApplicationForm: React.FC = () => {
               </option>
               {months.map((month) => (
                 <option key={month} value={String(month).padStart(2, '0')}>
-                  {new Date(0, month - 1).toLocaleString('default', { month: 'long' })}
+                  {new Date(0, month - 1).toLocaleString('default', {
+                    month: 'long',
+                  })}
                 </option>
               ))}
             </select>
@@ -509,7 +515,9 @@ const ApplicationForm: React.FC = () => {
             </label>
             {formValues[name] && formValues[name] instanceof File && (
               <div className="fileInfo">
-                <p>Uploaded file: {(formValues[name] as unknown as File).name}</p>
+                <p>
+                  Uploaded file: {(formValues[name] as unknown as File).name}
+                </p>
               </div>
             )}
           </div>
@@ -592,18 +600,51 @@ const ApplicationForm: React.FC = () => {
               Welcome to the ISFiT 2025 Participant Application!
             </h1>
             <p>
-            Welcome to the ISFiT 2025 Participant Application! ISFiT, the world’s largest international student festival, is held biennially in Trondheim, Norway, during the spring semester. Since its inception in 1990, ISFiT has brought together students from diverse national and cultural backgrounds, fostering dialogue and connection through stimulating discussions on important global issues. Each festival centers around a unique theme, and for 2025, we will be exploring the theme of POWER. We invite you to join us from March 13th to 23rd, 2025, for this exciting event, where students from across the globe will gather in Trondheim to engage, learn, and inspire one another.
+              Welcome to the ISFiT 2025 Participant Application! ISFiT, the
+              world’s largest international student festival, is held biennially
+              in Trondheim, Norway, during the spring semester. Since its
+              inception in 1990, ISFiT has brought together students from
+              diverse national and cultural backgrounds, fostering dialogue and
+              connection through stimulating discussions on important global
+              issues. Each festival centers around a unique theme, and for 2025,
+              we will be exploring the theme of POWER. We invite you to join us
+              from March 13th to 23rd, 2025, for this exciting event, where
+              students from across the globe will gather in Trondheim to engage,
+              learn, and inspire one another.
             </p>
             <p>
-            ​We are currently accepting participant applications, and you can apply up until October 13th! 
+              ​We are currently accepting participant applications, and you can
+              apply up until October 13th!
             </p>
             <p>
-            As a participant, you will be part of a community of international students passionate about creating positive change in the world. You will have the opportunity to engage in thought-provoking workshops, attend insightful debates, and participate in dynamic cultural exchange activities. Being a participant means more than just attending events and concerts — it means actively contributing your ideas, experiences, and perspectives to the discussions and debates that shape our understanding of the theme of POWER.             </p>
-            <p>
-            We in ISFiT will provide food and accomodation while you are here, and you may also apply for additional funds if you need so to attend the festival. 
+              As a participant, you will be part of a community of international
+              students passionate about creating positive change in the world.
+              You will have the opportunity to engage in thought-provoking
+              workshops, attend insightful debates, and participate in dynamic
+              cultural exchange activities. Being a participant means more than
+              just attending events and concerts — it means actively
+              contributing your ideas, experiences, and perspectives to the
+              discussions and debates that shape our understanding of the theme
+              of POWER.{' '}
             </p>
             <p>
-            So what are you waiting for? Fill in the form to apply, do you have any questions? Please check the Frequently Asked Questions<Link to="/faq" className="emailLink">(FAQ)</Link>section to see if your question has already been answered, or ask us at this information-email:<a href="mailto:question@isfit.no" className="emailLink">question@isfit.no</a>!</p>
+              We in ISFiT will provide food and accomodation while you are here,
+              and you may also apply for additional funds if you need so to
+              attend the festival.
+            </p>
+            <p>
+              So what are you waiting for? Fill in the form to apply, do you
+              have any questions? Please check the Frequently Asked Questions
+              <Link to="/faq" className="emailLink">
+                (FAQ)
+              </Link>
+              section to see if your question has already been answered, or ask
+              us at this information-email:
+              <a href="mailto:question@isfit.no" className="emailLink">
+                question@isfit.no
+              </a>
+              !
+            </p>
           </div>
           <div className="progressOverview">
             {steps.map((step, index) => (
