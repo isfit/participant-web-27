@@ -633,7 +633,7 @@ const ApplicationForm: React.FC = () => {
               attend the festival.
             </p>
             <p>
-              So what are you waiting for? Fill in the form to apply, do you
+              So what are you waiting for? Apply! Do you
               have any questions? Please check the Frequently Asked Questions
               <Link to="/faq" className="emailLink">
                 (FAQ)
@@ -645,6 +645,10 @@ const ApplicationForm: React.FC = () => {
               </a>
               !
             </p>
+            <p>
+            If you are having trouble applying through this website, you can
+            alternatively apply through this <a href="https://forms.gle/DFatZ3yqWkdDsuYt6" className="footerEmailLink" target='_blank'>Google Form</a>!
+          </p>
           </div>
           <div className="progressOverview">
             {steps.map((step, index) => (

@@ -386,6 +386,15 @@ label {
     text-align: center;
 }
 
+.footerEmailLink{
+    color: white;
+    font-weight: 600;
+  }
+  
+  .footerEmailLink:hover{
+    text-decoration: underline;
+  }
+
 @media (max-width: 768px) {
     .formContainer {
         padding: 15px 30px;
