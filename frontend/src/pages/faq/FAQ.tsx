@@ -106,14 +106,19 @@ const FAQ: React.FC = () => {
             <br /><br />
             <h3>Q: Can I use AI to write my application?</h3>
             <p>A: No. Any application we suspect AI to be of use in writing will be discounted in the reviewing process.</p>
+            <br /><br />
             <h3>Q: Can I apply even if I graduate before the festival?</h3>
             <p>A: Yes, recent graduates are welcome to apply. We understand that academic schedules vary across regions, so students graduating in 2024 are still eligible to attend ISFiT 2025.</p>
+            <br /><br />
             <h3>Q: Is there anything I can do to increase my chances of being selected?</h3>
             <p>A: To increase your chances, focus on answering the application questions thoroughly and thoughtfully. We're looking for participants who are genuinely interested in attending ISFiT and engaging in meaningful discussions on the theme of "Power." Show us that you can reflect on the theme and share unique experiences and perspectives from your background.</p>
+            <br /><br />
             <h3>Q: When will you know if you've been selected as a participant?</h3>
             <p>A: Invitation letters will be sent out around November 17th. Selected participants will have until November 26th to accept the invitation. If a participant can no longer attend, their spot will be offered to someone on the waiting list, who will be notified via email. Rejection letters will be sent after November 26th.</p>
+            <br /><br />
             <h3>Q: I already filled out the Google Form to apply, do I need to apply on this website as well?</h3>
             <p>A: If you have already filled out the Google Form, you don't have to apply here.</p>
+            <br /><br />
             <h3>Q: I see there's also a Google Form I can use to apply, do I have to fill out that and apply on this website?</h3>
             <p>A: No, you don't have to do both. One of them, either Google Form or applying through the website, is enough.</p>
           </div>
