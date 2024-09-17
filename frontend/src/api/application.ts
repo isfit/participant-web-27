@@ -1,4 +1,3 @@
-import axios from 'axios';
 import axiosInstance from './axios';
 
 const api_url: string = import.meta.env.VITE_API_URL;

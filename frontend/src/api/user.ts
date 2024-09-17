@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { ROLES } from '../config/roles';
 import axiosInstance from './axios';
 
