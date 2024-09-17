@@ -1,29 +1,34 @@
 import axios from 'axios';
-
+import axiosInstance from './axios';
 
 const api_url: string = import.meta.env.VITE_API_URL;
 
 export const apply = async (applicationForm: FormData) => {
-  const token = JSON.parse(localStorage.getItem('authTokens') || '');
-
-  const response = await axios.post(`${api_url}/api/application/apply`, applicationForm, {
+  const config = {
+    method: 'post',
+    maxBodyLength: Infinity,
+    url: `${api_url}/api/application/apply`,
     headers: {
       'Content-Type': 'multipart/form-data',
-      Authorization: `Bearer ${token}`,
     },
-  });
+    data: applicationForm,
+  };
+  const response = await axiosInstance.request(config);
 
   return response;
 };
 
 export const getApplications = async () => {
   const token = JSON.parse(localStorage.getItem('authTokens') || '');
-
-  const response = await axios.get(`${api_url}/api/application/applications`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  return response;
+  const config = {
+    method: 'post',
+    maxBodyLength: Infinity,
+    url: `${api_url}/api/application/applications`,
+  };
+  try {
+    const response = await axiosInstance.request(config);
+    return response;
+  } catch (error: any) {
+    return { success: false, message: error.response.data.errors[0].msg };
+  }
 };
