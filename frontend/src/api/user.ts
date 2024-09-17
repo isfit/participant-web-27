@@ -1,5 +1,4 @@
 import { ROLES } from '../config/roles';
-import axiosInstance from './axios';
 
 const api_url: string = import.meta.env.VITE_API_URL;
 
@@ -14,15 +13,6 @@ export const register = async (
     password: password,
     role: ROLES.USER,
   });
-  const config = {
-    method: 'post',
-    maxBodyLength: Infinity,
-    url: `${api_url}/auth/register`,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: data,
-  };
 
   try {
     return { success: true };
