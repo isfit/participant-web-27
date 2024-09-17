@@ -4,7 +4,6 @@ import { Request, Response, NextFunction } from 'express';
 
 
 const authenticate = async (req: Request, res: Response, next: NextFunction) => {
-    //const token = req.cookies.token;
 
     const authHeader = req.headers.authorization;
 

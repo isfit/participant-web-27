@@ -78,10 +78,10 @@ const ApplicationForm: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [visitedSteps, setVisitedSteps] = useState<number[]>([0]);
-  const [toastOpen, setToastOpen] = useState(false); // State for toast visibility
-  const [toastMessage, setToastMessage] = useState(['']); // State for toast message
-  const [toastTitle, setToastTitle] = useState(''); // State for toast title
-  const [countryCode, setCountryCode] = useState(''); // Default country code
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState(['']);
+  const [toastTitle, setToastTitle] = useState('');
+  const [countryCode, setCountryCode] = useState('');
 
   const [selectedDay, setSelectedDay] = useState('');
   const [selectedMonth, setSelectedMonth] = useState('');
@@ -225,9 +225,9 @@ const ApplicationForm: React.FC = () => {
         e.target.value = '';
         return;
       }
-      if (file.size > 5 * 1024 * 1024) {
-        // 5 MB limit
-        alert('File size exceeds 5 MB');
+      if (file.size > 1.8 * 1024 * 1024) {
+        // 1.8 MB limit
+        alert('File size exceeds 1.8 MB');
         e.target.value = '';
         return;
       }
@@ -540,7 +540,6 @@ const ApplicationForm: React.FC = () => {
             ))}
           </select>
         )}
-        {/* Default case for other input types */}
         {type !== 'textarea' &&
           type !== 'file' &&
           type !== 'select' &&

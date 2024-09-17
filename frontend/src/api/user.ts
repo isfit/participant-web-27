@@ -27,10 +27,8 @@ export const register = async (
 
   try {
     const response = await axiosInstance.request(config);
-    console.log(JSON.stringify(response.data));
     return { success: true };
   } catch (error: any) {
-    console.log(error);
     return { success: false, message: error.response.data.errors[0].msg };
   }
 };

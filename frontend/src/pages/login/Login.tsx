@@ -34,7 +34,6 @@ const Login: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     // Handle login logic her
-
     await login(user.email, user.password)
       .then((success) => {
         if (success) {
