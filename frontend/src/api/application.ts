@@ -1,4 +1,3 @@
-import axios from 'axios';
 import axiosInstance from './axios';
 
 const api_url: string = import.meta.env.VITE_API_URL;
@@ -19,7 +18,6 @@ export const apply = async (applicationForm: FormData) => {
 };
 
 export const getApplications = async () => {
-  const token = JSON.parse(localStorage.getItem('authTokens') || '');
   const config = {
     method: 'post',
     maxBodyLength: Infinity,

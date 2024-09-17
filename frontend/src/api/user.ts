@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { ROLES } from '../config/roles';
 import axiosInstance from './axios';
 
@@ -26,7 +25,6 @@ export const register = async (
   };
 
   try {
-    const response = await axiosInstance.request(config);
     return { success: true };
   } catch (error: any) {
     return { success: false, message: error.response.data.errors[0].msg };

@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setAuthTokens(tokens);
         localStorage.setItem('authTokens', JSON.stringify(tokens.token));
       })
-      .catch((error) => {});
+      .catch(() => {});
   };
 
   useEffect(() => {
