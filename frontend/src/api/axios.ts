@@ -14,6 +14,7 @@ axiosInstance.interceptors.request.use(
       if (decodedToken.exp * 1000 < Date.now()) {
         // Refresh token logic
         localStorage.removeItem('authTokens');
+        localStorage.setItem('sessionExpired', 'true');
         window.location.replace('/login');
       } else {
         config.headers['Authorization'] = `Bearer ${authToken}`;
