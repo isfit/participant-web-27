@@ -92,6 +92,10 @@ const HomePage: React.FC = () => {
             across the globe will gather in Trondheim to engage, learn, and
             inspire one another.
           </p>
+          <p>
+            If you are having trouble to apply through the website, you can
+            alternativly you can apply through this <a href="https://forms.gle/DFatZ3yqWkdDsuYt6" className="footerEmailLink" target='_blank'>Google Form</a>!
+          </p>
         </div>
       </div>
 
