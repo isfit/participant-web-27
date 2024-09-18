@@ -131,3 +131,7 @@ table {
 .sideMenu a:hover {
   background-color: #98343c;
 }
+
+.textareaTable{
+  min-width: 1000px;
+}
