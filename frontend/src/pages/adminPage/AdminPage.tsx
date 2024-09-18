@@ -273,16 +273,16 @@ const AdminPage: React.FC = () => {
                 <th>University Website</th>
                 <th>Is English Speaker</th>
                 <th>Applying As</th>
-                <th>Theme Power Thoughts</th>
-                <th>Country Power Issue</th>
-                <th>Motivation</th>
-                <th>Financial Support Reason</th>
+                <th className={styles.textareaTable}>Theme Power Thoughts</th>
+                <th className={styles.textareaTable}>Country Power Issue</th>
+                <th className={styles.textareaTable}>Motivation</th>
+                <th className={styles.textareaTable}>Financial Support Reason</th>
                 <th>Full or partial funding</th>
                 <th>Dependents</th>
                 <th>Family Income</th>
                 <th>Can Participate</th>
                 <th>Traveling to Trondheim from</th>
-                <th>Other funding info</th>
+                <th className={styles.textareaTable}>Other funding info</th>
                 <th>Consent Visa</th>
                 <th>Consent Flight</th>
                 <th>Consent Norwegian law</th>
@@ -320,16 +320,16 @@ const AdminPage: React.FC = () => {
                   <td>{application.universityWebsite || 'N/A'}</td>
                   <td>{application.isEnglishSpeaker ? 'Yes' : 'No'}</td>
                   <td>{application.applyingAs}</td>
-                  <td>{application.themePowerThoughts}</td>
-                  <td>{application.countryPowerIssue}</td>
-                  <td>{application.motivation}</td>
-                  <td>{application.financialSupportReason}</td>
+                  <td className={styles.textareaTable}>{application.themePowerThoughts}</td>
+                  <td className={styles.textareaTable}>{application.countryPowerIssue}</td>
+                  <td className={styles.textareaTable}>{application.motivation}</td>
+                  <td className={styles.textareaTable}>{application.financialSupportReason}</td>
                   <td>{application.fullOrPartialFunding}</td>
                   <td>{application.dependents}</td>
                   <td>{application.familyIncome}</td>
                   <td>{application.canParticipate}</td>
                   <td>{application.countryTravelingFrom}</td>
-                  <td>{application.otherFundingInfo}</td>
+                  <td className={styles.textareaTable}>{application.otherFundingInfo}</td>
                   <td>{application.consentVisa}</td>
                   <td>{application.consentFlight ? 'Yes' : 'No'}</td>
                   <td>{application.consentNorwegianLaw ? 'Yes' : 'No'}</td>
