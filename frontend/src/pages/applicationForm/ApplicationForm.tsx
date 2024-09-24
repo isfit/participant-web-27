@@ -16,6 +16,7 @@ import {
 import getSummary from '../../utils/summary.tsx';
 import CustomToast from './toast';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthenticationContext.tsx';
 
 const steps = [
   'Personal Details',
@@ -36,12 +37,15 @@ interface FormField {
 }
 
 const ApplicationForm: React.FC = () => {
+  const { user } = useAuth();
+
   const [formValues, setFormValues] = useState<IApplicationForm>(() => {
     const savedForm = localStorage.getItem('applicationForm');
     return savedForm
       ? JSON.parse(savedForm)
       : {
           fullName: '',
+          email: user?.email || '',
           phoneNumber: '',
           dateOfBirth: '',
           gender: '',
@@ -633,8 +637,8 @@ const ApplicationForm: React.FC = () => {
               attend the festival.
             </p>
             <p>
-              So what are you waiting for? Apply! Do you
-              have any questions? Please check the Frequently Asked Questions
+              So what are you waiting for? Apply! Do you have any questions?
+              Please check the Frequently Asked Questions
               <Link to="/faq" className="emailLink">
                 (FAQ)
               </Link>
@@ -646,9 +650,17 @@ const ApplicationForm: React.FC = () => {
               !
             </p>
             <p>
-            If you are having trouble applying through this website, you can
-            alternatively apply through this <a href="https://forms.gle/DFatZ3yqWkdDsuYt6" className="footerEmailLink" target='_blank'>Google Form</a>!
-          </p>
+              If you are having trouble applying through this website, you can
+              alternatively apply through this{' '}
+              <a
+                href="https://forms.gle/DFatZ3yqWkdDsuYt6"
+                className="footerEmailLink"
+                target="_blank"
+              >
+                Google Form
+              </a>
+              !
+            </p>
           </div>
           <div className="progressOverview">
             {steps.map((step, index) => (
