@@ -3,12 +3,12 @@
 }
 
 .tableContainer {
-    margin: 20px 0 0 0;
-    width: 100%;
-    overflow-x: auto;
-    border-radius: 10px;
-    background-color: #88242c;
-  }
+  margin: 20px 0 0 0;
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 10px;
+  background-color: #88242c;
+}
 
 table {
     width: 100%;

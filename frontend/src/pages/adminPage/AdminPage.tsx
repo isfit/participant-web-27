@@ -16,10 +16,10 @@ const AdminPage: React.FC = () => {
   const [applications, setApplications] = useState<IApplicationForm[]>([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [loading, setLoading] = useState<boolean>(true);
   const { user } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const [numOfApplciation, setNumOfApplication] = useState(0);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -71,10 +71,9 @@ const AdminPage: React.FC = () => {
 
   useEffect(() => {
     const getApplications = async () => {
-      setLoading(true);
       const data = await fetchApplications();
       setApplications(data);
-      setLoading(false);
+      setNumOfApplication(data.length);
     };
     getApplications();
   }, [startDate, endDate]);
@@ -229,10 +228,6 @@ const AdminPage: React.FC = () => {
       </div>
       <div>
         <Header linkTo="/homepage" />
-        <h1 className={loading ? styles.adminLoading : ''}>Admin page</h1>
-      </div>
-      <div className={styles.topRight}>
-        <button onClick={handleLogout}>Logout</button>
       </div>
       <div>
         <div className={styles.filterContainer}>
@@ -254,7 +249,7 @@ const AdminPage: React.FC = () => {
           </label>
         </div>
         <button onClick={exportToCSV}>Export to CSV</button>
-        <h2>Applicants</h2>
+        <h2>Applicants - ({numOfApplciation})</h2>
         <div className={styles.tableContainer}>
           <table>
             <thead>
