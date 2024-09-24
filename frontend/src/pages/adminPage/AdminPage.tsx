@@ -82,6 +82,7 @@ const AdminPage: React.FC = () => {
     const csvRows = [
       [
         'Full Name',
+        'Email',
         'Phone number',
         'Date of Birth (DD/MM/YYYY)',
         'Gender',
@@ -117,6 +118,7 @@ const AdminPage: React.FC = () => {
       ...applications.map((app) => {
         return [
           app.fullName,
+          app.email,
           app.phoneNumber,
           new Date(app.dateOfBirth).toLocaleDateString('en-GB'),
           app.gender,
@@ -255,6 +257,7 @@ const AdminPage: React.FC = () => {
             <thead>
               <tr>
                 <th>Full Name</th>
+                <th>Email</th>
                 <th>Phone number</th>
                 <th>Date of Birth</th>
                 <th>Gender</th>
@@ -271,7 +274,9 @@ const AdminPage: React.FC = () => {
                 <th className={styles.textareaTable}>Theme Power Thoughts</th>
                 <th className={styles.textareaTable}>Country Power Issue</th>
                 <th className={styles.textareaTable}>Motivation</th>
-                <th className={styles.textareaTable}>Financial Support Reason</th>
+                <th className={styles.textareaTable}>
+                  Financial Support Reason
+                </th>
                 <th>Full or partial funding</th>
                 <th>Dependents</th>
                 <th>Family Income</th>
@@ -292,6 +297,7 @@ const AdminPage: React.FC = () => {
               {applications.map((application) => (
                 <tr key={application._id}>
                   <td>{application.fullName}</td>
+                  <td>{application.email}</td>
                   <td>{application.phoneNumber}</td>
                   <td>
                     {new Date(application.dateOfBirth).toLocaleDateString()}
@@ -315,16 +321,26 @@ const AdminPage: React.FC = () => {
                   <td>{application.universityWebsite || 'N/A'}</td>
                   <td>{application.isEnglishSpeaker ? 'Yes' : 'No'}</td>
                   <td>{application.applyingAs}</td>
-                  <td className={styles.textareaTable}>{application.themePowerThoughts}</td>
-                  <td className={styles.textareaTable}>{application.countryPowerIssue}</td>
-                  <td className={styles.textareaTable}>{application.motivation}</td>
-                  <td className={styles.textareaTable}>{application.financialSupportReason}</td>
+                  <td className={styles.textareaTable}>
+                    {application.themePowerThoughts}
+                  </td>
+                  <td className={styles.textareaTable}>
+                    {application.countryPowerIssue}
+                  </td>
+                  <td className={styles.textareaTable}>
+                    {application.motivation}
+                  </td>
+                  <td className={styles.textareaTable}>
+                    {application.financialSupportReason}
+                  </td>
                   <td>{application.fullOrPartialFunding}</td>
                   <td>{application.dependents}</td>
                   <td>{application.familyIncome}</td>
                   <td>{application.canParticipate}</td>
                   <td>{application.countryTravelingFrom}</td>
-                  <td className={styles.textareaTable}>{application.otherFundingInfo}</td>
+                  <td className={styles.textareaTable}>
+                    {application.otherFundingInfo}
+                  </td>
                   <td>{application.consentVisa}</td>
                   <td>{application.consentFlight ? 'Yes' : 'No'}</td>
                   <td>{application.consentNorwegianLaw ? 'Yes' : 'No'}</td>
