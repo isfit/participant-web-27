@@ -129,6 +129,15 @@ const ApplicationForm: React.FC = () => {
     }
   }, [currentStep, visitedSteps]);
 
+  useEffect(() => {
+    if (user?.email) {
+      setFormValues((prevState) => ({
+        ...prevState,
+        email: user.email,
+      }));
+    }
+  }, [user]);
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -136,7 +145,6 @@ const ApplicationForm: React.FC = () => {
   ) => {
     const { name, value, type } = e.target;
     const isCheckbox = type === 'checkbox';
-
     setFormValues((prevState) => {
       const updatedValues = {
         ...prevState,
