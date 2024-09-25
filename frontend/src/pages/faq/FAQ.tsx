@@ -121,6 +121,9 @@ const FAQ: React.FC = () => {
             <br /><br />
             <h3>Q: I see there's also a Google Form I can use to apply, do I have to fill out that and apply on this website?</h3>
             <p>A: No, you don't have to do both. One of them, either Google Form or applying through the website, is enough.</p>
+            <br /><br />
+            <h3>ISFiT is happening during Ramadan. I am a Muslim and planning to fast, can I still attend ISFiT?</h3>
+            <p>Yes, you can still attend ISFiT if you are a Muslim planning on fasting during the festival. We will do our best to accommodate you when it comes to meals or any other needs you might have.</p>
           </div>
         </div>
       </div>
