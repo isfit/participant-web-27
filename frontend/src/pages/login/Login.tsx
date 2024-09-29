@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@radix-ui/themes';
 import { useAuth } from '../../context/AuthenticationContext';
 import Header from '../../components/Header/Header';
 import styles from './Login.module.css';
+import CustomToast from '../applicationForm/toast';
 
 interface User {
   email: string;
@@ -14,6 +15,7 @@ const Login: React.FC = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
+  const [toastOpen, setToastOpen] = useState(false); // State for toast visibility
 
   const [user, setUser] = useState<User>({
     email: '',
@@ -26,15 +28,12 @@ const Login: React.FC = () => {
       [e.target.name]: e.target.value,
     });
     setErrorMessage(undefined);
+    setToastOpen(false);
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    // Handle login logic here
-    console.log(
-      `Logging in with email: ${user.email} and password: ${user.password}`,
-    );
-
+    // Handle login logic her
     await login(user.email, user.password)
       .then((success) => {
         if (success) {
@@ -43,10 +42,17 @@ const Login: React.FC = () => {
           setErrorMessage('Invalid email or password');
         }
       })
-      .catch((error) => {
+      .catch(() => {
         setErrorMessage('Something went wrong. Please try again later.');
       });
   };
+
+  useEffect(() => {
+    if (localStorage.getItem('sessionExpired') === 'true') {
+      setToastOpen(true);
+      localStorage.removeItem('sessionExpired');
+    }
+  }, []);
 
   return (
     <div className={styles.login}>
@@ -88,6 +94,12 @@ const Login: React.FC = () => {
             <Button className={styles.createUserButton}>Create User</Button>
           </Link>
         </form>
+        <CustomToast
+          open={toastOpen}
+          setOpen={setToastOpen}
+          title={'Session Expired'}
+          message={['Please login again']}
+        />
       </div>
     </div>
   );

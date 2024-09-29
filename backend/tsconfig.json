@@ -1,14 +1,14 @@
 {
     "compilerOptions": {
         "target": "es2016",
-        "jsx": "preserve",
+        "jsx": "react",                        
         "module": "commonjs",
-        "allowJs": true,
-        "outDir": "./dist",
+        "allowJs": true,                       
+        "outDir": "./dist",                    
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "strict": true,
         "skipLibCheck": true
     },
-    "exclude": ["node_modules", "dist", "client"]
+    "exclude": ["node_modules", "client"]
 }

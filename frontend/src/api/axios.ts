@@ -1,34 +1,30 @@
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
-import { AuthTokens } from '../types/types';
 
 const axiosInstance = axios.create({
-    baseURL: '/',
+  baseURL: '/',
 });
 
 axiosInstance.interceptors.request.use(
-    async (config) => {
-        const token = localStorage.getItem('authTokens');
-        if (token) {
-            const authTokens: AuthTokens = JSON.parse(token);
-            const decodedToken = jwtDecode<{ exp: number }>(authTokens.accessToken);
-            if (decodedToken.exp * 1000 < Date.now()) {
-                // Refresh token logic
-                const response = await axios.post<AuthTokens>('/api/refresh', {
-                    refreshToken: authTokens.refreshToken,
-                });
-                const tokens = response.data;
-                localStorage.setItem('authTokens', JSON.stringify(tokens));
-                config.headers['Authorization'] = `Bearer ${tokens.accessToken}`;
-            } else {
-                config.headers['Authorization'] = `Bearer ${authTokens.accessToken}`;
-            }
-        }
-        return config;
-    },
-    (error) => {
-        return Promise.reject(error);
+  async (config) => {
+    const token = localStorage.getItem('authTokens');
+    if (token) {
+      const authToken: string = JSON.parse(token);
+      const decodedToken = jwtDecode<{ exp: number }>(authToken);
+      if (decodedToken.exp * 1000 < Date.now()) {
+        // Refresh token logic
+        localStorage.removeItem('authTokens');
+        localStorage.setItem('sessionExpired', 'true');
+        window.location.replace('/login');
+      } else {
+        config.headers['Authorization'] = `Bearer ${authToken}`;
+      }
     }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
 );
 
 export default axiosInstance;

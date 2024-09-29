@@ -59,16 +59,18 @@ const HomePage: React.FC = () => {
         ref={menuRef}
         className={`${styles.sideMenu} ${menuOpen ? styles.open : ''}`}
       >
+        <Link to="/faq">FAQ</Link>
+        <Link to="/homePage">Homepage</Link>
         {user?.role === ROLES.ADMIN && (
           <Link to="/admin">Admin</Link>
         )}
-        <Link to="/login">Login</Link>
+        {!user && <Link to="/login">Login</Link>}
         {user && <Button onClick={handleLogout}>Logout</Button>}
       </div>
       <div className={styles.centerContainer}>
-        <img src={'./src/assets/Isfitlogo_power_white_version2.png'} alt="Logo" className={styles.logo} />
+        <img src={'images/Isfitlogo_power_white_version2.png'} alt="Logo" className={styles.logo} />
         <br />
-        <Link to="/applicationForm" className={styles.applyButtonLink}>
+        <Link to="/applicationForm">
           <Button className={styles.applyButton}>Apply now!</Button>
         </Link>
         <div className={styles.container}>
@@ -90,6 +92,10 @@ const HomePage: React.FC = () => {
             across the globe will gather in Trondheim to engage, learn, and
             inspire one another.
           </p>
+          <p>
+            If you are having trouble applying through this website, you can
+            alternatively apply through this <a href="https://forms.gle/DFatZ3yqWkdDsuYt6" className={styles.footerEmailLink} target='_blank'>Google Form</a>!
+          </p>
         </div>
       </div>
 
@@ -98,7 +104,7 @@ const HomePage: React.FC = () => {
       {/* Footer Section */}
       <footer className={styles.footer}>
       <img
-      src='./src/assets/Isfitlogo_power_white_version2.png'
+      src='/images/Isfitlogo_power_white_version2.png'
       alt="Logo"
       className={styles.footerLogo}
     />
@@ -119,13 +125,13 @@ const HomePage: React.FC = () => {
         </div>
         <div className={styles.footerRight}>
           <a href="https://www.facebook.com/ISFiT" className={styles.footerLink} target="_blank" rel="noopener noreferrer">
-            <img src={'./src/assets/facebook.png'} alt="Facebook" className={styles.socialIcon} /> Facebook
+            <img src={'/images/facebook.png'} alt="Facebook" className={styles.socialIcon} /> Facebook
           </a>
           <a href="https://www.instagram.com/isfitfestival" className={styles.footerLink} target="_blank" rel="noopener noreferrer">
-            <img src={'./src/assets/instagram.png'} alt="Instagram" className={styles.socialIcon} /> Instagram
+            <img src={'/images/instagram.png'} alt="Instagram" className={styles.socialIcon} /> Instagram
           </a>
           <a href="https://twitter.com/ISFiT" className={styles.footerLink} target="_blank" rel="noopener noreferrer">
-            <img src={'./src/assets/x-logo.jpg'} alt="Twitter" className={styles.socialIcon} /> X
+            <img src={'/images/x-logo.jpg'} alt="Twitter" className={styles.socialIcon} /> X
           </a>
         </div>
       </div>
@@ -133,18 +139,18 @@ const HomePage: React.FC = () => {
         <h2><b>PARTNERS:</b></h2>
       </div>
       <div className={styles.footerLine3}>
-        <img src={'./src/assets/ntnu.png'} alt="NTNU" className={styles.partnersIcon} />
-        <img src={'./src/assets/sit.png'} alt="sit" className={styles.partnersIcon} />
-        <img src={'./src/assets/kjeldsberg.png'} alt="kjelsberg" className={styles.partnersIcon} />
+        <img src={'/images/ntnu.png'} alt="NTNU" className={styles.partnersIcon} />
+        <img src={'/images/sit.png'} alt="sit" className={styles.partnersIcon} />
+        <img src={'/images/kjeldsberg.png'} alt="kjelsberg" className={styles.partnersIcon} />
       </div>
       <div className={styles.footerLine4}>
-        <img src={'./src/assets/moller.png'} alt="Moller" className={styles.partnersIcon} />
-        <img src={'./src/assets/trøndelagkommune.png'} alt="Trøndelagkommune" className={styles.partnersIcon} />
-        <img src={'./src/assets/kommune.png'} alt="Trondheim Kommune" className={styles.partnersIcon} />
+        <img src={'/images/moller.png'} alt="Moller" className={styles.partnersIcon} />
+        <img src={'/images/trøndelagkommune.png'} alt="Trøndelagkommune" className={styles.partnersIcon} />
+        <img src={'/images/kommune.png'} alt="Trondheim Kommune" className={styles.partnersIcon} />
       </div>
       <div className={styles.footerLine5}>
-      <img src={'./src/assets/Kilroy.png'} alt="Kilroy" className={styles.partnersIcon} />
-        <img src={'./src/assets/vaernes.png'} alt="Vaernes" className={styles.partnersIcon} />
+      <img src={'/images/Kilroy.png'} alt="Kilroy" className={styles.partnersIcon} />
+        <img src={'/images/vaernes.png'} alt="Vaernes" className={styles.partnersIcon} />
         
       </div>
       <div className={styles.footerLine6}>

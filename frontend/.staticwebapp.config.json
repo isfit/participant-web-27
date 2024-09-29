@@ -1,0 +1,9 @@
+{
+    "routes": [
+      {
+        "route": "/images/*",
+        "serve": "/public/images"
+      }
+    ]
+  }
+  

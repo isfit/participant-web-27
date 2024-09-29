@@ -19,6 +19,16 @@
     box-shadow: 0 0 10px 0 rgba(68, 68, 68, 0.388);
 }
 
+.emailLink{
+    color: white;
+    padding: 8px;
+    font-weight: 300;
+  }
+  
+  .emailLink:hover{
+    text-decoration: underline;
+  }
+
 .sectionSubtext {
     font-size: 1em;
     color: #ddd;
@@ -200,6 +210,28 @@ label {
     margin-bottom: 16px;
 }
 
+.dobContainer {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+    width: 100%; 
+}
+
+.dobInput {
+    margin-right: 8px;
+    padding: 10px;
+    width: 30%;  
+    border-radius: var(--border-radius);
+    border: 1px solid var(--primary-color);
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    font-size: 0.8em;
+}
+
+.dobInput:last-child {
+    margin-right: 0;
+}
+
 .outerContainerSection {
     width: 100%;
     background-color: #88242c;
@@ -337,11 +369,11 @@ label {
 
 .separator {
     margin: 0 5px;
-    color: #888; /* Optional: style for the arrow separator */
+    color: #888;
   }
 
   .clickableStep {
-    cursor: pointer; /* Make visited steps clickable */
+    cursor: pointer; 
   }
   
 
@@ -354,7 +386,15 @@ label {
     text-align: center;
 }
 
-/* Responsive adjustments */
+.footerEmailLink{
+    color: white;
+    font-weight: 600;
+  }
+  
+  .footerEmailLink:hover{
+    text-decoration: underline;
+  }
+
 @media (max-width: 768px) {
     .formContainer {
         padding: 15px 30px;

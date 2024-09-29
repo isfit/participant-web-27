@@ -13,9 +13,10 @@ import {
   financialSupportSection,
   consentSection,
 } from './sections';
-import checkErrorField from './checkErrorField';
 import getSummary from '../../utils/summary.tsx';
 import CustomToast from './toast';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthenticationContext.tsx';
 
 const steps = [
   'Personal Details',
@@ -36,12 +37,15 @@ interface FormField {
 }
 
 const ApplicationForm: React.FC = () => {
+  const { user } = useAuth();
+
   const [formValues, setFormValues] = useState<IApplicationForm>(() => {
     const savedForm = localStorage.getItem('applicationForm');
     return savedForm
       ? JSON.parse(savedForm)
       : {
           fullName: '',
+          email: user?.email || '',
           phoneNumber: '',
           dateOfBirth: '',
           gender: '',
@@ -78,11 +82,42 @@ const ApplicationForm: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [visitedSteps, setVisitedSteps] = useState<number[]>([0]);
-  const [toastOpen, setToastOpen] = useState(false); // State for toast visibility
-  const [toastMessage, setToastMessage] = useState(['']); // State for toast message
-  const [toastTitle, setToastTitle] = useState(''); // State for toast title
-  const [countryCode, setCountryCode] = useState(''); // Default country code
-  let stepErrors: string[] = [];
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState(['']);
+  const [toastTitle, setToastTitle] = useState('');
+  const [countryCode, setCountryCode] = useState('');
+
+  const [selectedDay, setSelectedDay] = useState('');
+  const [selectedMonth, setSelectedMonth] = useState('');
+  const [selectedYear, setSelectedYear] = useState('');
+
+  useEffect(() => {
+    if (selectedDay && selectedMonth && selectedYear) {
+      setFormValues((prevState) => ({
+        ...prevState,
+        dateOfBirth: `${selectedYear}-${selectedMonth.padStart(2, '0')}-${selectedDay.padStart(2, '0')}`,
+      }));
+    }
+  }, [selectedDay, selectedMonth, selectedYear]);
+
+  const daysInMonth = (month: number, year: number) => {
+    return new Date(year, month, 0).getDate();
+  };
+
+  const days = Array.from(
+    {
+      length:
+        selectedMonth && selectedYear
+          ? daysInMonth(parseInt(selectedMonth), parseInt(selectedYear))
+          : 31,
+    },
+    (_, i) => i + 1,
+  );
+  const months = Array.from({ length: 12 }, (_, i) => i + 1);
+  const years = Array.from(
+    { length: 100 },
+    (_, i) => new Date().getFullYear() - i,
+  );
 
   useEffect(() => {
     localStorage.setItem('applicationForm', JSON.stringify(formValues));
@@ -94,6 +129,15 @@ const ApplicationForm: React.FC = () => {
     }
   }, [currentStep, visitedSteps]);
 
+  useEffect(() => {
+    if (user?.email) {
+      setFormValues((prevState) => ({
+        ...prevState,
+        email: user.email,
+      }));
+    }
+  }, [user]);
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -101,7 +145,6 @@ const ApplicationForm: React.FC = () => {
   ) => {
     const { name, value, type } = e.target;
     const isCheckbox = type === 'checkbox';
-
     setFormValues((prevState) => {
       const updatedValues = {
         ...prevState,
@@ -160,8 +203,6 @@ const ApplicationForm: React.FC = () => {
         continent,
       }));
     }
-
-    console.log(name, value, type);
   };
 
   const handlePhoneNumberChange = (
@@ -189,20 +230,21 @@ const ApplicationForm: React.FC = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name } = e.target;
     const file = e.target.files?.[0];
-    
+
     if (file) {
       if (!['application/pdf'].includes(file.type)) {
         alert('File must be a PDF.');
         e.target.value = '';
         return;
       }
-      if (file.size > 5 * 1024 * 1024) { // 5 MB limit
-        alert('File size exceeds 5 MB');
+      if (file.size > 1.8 * 1024 * 1024) {
+        // 1.8 MB limit
+        alert('File size exceeds 1.8 MB');
         e.target.value = '';
         return;
       }
     }
-  
+
     setFormValues((prevState) => ({
       ...prevState,
       [name]: file || undefined,
@@ -211,30 +253,24 @@ const ApplicationForm: React.FC = () => {
 
   const validateStep = () => {
     const currentFields = getCurrentFields();
-    stepErrors = [];
-
+    const stepErrors: string[] = [];
     currentFields.forEach((field) => {
       if (field.required && !formValues[field.name]) {
         stepErrors.push(field.label);
       }
     });
 
-    console.log('Errors:', stepErrors);
-
     if (stepErrors.length > 0) {
       setToastTitle('Missing Required Fields');
       setToastMessage(stepErrors);
-      setToastOpen(true); // Show the toast with the error message
-      return stepErrors.length === 0;
-    } else {
-      setToastOpen(false); // Hide the toast if there are no errors
-      return stepErrors.length === 0;
+      setToastOpen(true);
+      return false;
     }
+    setToastOpen(false);
+    return true;
   };
 
   const handleNext = () => {
-    console.log(currentStep);
-    console.log(formValues);
     if (validateStep()) {
       if (currentStep < steps.length - 1) {
         setCurrentStep(currentStep + 1);
@@ -258,9 +294,9 @@ const ApplicationForm: React.FC = () => {
     if (!validateStep()) {
       return;
     }
-  
+
     const formData = new FormData();
-  
+
     Object.entries(formValues).forEach(([key, value]) => {
       if (key === 'studentCertificate' && value) {
         formData.append(key, value as File);
@@ -268,15 +304,12 @@ const ApplicationForm: React.FC = () => {
         formData.append(key, String(value));
       }
     });
-  
+
     try {
       const response = await apply(formData);
       if (response.status === 201) {
         setSubmitted(true);
-        console.log('Application submitted:', response.data.message);
         localStorage.removeItem('applicationForm');
-      } else {
-        console.log('Error submitting application:', response.data.message);
       }
     } catch (error) {
       console.error('Error submitting application:', error);
@@ -312,6 +345,65 @@ const ApplicationForm: React.FC = () => {
     placeholder,
     required,
   }: FormField) => {
+    if (name === 'dateOfBirth') {
+      return (
+        <label key={name} className="formSection">
+          <p>{label}</p>
+          <div className="dobContainer">
+            <select
+              name="day"
+              value={selectedDay}
+              onChange={(e) => setSelectedDay(e.target.value)}
+              required
+              className="dobInput"
+            >
+              <option value="" disabled>
+                Day
+              </option>
+              {days.map((day) => (
+                <option key={day} value={String(day)}>
+                  {day}
+                </option>
+              ))}
+            </select>
+            <select
+              name="month"
+              value={selectedMonth}
+              onChange={(e) => setSelectedMonth(e.target.value)}
+              required
+              className="dobInput"
+            >
+              <option value="" disabled>
+                Month
+              </option>
+              {months.map((month) => (
+                <option key={month} value={String(month).padStart(2, '0')}>
+                  {new Date(0, month - 1).toLocaleString('default', {
+                    month: 'long',
+                  })}
+                </option>
+              ))}
+            </select>
+            <select
+              name="year"
+              value={selectedYear}
+              onChange={(e) => setSelectedYear(e.target.value)}
+              required
+              className="dobInput"
+            >
+              <option value="" disabled>
+                Year
+              </option>
+              {years.map((year) => (
+                <option key={year} value={String(year)}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
+        </label>
+      );
+    }
     if (name === 'continent') {
       const nationality = formValues['nationality'];
       const continent = getContinentFromNationality(nationality);
@@ -435,7 +527,9 @@ const ApplicationForm: React.FC = () => {
             </label>
             {formValues[name] && formValues[name] instanceof File && (
               <div className="fileInfo">
-                <p>Uploaded file: {formValues[name]?.name}</p>
+                <p>
+                  Uploaded file: {(formValues[name] as unknown as File).name}
+                </p>
               </div>
             )}
           </div>
@@ -458,7 +552,6 @@ const ApplicationForm: React.FC = () => {
             ))}
           </select>
         )}
-        {/* Default case for other input types */}
         {type !== 'textarea' &&
           type !== 'file' &&
           type !== 'select' &&
@@ -519,19 +612,62 @@ const ApplicationForm: React.FC = () => {
               Welcome to the ISFiT 2025 Participant Application!
             </h1>
             <p>
-              ISFiT, the world’s largest international student festival, is held
-              biennially in Trondheim, Norway, during the spring semester. Since
-              its inception in 1990, ISFiT has brought together students from
+              Welcome to the ISFiT 2025 Participant Application! ISFiT, the
+              world’s largest international student festival, is held biennially
+              in Trondheim, Norway, during the spring semester. Since its
+              inception in 1990, ISFiT has brought together students from
               diverse national and cultural backgrounds, fostering dialogue and
               connection through stimulating discussions on important global
-              issues.
+              issues. Each festival centers around a unique theme, and for 2025,
+              we will be exploring the theme of POWER. We invite you to join us
+              from March 13th to 23rd, 2025, for this exciting event, where
+              students from across the globe will gather in Trondheim to engage,
+              learn, and inspire one another.
             </p>
             <p>
-              Each festival centers around a unique theme, and for 2025, we will
-              be exploring the theme of POWER. We invite you to join us from
-              March 13th to 23rd, 2025, for this exciting event, where students
-              from across the globe will gather in Trondheim to engage, learn,
-              and inspire one another.
+              ​We are currently accepting participant applications, and you can
+              apply up until October 13th!
+            </p>
+            <p>
+              As a participant, you will be part of a community of international
+              students passionate about creating positive change in the world.
+              You will have the opportunity to engage in thought-provoking
+              workshops, attend insightful debates, and participate in dynamic
+              cultural exchange activities. Being a participant means more than
+              just attending events and concerts — it means actively
+              contributing your ideas, experiences, and perspectives to the
+              discussions and debates that shape our understanding of the theme
+              of POWER.{' '}
+            </p>
+            <p>
+              We in ISFiT will provide food and accomodation while you are here,
+              and you may also apply for additional funds if you need so to
+              attend the festival.
+            </p>
+            <p>
+              So what are you waiting for? Apply! Do you have any questions?
+              Please check the Frequently Asked Questions
+              <Link to="/faq" className="emailLink">
+                (FAQ)
+              </Link>
+              section to see if your question has already been answered, or ask
+              us at this information-email:
+              <a href="mailto:question@isfit.no" className="emailLink">
+                question@isfit.no
+              </a>
+              !
+            </p>
+            <p>
+              If you are having trouble applying through this website, you can
+              alternatively apply through this{' '}
+              <a
+                href="https://forms.gle/DFatZ3yqWkdDsuYt6"
+                className="footerEmailLink"
+                target="_blank"
+              >
+                Google Form
+              </a>
+              !
             </p>
           </div>
           <div className="progressOverview">
