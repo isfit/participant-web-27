@@ -430,6 +430,7 @@ const nationalityToContinent: { [key: string]: string } = {
     Bruneian: 'Asia',
     Bulgarian: 'Europe',
     Burkinabé: 'Africa',
+    Burmese: 'Asia',
     Burundian: 'Africa',
     'Cabo Verdean': 'Africa',
     Cambodian: 'Asia',
