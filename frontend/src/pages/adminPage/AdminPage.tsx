@@ -92,7 +92,7 @@ const AdminPage: React.FC = () => {
         'Is Student',
         'Study Field',
         'University',
-        'Student Certificate',
+        //'Student Certificate',
         'University Website',
         'Is English Speaker',
         'Applying As',
@@ -128,7 +128,7 @@ const AdminPage: React.FC = () => {
           app.isStudent ? 'Yes' : 'No',
           app.studyField,
           app.university,
-          app.studentCertificate,
+          //app.studentCertificate,
           app.universityWebsite || 'N/A',
           app.isEnglishSpeaker ? 'Yes' : 'No',
           app.applyingAs,
@@ -267,7 +267,7 @@ const AdminPage: React.FC = () => {
                 <th>Is Student</th>
                 <th>Study Field</th>
                 <th>University</th>
-                <th>Student Certificate</th>
+                {/*<th>Student Certificate</th>*/}
                 <th>University Website</th>
                 <th>Is English Speaker</th>
                 <th>Applying As</th>
@@ -309,7 +309,7 @@ const AdminPage: React.FC = () => {
                   <td>{application.isStudent ? 'Yes' : 'No'}</td>
                   <td>{application.studyField}</td>
                   <td>{application.university}</td>
-                  <td>
+                  {/*<td>
                     {application.studentCertificate ? (
                       <button onClick={() => downloadPDF(application?._id)}>
                         Download Certificate
@@ -317,7 +317,7 @@ const AdminPage: React.FC = () => {
                     ) : (
                       'N/A'
                     )}
-                  </td>
+                  </td>*/}
                   <td>{application.universityWebsite || 'N/A'}</td>
                   <td>{application.isEnglishSpeaker ? 'Yes' : 'No'}</td>
                   <td>{application.applyingAs}</td>
