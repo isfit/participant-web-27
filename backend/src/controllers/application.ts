@@ -107,12 +107,26 @@ const getApplications = async (
         dateFilter.$lte = adjustedEndDate;
       }
   
-      const query = startDate || endDate ? { createdAt: dateFilter } : {};
+      const matchStage = startDate || endDate ? { createdAt: dateFilter } : {};
   
-      // Fetch distinct applications based on fullName, email, and phoneNumber
-      const applications = await Application.find(query)
-        .select("-studentCertificate") // Exclude `studentCertificate`
-        .distinct("fullName email phoneNumber"); // Use distinct to get unique combinations
+      // Aggregation pipeline to group by fullName, email, and phoneNumber
+      const applications = await Application.aggregate([
+        { $match: matchStage },
+        {
+          $group: {
+            _id: {
+              fullName: "$fullName",
+              email: "$email",
+              phoneNumber: "$phoneNumber"
+            },
+            doc: { $first: "$$ROOT" } // Take the first document in each group
+          }
+        },
+        {
+          $replaceRoot: { newRoot: "$doc" } // Replace root to include only the original document
+        },
+        { $project: { studentCertificate: 0 } } // Exclude `studentCertificate` from the response
+      ]);
   
       res.status(200).json(applications);
     } catch (error) {
@@ -120,6 +134,7 @@ const getApplications = async (
     }
   };
   
+
   
 
 const downloadCertificate = async (
