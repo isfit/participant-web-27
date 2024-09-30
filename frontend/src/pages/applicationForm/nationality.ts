@@ -229,6 +229,7 @@ export const nationalities = [
     'British',
     'Bruneian',
     'Bulgarian',
+    'Burmese',
     'Burkinabé',
     'Burundian',
     'Cabo Verdean',
