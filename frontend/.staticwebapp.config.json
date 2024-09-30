@@ -1,9 +1,12 @@
 {
-    "routes": [
-      {
-        "route": "/images/*",
-        "serve": "/public/images"
-      }
-    ]
+  "routes": [
+    {
+      "route": "/images/*",
+      "serve": "/public/images"
+    }
+  ],
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/images/*", "/css/*", "/js/*", "/favicon.ico"] 
   }
-  
+}
