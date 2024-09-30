@@ -93,30 +93,32 @@ const getApplications = async (
     req: Request,
     res: Response,
     next: NextFunction
-) => {
+  ) => {
     try {
-        const { startDate, endDate } = req.query;
-
-        const dateFilter: any = {};
-        if (startDate) {
-            dateFilter.$gte = new Date(startDate as string);
-        }
-        if (endDate) {
-            dateFilter.$lte = new Date(endDate as string);
-            let adjustedEndDate = new Date(endDate as string);
-            adjustedEndDate.setHours(23, 59, 59, 999);
-            dateFilter.$lte = adjustedEndDate;
-        }
-
-        const query = startDate || endDate ? { createdAt: dateFilter } : {};
-
-        const applications = await Application.find(query);
-
-        res.status(200).json(applications);
+      const { startDate, endDate } = req.query;
+  
+      const dateFilter: any = {};
+      if (startDate) {
+        dateFilter.$gte = new Date(startDate as string);
+      }
+      if (endDate) {
+        dateFilter.$lte = new Date(endDate as string);
+        let adjustedEndDate = new Date(endDate as string);
+        adjustedEndDate.setHours(23, 59, 59, 999);
+        dateFilter.$lte = adjustedEndDate;
+      }
+  
+      const query = startDate || endDate ? { createdAt: dateFilter } : {};
+  
+      // Exclude the `studentCertificate` field from the query response
+      const applications = await Application.find(query, '-studentCertificate');
+  
+      res.status(200).json(applications);
     } catch (error) {
-        next(error);
+      next(error);
     }
-};
+  };
+  
 
 const downloadCertificate = async (
     req: Request,
