@@ -102,7 +102,6 @@ const getApplications = async (
         dateFilter.$gte = new Date(startDate as string);
       }
       if (endDate) {
-        dateFilter.$lte = new Date(endDate as string);
         let adjustedEndDate = new Date(endDate as string);
         adjustedEndDate.setHours(23, 59, 59, 999);
         dateFilter.$lte = adjustedEndDate;
@@ -110,14 +109,17 @@ const getApplications = async (
   
       const query = startDate || endDate ? { createdAt: dateFilter } : {};
   
-      // Exclude the `studentCertificate` field from the query response
-      const applications = await Application.find(query, '-studentCertificate');
+      // Fetch distinct applications based on fullName, email, and phoneNumber
+      const applications = await Application.find(query)
+        .select("-studentCertificate") // Exclude `studentCertificate`
+        .distinct("fullName email phoneNumber"); // Use distinct to get unique combinations
   
       res.status(200).json(applications);
     } catch (error) {
       next(error);
     }
   };
+  
   
 
 const downloadCertificate = async (
