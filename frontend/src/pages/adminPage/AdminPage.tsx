@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../../components/Header/Header';
-import axios from 'axios';
+//import axios from 'axios';
 import { IApplicationForm } from '../../types/types';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthenticationContext';
@@ -168,7 +168,7 @@ const AdminPage: React.FC = () => {
     document.body.removeChild(link);
   };
 
-  const downloadPDF = async (id: string) => {
+  /*const downloadPDF = async (id: string) => {
     try {
       const response = await axios.get(
         `${api_url}/api/application/certificate/${id}`,
@@ -192,7 +192,7 @@ const AdminPage: React.FC = () => {
     } catch (error) {
       console.error('Error downloading PDF:', error);
     }
-  };
+  };*/
 
   return (
     <div className={styles.adminOuter}>
