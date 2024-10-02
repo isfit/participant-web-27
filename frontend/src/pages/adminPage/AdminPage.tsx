@@ -83,7 +83,7 @@ const AdminPage: React.FC = () => {
     getApplications();
   }, [startDate, endDate]);
 
-  const escapeCSV = (text) => {
+  const escapeCSV = (text: string) => {
     if (text == null) return 'N/A';
     return `"${text.replace(/"/g, '""')}"`;
   };
