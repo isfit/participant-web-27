@@ -84,7 +84,12 @@ const AdminPage: React.FC = () => {
     getApplications();
   }, [startDate, endDate]);
 
+  const escapeCSV = (text) => {
+    if (text == null) return 'N/A';
+    return `"${text.replace(/"/g, '""')}"`;
+  };
   const exportToCSV = () => {
+    console.log(`Total applications: ${applications.length}`);
     const csvRows = [
       [
         'Full Name',
@@ -123,55 +128,59 @@ const AdminPage: React.FC = () => {
       ],
       ...applications.map((app) => {
         return [
-          app.fullName,
-          app.email,
-          app.phoneNumber,
-          new Date(app.dateOfBirth).toLocaleDateString('en-GB'),
-          app.gender,
-          app.nationality,
-          app.continent,
-          app.residenceCountry,
+          escapeCSV(app.fullName),
+          escapeCSV(app.email),
+          escapeCSV(app.phoneNumber),
+          app.dateOfBirth
+            ? new Date(app.dateOfBirth).toLocaleDateString('en-GB')
+            : 'N/A',
+          escapeCSV(app.gender),
+          escapeCSV(app.nationality),
+          escapeCSV(app.continent),
+          escapeCSV(app.residenceCountry),
           app.isStudent ? 'Yes' : 'No',
-          app.studyField,
-          app.university,
-          app.studentCertificateUrl, // Commented out for now
-          app.universityWebsite || 'N/A',
+          escapeCSV(app.studyField),
+          escapeCSV(app.university),
+          escapeCSV(app.studentCertificateUrl), // Commented out for now
+          escapeCSV(app.universityWebsite),
           app.isEnglishSpeaker ? 'Yes' : 'No',
-          app.applyingAs,
-          app.themePowerThoughts,
-          app.countryPowerIssue,
-          app.motivation,
-          app.financialSupportReason,
-          app.fullOrPartialFunding,
-          app.dependents.toString(),
-          app.familyIncome,
-          app.canParticipate,
-          app.countryTravelingFrom,
-          app.otherFundingInfo,
-          app.consentVisa,
+          escapeCSV(app.applyingAs),
+          escapeCSV(app.themePowerThoughts),
+          escapeCSV(app.countryPowerIssue),
+          escapeCSV(app.motivation),
+          escapeCSV(app.financialSupportReason),
+          escapeCSV(app.fullOrPartialFunding),
+          app.dependents != null ? escapeCSV(app.dependents.toString()) : 'N/A',
+          escapeCSV(app.familyIncome),
+          escapeCSV(app.canParticipate),
+          escapeCSV(app.countryTravelingFrom),
+          escapeCSV(app.otherFundingInfo),
+          escapeCSV(app.consentVisa),
           app.consentFlight ? 'Yes' : 'No',
           app.consentNorwegianLaw ? 'Yes' : 'No',
           app.consentReturn ? 'Yes' : 'No',
           app.consentPersonalDetails ? 'Yes' : 'No',
           app.consentAttendance ? 'Yes' : 'No',
-          app.consentMedia,
+          escapeCSV(app.consentMedia),
           app.createdAt
             ? new Date(app.createdAt).toLocaleDateString('en-GB')
             : 'N/A',
         ];
       }),
     ];
+    console.log(`Total rows in CSV: ${csvRows.length}`);
+    const csvContent = csvRows.map((e) => e.join(',')).join('\n');
+    console.log(csvContent.length);
 
-    const csvContent =
-      'data:text/csv;charset=utf-8,' +
-      csvRows.map((e) => e.join(',')).join('\n');
-    const encodedUri = encodeURI(csvContent);
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
+    link.setAttribute('href', url);
     link.setAttribute('download', 'applications.csv');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(url); // Clean up the object URL
   };
 
   /*const downloadPDF = async (id: string) => {
