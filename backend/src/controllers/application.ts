@@ -1,5 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import Application from "../models/Application";
+import { BlobServiceClient } from "@azure/storage-blob";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const AZURE_STORAGE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING;
+const AZURE_STORAGE_DOWNLOAD_STRING = process.env.AZURE_STORAGE_DOWNLOAD_STRING;
 
 const submitApplication = async (
     req: Request,
@@ -43,6 +50,32 @@ const submitApplication = async (
 
         const studentCertificate = req.file?.buffer;
 
+        // Upload Certificate to Azure Blob Storage and set the URL in the application
+        let studentCertificateUrl: string | undefined;
+        if (studentCertificate) {
+          // Create the BlobServiceClient object with connection string
+        if (!AZURE_STORAGE_CONNECTION_STRING) {
+          throw Error('Azure Storage Connection string not found');
+        }
+        const blobServiceClient = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING);
+        const containerClient = blobServiceClient.getContainerClient("studentcertificates");
+        
+        const blobName = `certificate_${email}.pdf`;
+        const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+        const exists = await blockBlobClient.exists();
+        if (exists) {
+          await blockBlobClient.delete();
+        }
+        await blockBlobClient.upload(studentCertificate, studentCertificate.length);
+  
+        // Get the URL of the uploaded blob
+        const blobUrl = blockBlobClient.url;
+        studentCertificateUrl = `${blobUrl}?${AZURE_STORAGE_DOWNLOAD_STRING}`;
+          
+        } else {
+          studentCertificateUrl = undefined;
+        }
+        
         const newApplication = new Application({
             fullName,
             email,
@@ -57,6 +90,7 @@ const submitApplication = async (
             university,
             universityWebsite,
             studentCertificate,
+            studentCertificateUrl,
             isEnglishSpeaker,
             applyingAs,
             themePowerThoughts,
@@ -162,5 +196,6 @@ const downloadCertificate = async (
         next(error);
     }
 };
+
 
 export { submitApplication, getApplications, downloadCertificate };

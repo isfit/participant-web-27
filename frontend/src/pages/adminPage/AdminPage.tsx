@@ -61,7 +61,6 @@ const AdminPage: React.FC = () => {
         },
       );
 
-      console.log('Fetched applications data:', response.data); // Log the fetched data
       return response.data;
     } catch (error) {
       console.error('Error fetching applications:', error);
@@ -72,10 +71,11 @@ const AdminPage: React.FC = () => {
   useEffect(() => {
     const getApplications = async () => {
       const data = await fetchApplications();
-      
+
       // Deduplicate applications by _id
-      const uniqueApplications = Array.from(new Set(data.map((app) => app._id)))
-        .map((id) => data.find((app) => app._id === id)) as IApplicationForm[];
+      const uniqueApplications = Array.from(
+        new Set(data.map((app) => app._id)),
+      ).map((id) => data.find((app) => app._id === id)) as IApplicationForm[];
 
       setApplications(uniqueApplications);
       setNumOfApplication(uniqueApplications.length);
@@ -83,6 +83,10 @@ const AdminPage: React.FC = () => {
     getApplications();
   }, [startDate, endDate]);
 
+  const escapeCSV = (text) => {
+    if (text == null) return 'N/A';
+    return `"${text.replace(/"/g, '""')}"`;
+  };
   const exportToCSV = () => {
     const csvRows = [
       [
@@ -97,7 +101,7 @@ const AdminPage: React.FC = () => {
         'Is Student',
         'Study Field',
         'University',
-        //'Student Certificate', // Commented out for now
+        'Student Certificate',
         'University Website',
         'Is English Speaker',
         'Applying As',
@@ -122,55 +126,57 @@ const AdminPage: React.FC = () => {
       ],
       ...applications.map((app) => {
         return [
-          app.fullName,
-          app.email,
-          app.phoneNumber,
-          new Date(app.dateOfBirth).toLocaleDateString('en-GB'),
-          app.gender,
-          app.nationality,
-          app.continent,
-          app.residenceCountry,
+          escapeCSV(app.fullName),
+          escapeCSV(app.email),
+          escapeCSV(app.phoneNumber),
+          app.dateOfBirth
+            ? new Date(app.dateOfBirth).toLocaleDateString('en-GB')
+            : 'N/A',
+          escapeCSV(app.gender),
+          escapeCSV(app.nationality),
+          escapeCSV(app.continent),
+          escapeCSV(app.residenceCountry),
           app.isStudent ? 'Yes' : 'No',
-          app.studyField,
-          app.university,
-          //app.studentCertificate, // Commented out for now
-          app.universityWebsite || 'N/A',
+          escapeCSV(app.studyField),
+          escapeCSV(app.university),
+          escapeCSV(app.studentCertificateUrl), // Commented out for now
+          escapeCSV(app.universityWebsite),
           app.isEnglishSpeaker ? 'Yes' : 'No',
-          app.applyingAs,
-          app.themePowerThoughts,
-          app.countryPowerIssue,
-          app.motivation,
-          app.financialSupportReason,
-          app.fullOrPartialFunding,
-          app.dependents.toString(),
-          app.familyIncome,
-          app.canParticipate,
-          app.countryTravelingFrom,
-          app.otherFundingInfo,
-          app.consentVisa,
+          escapeCSV(app.applyingAs),
+          escapeCSV(app.themePowerThoughts),
+          escapeCSV(app.countryPowerIssue),
+          escapeCSV(app.motivation),
+          escapeCSV(app.financialSupportReason),
+          escapeCSV(app.fullOrPartialFunding),
+          app.dependents != null ? escapeCSV(app.dependents.toString()) : 'N/A',
+          escapeCSV(app.familyIncome),
+          escapeCSV(app.canParticipate),
+          escapeCSV(app.countryTravelingFrom),
+          escapeCSV(app.otherFundingInfo),
+          escapeCSV(app.consentVisa),
           app.consentFlight ? 'Yes' : 'No',
           app.consentNorwegianLaw ? 'Yes' : 'No',
           app.consentReturn ? 'Yes' : 'No',
           app.consentPersonalDetails ? 'Yes' : 'No',
           app.consentAttendance ? 'Yes' : 'No',
-          app.consentMedia,
+          escapeCSV(app.consentMedia),
           app.createdAt
             ? new Date(app.createdAt).toLocaleDateString('en-GB')
             : 'N/A',
         ];
       }),
     ];
+    const csvContent = csvRows.map((e) => e.join(',')).join('\n');
 
-    const csvContent =
-      'data:text/csv;charset=utf-8,' +
-      csvRows.map((e) => e.join(',')).join('\n');
-    const encodedUri = encodeURI(csvContent);
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
+    link.setAttribute('href', url);
     link.setAttribute('download', 'applications.csv');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(url); // Clean up the object URL
   };
 
   /*const downloadPDF = async (id: string) => {
@@ -198,6 +204,11 @@ const AdminPage: React.FC = () => {
       console.error('Error downloading PDF:', error);
     }
   };*/ // Commented out for now
+
+  const downloadPDF = async (url: string | undefined) => {
+    //Open the PDF in a new tab
+    if (url) window.open(url);
+  };
 
   return (
     <div className={styles.adminOuter}>
@@ -272,14 +283,16 @@ const AdminPage: React.FC = () => {
                 <th>Is Student</th>
                 <th>Study Field</th>
                 <th>University</th>
-                {/*<th>Student Certificate</th>*/} {/* Commented out for now */}
+                <th>Student Certificate</th>
                 <th>University Website</th>
                 <th>Is English Speaker</th>
                 <th>Applying As</th>
                 <th className={styles.textareaTable}>Theme Power Thoughts</th>
                 <th className={styles.textareaTable}>Country Power Issue</th>
                 <th className={styles.textareaTable}>Motivation</th>
-                <th className={styles.textareaTable}>Financial Support Reason</th>
+                <th className={styles.textareaTable}>
+                  Financial Support Reason
+                </th>
                 <th>Full or partial funding</th>
                 <th>Dependents</th>
                 <th>Family Income</th>
@@ -302,7 +315,9 @@ const AdminPage: React.FC = () => {
                   <td>{application.fullName}</td>
                   <td>{application.email}</td>
                   <td>{application.phoneNumber}</td>
-                  <td>{new Date(application.dateOfBirth).toLocaleDateString()}</td>
+                  <td>
+                    {new Date(application.dateOfBirth).toLocaleDateString()}
+                  </td>
                   <td>{application.gender}</td>
                   <td>{application.nationality}</td>
                   <td>{application.continent}</td>
@@ -310,28 +325,44 @@ const AdminPage: React.FC = () => {
                   <td>{application.isStudent ? 'Yes' : 'No'}</td>
                   <td>{application.studyField}</td>
                   <td>{application.university}</td>
-                  {/*<td>
-                    {application.studentCertificate ? (
-                      <button onClick={() => downloadPDF(application?._id)}>
-                        Download Certificate
-                      </button>
-                    ) : (
-                      'N/A'
-                    )}
-                  </td>*/} {/* Commented out for now */}
+                  {
+                    <td>
+                      {application.studentCertificateUrl ? (
+                        <button
+                          onClick={() =>
+                            downloadPDF(application?.studentCertificateUrl)
+                          }
+                        >
+                          Open Certificate
+                        </button>
+                      ) : (
+                        'N/A'
+                      )}
+                    </td>
+                  }{' '}
                   <td>{application.universityWebsite || 'N/A'}</td>
                   <td>{application.isEnglishSpeaker ? 'Yes' : 'No'}</td>
                   <td>{application.applyingAs}</td>
-                  <td className={styles.textareaTable}>{application.themePowerThoughts}</td>
-                  <td className={styles.textareaTable}>{application.countryPowerIssue}</td>
-                  <td className={styles.textareaTable}>{application.motivation}</td>
-                  <td className={styles.textareaTable}>{application.financialSupportReason}</td>
+                  <td className={styles.textareaTable}>
+                    {application.themePowerThoughts}
+                  </td>
+                  <td className={styles.textareaTable}>
+                    {application.countryPowerIssue}
+                  </td>
+                  <td className={styles.textareaTable}>
+                    {application.motivation}
+                  </td>
+                  <td className={styles.textareaTable}>
+                    {application.financialSupportReason}
+                  </td>
                   <td>{application.fullOrPartialFunding}</td>
                   <td>{application.dependents}</td>
                   <td>{application.familyIncome}</td>
                   <td>{application.canParticipate}</td>
                   <td>{application.countryTravelingFrom}</td>
-                  <td className={styles.textareaTable}>{application.otherFundingInfo}</td>
+                  <td className={styles.textareaTable}>
+                    {application.otherFundingInfo}
+                  </td>
                   <td>{application.consentVisa}</td>
                   <td>{application.consentFlight ? 'Yes' : 'No'}</td>
                   <td>{application.consentNorwegianLaw ? 'Yes' : 'No'}</td>
@@ -339,7 +370,11 @@ const AdminPage: React.FC = () => {
                   <td>{application.consentPersonalDetails ? 'Yes' : 'No'}</td>
                   <td>{application.consentAttendance ? 'Yes' : 'No'}</td>
                   <td>{application.consentMedia}</td>
-                  <td>{application.createdAt ? new Date(application.createdAt).toLocaleDateString() : 'N/A'}</td>
+                  <td>
+                    {application.createdAt
+                      ? new Date(application.createdAt).toLocaleDateString()
+                      : 'N/A'}
+                  </td>
                 </tr>
               ))}
             </tbody>
