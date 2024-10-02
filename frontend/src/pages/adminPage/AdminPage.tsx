@@ -72,10 +72,11 @@ const AdminPage: React.FC = () => {
   useEffect(() => {
     const getApplications = async () => {
       const data = await fetchApplications();
-      
+
       // Deduplicate applications by _id
-      const uniqueApplications = Array.from(new Set(data.map((app) => app._id)))
-        .map((id) => data.find((app) => app._id === id)) as IApplicationForm[];
+      const uniqueApplications = Array.from(
+        new Set(data.map((app) => app._id)),
+      ).map((id) => data.find((app) => app._id === id)) as IApplicationForm[];
 
       setApplications(uniqueApplications);
       setNumOfApplication(uniqueApplications.length);
@@ -97,7 +98,7 @@ const AdminPage: React.FC = () => {
         'Is Student',
         'Study Field',
         'University',
-        //'Student Certificate', // Commented out for now
+        'Student Certificate',
         'University Website',
         'Is English Speaker',
         'Applying As',
@@ -133,7 +134,7 @@ const AdminPage: React.FC = () => {
           app.isStudent ? 'Yes' : 'No',
           app.studyField,
           app.university,
-          //app.studentCertificate, // Commented out for now
+          app.studentCertificateUrl, // Commented out for now
           app.universityWebsite || 'N/A',
           app.isEnglishSpeaker ? 'Yes' : 'No',
           app.applyingAs,
@@ -198,6 +199,11 @@ const AdminPage: React.FC = () => {
       console.error('Error downloading PDF:', error);
     }
   };*/ // Commented out for now
+
+  const downloadPDF = async (url: string | undefined) => {
+    //Open the PDF in a new tab
+    if (url) window.open(url);
+  };
 
   return (
     <div className={styles.adminOuter}>
@@ -272,14 +278,16 @@ const AdminPage: React.FC = () => {
                 <th>Is Student</th>
                 <th>Study Field</th>
                 <th>University</th>
-                {/*<th>Student Certificate</th>*/} {/* Commented out for now */}
+                <th>Student Certificate</th>
                 <th>University Website</th>
                 <th>Is English Speaker</th>
                 <th>Applying As</th>
                 <th className={styles.textareaTable}>Theme Power Thoughts</th>
                 <th className={styles.textareaTable}>Country Power Issue</th>
                 <th className={styles.textareaTable}>Motivation</th>
-                <th className={styles.textareaTable}>Financial Support Reason</th>
+                <th className={styles.textareaTable}>
+                  Financial Support Reason
+                </th>
                 <th>Full or partial funding</th>
                 <th>Dependents</th>
                 <th>Family Income</th>
@@ -302,7 +310,9 @@ const AdminPage: React.FC = () => {
                   <td>{application.fullName}</td>
                   <td>{application.email}</td>
                   <td>{application.phoneNumber}</td>
-                  <td>{new Date(application.dateOfBirth).toLocaleDateString()}</td>
+                  <td>
+                    {new Date(application.dateOfBirth).toLocaleDateString()}
+                  </td>
                   <td>{application.gender}</td>
                   <td>{application.nationality}</td>
                   <td>{application.continent}</td>
@@ -310,28 +320,44 @@ const AdminPage: React.FC = () => {
                   <td>{application.isStudent ? 'Yes' : 'No'}</td>
                   <td>{application.studyField}</td>
                   <td>{application.university}</td>
-                  {/*<td>
-                    {application.studentCertificate ? (
-                      <button onClick={() => downloadPDF(application?._id)}>
-                        Download Certificate
-                      </button>
-                    ) : (
-                      'N/A'
-                    )}
-                  </td>*/} {/* Commented out for now */}
+                  {
+                    <td>
+                      {application.studentCertificateUrl ? (
+                        <button
+                          onClick={() =>
+                            downloadPDF(application?.studentCertificateUrl)
+                          }
+                        >
+                          Open Certificate
+                        </button>
+                      ) : (
+                        'N/A'
+                      )}
+                    </td>
+                  }{' '}
                   <td>{application.universityWebsite || 'N/A'}</td>
                   <td>{application.isEnglishSpeaker ? 'Yes' : 'No'}</td>
                   <td>{application.applyingAs}</td>
-                  <td className={styles.textareaTable}>{application.themePowerThoughts}</td>
-                  <td className={styles.textareaTable}>{application.countryPowerIssue}</td>
-                  <td className={styles.textareaTable}>{application.motivation}</td>
-                  <td className={styles.textareaTable}>{application.financialSupportReason}</td>
+                  <td className={styles.textareaTable}>
+                    {application.themePowerThoughts}
+                  </td>
+                  <td className={styles.textareaTable}>
+                    {application.countryPowerIssue}
+                  </td>
+                  <td className={styles.textareaTable}>
+                    {application.motivation}
+                  </td>
+                  <td className={styles.textareaTable}>
+                    {application.financialSupportReason}
+                  </td>
                   <td>{application.fullOrPartialFunding}</td>
                   <td>{application.dependents}</td>
                   <td>{application.familyIncome}</td>
                   <td>{application.canParticipate}</td>
                   <td>{application.countryTravelingFrom}</td>
-                  <td className={styles.textareaTable}>{application.otherFundingInfo}</td>
+                  <td className={styles.textareaTable}>
+                    {application.otherFundingInfo}
+                  </td>
                   <td>{application.consentVisa}</td>
                   <td>{application.consentFlight ? 'Yes' : 'No'}</td>
                   <td>{application.consentNorwegianLaw ? 'Yes' : 'No'}</td>
@@ -339,7 +365,11 @@ const AdminPage: React.FC = () => {
                   <td>{application.consentPersonalDetails ? 'Yes' : 'No'}</td>
                   <td>{application.consentAttendance ? 'Yes' : 'No'}</td>
                   <td>{application.consentMedia}</td>
-                  <td>{application.createdAt ? new Date(application.createdAt).toLocaleDateString() : 'N/A'}</td>
+                  <td>
+                    {application.createdAt
+                      ? new Date(application.createdAt).toLocaleDateString()
+                      : 'N/A'}
+                  </td>
                 </tr>
               ))}
             </tbody>

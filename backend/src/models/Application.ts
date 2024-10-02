@@ -14,6 +14,7 @@ interface IApplication extends Document {
     university: string;
     universityWebsite?: string;
     studentCertificate?: Buffer;
+    studentCertificateUrl?: string;
     isEnglishSpeaker: boolean;
     applyingAs: string;
     themePowerThoughts: string;
@@ -49,6 +50,7 @@ const ApplicationSchema: Schema = new Schema({
     university: { type: String, required: true },
     universityWebsite: { type: String },
     studentCertificate: { type: Buffer, required: true },
+    studentCertificateUrl: { type: String },
     isEnglishSpeaker: { type: Boolean, required: true },
     applyingAs: { type: String, required: true },
     themePowerThoughts: { type: String, required: true },
