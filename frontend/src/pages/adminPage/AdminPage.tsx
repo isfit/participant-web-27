@@ -61,7 +61,6 @@ const AdminPage: React.FC = () => {
         },
       );
 
-      console.log('Fetched applications data:', response.data); // Log the fetched data
       return response.data;
     } catch (error) {
       console.error('Error fetching applications:', error);
@@ -89,7 +88,6 @@ const AdminPage: React.FC = () => {
     return `"${text.replace(/"/g, '""')}"`;
   };
   const exportToCSV = () => {
-    console.log(`Total applications: ${applications.length}`);
     const csvRows = [
       [
         'Full Name',
@@ -168,9 +166,7 @@ const AdminPage: React.FC = () => {
         ];
       }),
     ];
-    console.log(`Total rows in CSV: ${csvRows.length}`);
     const csvContent = csvRows.map((e) => e.join(',')).join('\n');
-    console.log(csvContent.length);
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
