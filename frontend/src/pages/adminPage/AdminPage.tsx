@@ -139,8 +139,10 @@ const AdminPage: React.FC = () => {
           app.isStudent ? 'Yes' : 'No',
           escapeCSV(app.studyField),
           escapeCSV(app.university),
-          escapeCSV(app.studentCertificateUrl), // Commented out for now
-          escapeCSV(app.universityWebsite),
+          app.studentCertificateUrl
+            ? escapeCSV(app.studentCertificateUrl)
+            : 'N/A', // Commented out for now
+          app.universityWebsite ? escapeCSV(app.universityWebsite) : 'N/A', // Commented out for now
           app.isEnglishSpeaker ? 'Yes' : 'No',
           escapeCSV(app.applyingAs),
           escapeCSV(app.themePowerThoughts),
