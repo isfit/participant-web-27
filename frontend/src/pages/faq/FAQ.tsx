@@ -78,7 +78,7 @@ const FAQ: React.FC = () => {
           <div className={styles.faqSection}>
 
             <h3>Q: What are the requirements for being counted as a student?</h3>
-            <p>A: You need to be actively enrolled in a study programme during the study year 24/25. This should be a university programme or one of equivalent level.</p>
+            <p>A: To be counted as a student, you must be enrolled in a university program in 2024 and/or 2025. If you received your degree in January 2024, you are still eligible to apply. The program must be at a university level or an equivalent.</p>
             <br /><br />
             <h3>Q: My institute does not provide student certificates at this time/I am struggling with retrieving a student certificate, what can I send in?</h3>
             <p>A: Student certificates can be any of the following: A letter of admission stating the programme/course duration, student identity card, letter from university, and any school credential. All this must contain the student's full names and relevant information that confirms the applicant's status as a student. This should be uploaded as required during application for ISFiT.</p>
