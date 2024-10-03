@@ -38,6 +38,7 @@ export interface IApplicationForm {
   university: string;
   universityWebsite?: string;
   studentCertificate?: Buffer;
+  studentCertificateUrl?: string;
   isEnglishSpeaker: boolean;
   applyingAs: string;
   themePowerThoughts: string;

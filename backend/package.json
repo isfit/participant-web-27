@@ -8,12 +8,15 @@
     "start": "ts-node src/server.ts",
     "build": "tsc",
     "dev": "nodemon src/server.ts",
-    "prod": "node dist/src/server.js"
+    "prod": "node dist/src/server.js",
+    "migrateCertificates": "ts-node src/scripts/migrateCertificates.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@azure/identity": "^4.4.1",
+    "@azure/storage-blob": "^12.25.0",
     "@types/bcrypt": "^5.0.2",
     "@types/cookie-parser": "^1.4.7",
     "@types/jsonwebtoken": "^9.0.6",
