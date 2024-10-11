@@ -18,13 +18,20 @@ app.use(cookieParser());
 
 const uri: string = process.env.MONGODB_URI || "mongodb://localhost:27017";
 
+const mongooseOptions = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  socketTimeoutMS: 120000,
+  connectTimeoutMS: 120000,
+};
+
 (async () => {
-    try {
-        await mongoose.connect(uri);
-        console.log("Connected to the database");
-    } catch {
-        console.log("Error connecting to the database");
-    }
+  try {
+    await mongoose.connect(uri, mongooseOptions);
+    console.log("Connected to the database");
+  } catch (error) {
+    console.error("Error connecting to the database", error);
+  }
 })();
 
 app.use("/auth", auth);
@@ -32,15 +39,23 @@ app.use("/api", user);
 app.use("/api/application", application);
 
 app.get("/health", (_req: Request, res: Response) => {
-    res.status(200).send("Server is running");
+  res.status(200).send("Server is running");
 });
 
 const PORT: string | number = process.env.PORT || 4000;
 
 app.listen(PORT, () => {
-    console.log(`Server is running on PORT: ${PORT}`);
+  console.log(`Server is running on PORT: ${PORT}`);
 });
 
 setInterval(() => {
-    console.log("Server health check. Server is running on port:" + PORT);
+  console.log("Server health check. Server is running on port:" + PORT);
 }, 60000);
+
+app.use((err: any, _req: Request, res: Response, next: Function) => {
+  if (err.code && err.code === 11000) {
+    console.error("Duplicate key error:", err.message);
+    return res.status(400).json({ error: "Duplicate key error", message: err.message });
+  }
+  next(err);
+});
