@@ -19,10 +19,8 @@ app.use(cookieParser());
 const uri: string = process.env.MONGODB_URI || "mongodb://localhost:27017";
 
 const mongooseOptions = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  socketTimeoutMS: 120000,
-  connectTimeoutMS: 120000,
+  socketTimeoutMS: 180000,
+  connectTimeoutMS: 180000,
 };
 
 (async () => {
