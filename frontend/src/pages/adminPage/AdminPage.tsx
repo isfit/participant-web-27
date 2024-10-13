@@ -209,10 +209,10 @@ const AdminPage: React.FC = () => {
     }
   };*/ // Commented out for now
 
-  const downloadPDF = async (url: string | undefined) => {
+ /* const downloadPDF = async (url: string | undefined) => {
     //Open the PDF in a new tab
     if (url) window.open(url);
-  };
+  };*/
 
   return (
     <div className={styles.adminOuter}>
