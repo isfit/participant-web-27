@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../../components/Header/Header';
 import { IApplicationForm } from '../../types/types';
-//import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthenticationContext';
 import styles from './AdminPage.module.css';
@@ -19,7 +18,9 @@ const AdminPage: React.FC = () => {
   const { user } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const [numOfApplciation, setNumOfApplication] = useState(0);
+  const [numOfApplication, setNumOfApplication] = useState(0);
+  const [page] = useState(1); // Pagination state
+  const [limit] = useState(50); // Limit of applications per page
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -30,6 +31,7 @@ const AdminPage: React.FC = () => {
     window.location.reload();
   };
 
+  // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -46,21 +48,35 @@ const AdminPage: React.FC = () => {
 
   const token = JSON.parse(localStorage.getItem('authTokens') || '');
 
+  // Debounce function to reduce API calls
+  const debounce = (func: Function, delay: number) => {
+    let timeoutId: NodeJS.Timeout;
+    return (...args: any) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => func.apply(null, args), delay);
+    };
+  };
+
+  // Handle date changes with debounce
+  const handleDateChange = debounce((field: string, value: string) => {
+    if (field === 'startDate') setStartDate(value);
+    else setEndDate(value);
+  }, 500);
+
+  // Fetch applications with pagination
   const fetchApplications = async (): Promise<IApplicationForm[]> => {
     try {
-      const response = await axiosInstance.get(
-        `${api_url}/api/application/applications`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            startDate,
-            endDate,
-          },
+      const response = await axiosInstance.get(`${api_url}/api/application/applications`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
-
+        params: {
+          startDate,
+          endDate,
+          page,
+          limit,
+        },
+      });
       return response.data;
     } catch (error) {
       console.error('Error fetching applications:', error);
@@ -71,22 +87,18 @@ const AdminPage: React.FC = () => {
   useEffect(() => {
     const getApplications = async () => {
       const data = await fetchApplications();
-
-      // Deduplicate applications by _id
-      const uniqueApplications = Array.from(
-        new Set(data.map((app) => app._id)),
-      ).map((id) => data.find((app) => app._id === id)) as IApplicationForm[];
-
-      setApplications(uniqueApplications);
-      setNumOfApplication(uniqueApplications.length);
+      setApplications(data);
+      setNumOfApplication(data.length);
     };
     getApplications();
-  }, [startDate, endDate]);
+  }, [startDate, endDate, page]);
 
+  // Export to CSV function
   const escapeCSV = (text: string) => {
     if (text == null) return 'N/A';
     return `"${text.replace(/"/g, '""')}"`;
   };
+
   const exportToCSV = () => {
     const csvRows = [
       [
@@ -101,7 +113,6 @@ const AdminPage: React.FC = () => {
         'Is Student',
         'Study Field',
         'University',
-        'Student Certificate',
         'University Website',
         'Is English Speaker',
         'Applying As',
@@ -129,9 +140,7 @@ const AdminPage: React.FC = () => {
           escapeCSV(app.fullName),
           escapeCSV(app.email),
           escapeCSV(app.phoneNumber),
-          app.dateOfBirth
-            ? new Date(app.dateOfBirth).toLocaleDateString('en-GB')
-            : 'N/A',
+          app.dateOfBirth ? new Date(app.dateOfBirth).toLocaleDateString('en-GB') : 'N/A',
           escapeCSV(app.gender),
           escapeCSV(app.nationality),
           escapeCSV(app.continent),
@@ -139,10 +148,7 @@ const AdminPage: React.FC = () => {
           app.isStudent ? 'Yes' : 'No',
           escapeCSV(app.studyField),
           escapeCSV(app.university),
-          app.studentCertificateUrl
-            ? escapeCSV(app.studentCertificateUrl)
-            : 'N/A', // Commented out for now
-          app.universityWebsite ? escapeCSV(app.universityWebsite) : 'N/A', // Commented out for now
+          app.universityWebsite ? escapeCSV(app.universityWebsite) : 'N/A',
           app.isEnglishSpeaker ? 'Yes' : 'No',
           escapeCSV(app.applyingAs),
           escapeCSV(app.themePowerThoughts),
@@ -162,9 +168,7 @@ const AdminPage: React.FC = () => {
           app.consentPersonalDetails ? 'Yes' : 'No',
           app.consentAttendance ? 'Yes' : 'No',
           escapeCSV(app.consentMedia),
-          app.createdAt
-            ? new Date(app.createdAt).toLocaleDateString('en-GB')
-            : 'N/A',
+          app.createdAt ? new Date(app.createdAt).toLocaleDateString('en-GB') : 'N/A',
         ];
       }),
     ];
@@ -178,39 +182,12 @@ const AdminPage: React.FC = () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    URL.revokeObjectURL(url); // Clean up the object URL
+    URL.revokeObjectURL(url);
   };
 
-  /*const downloadPDF = async (id: string) => {
-    try {
-      const response = await axios.get(
-        `${api_url}/api/application/certificate/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          responseType: 'blob',
-        },
-      );
-
-      const url = window.URL.createObjectURL(
-        new Blob([response.data], { type: 'application/pdf' }),
-      );
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'student_certificate.pdf');
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-    } catch (error) {
-      console.error('Error downloading PDF:', error);
-    }
-  };*/ // Commented out for now
-
-  const downloadPDF = async (url: string | undefined) => {
-    //Open the PDF in a new tab
+  /*const downloadPDF = async (url: string | undefined) => {
     if (url) window.open(url);
-  };
+  };*/
 
   return (
     <div className={styles.adminOuter}>
@@ -228,18 +205,11 @@ const AdminPage: React.FC = () => {
           </>
         ) : (
           <div className={styles.hamburgerIconClose}>
-            <img
-              src={cross}
-              className={styles.hamburgerCross}
-              alt="Close menu"
-            />
+            <img src={cross} className={styles.hamburgerCross} alt="Close menu" />
           </div>
         )}
       </div>
-      <div
-        ref={menuRef}
-        className={`${styles.sideMenu} ${menuOpen ? styles.open : ''}`}
-      >
+      <div ref={menuRef} className={`${styles.sideMenu} ${menuOpen ? styles.open : ''}`}>
         <Link to="/faq">FAQ</Link>
         <Link to="/homePage">HomePage</Link>
         {user?.role === ROLES.ADMIN && <Link to="/admin">Admin</Link>}
@@ -253,23 +223,15 @@ const AdminPage: React.FC = () => {
         <div className={styles.filterContainer}>
           <label>
             Start Date
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-            />
+            <input type="date" value={startDate} onChange={(e) => handleDateChange('startDate', e.target.value)} />
           </label>
           <label>
             End Date
-            <input
-              type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-            />
+            <input type="date" value={endDate} onChange={(e) => handleDateChange('endDate', e.target.value)} />
           </label>
         </div>
         <button onClick={exportToCSV}>Export to CSV</button>
-        <h2>Applicants - ({numOfApplciation})</h2>
+        <h2>Applicants - ({numOfApplication})</h2>
         <div className={styles.tableContainer}>
           <table>
             <thead>
@@ -285,16 +247,13 @@ const AdminPage: React.FC = () => {
                 <th>Is Student</th>
                 <th>Study Field</th>
                 <th>University</th>
-                <th>Student Certificate</th>
                 <th>University Website</th>
                 <th>Is English Speaker</th>
                 <th>Applying As</th>
                 <th className={styles.textareaTable}>Theme Power Thoughts</th>
                 <th className={styles.textareaTable}>Country Power Issue</th>
                 <th className={styles.textareaTable}>Motivation</th>
-                <th className={styles.textareaTable}>
-                  Financial Support Reason
-                </th>
+                <th className={styles.textareaTable}>Financial Support Reason</th>
                 <th>Full or partial funding</th>
                 <th>Dependents</th>
                 <th>Family Income</th>
@@ -317,9 +276,7 @@ const AdminPage: React.FC = () => {
                   <td>{application.fullName}</td>
                   <td>{application.email}</td>
                   <td>{application.phoneNumber}</td>
-                  <td>
-                    {new Date(application.dateOfBirth).toLocaleDateString()}
-                  </td>
+                  <td>{new Date(application.dateOfBirth).toLocaleDateString()}</td>
                   <td>{application.gender}</td>
                   <td>{application.nationality}</td>
                   <td>{application.continent}</td>
@@ -327,44 +284,19 @@ const AdminPage: React.FC = () => {
                   <td>{application.isStudent ? 'Yes' : 'No'}</td>
                   <td>{application.studyField}</td>
                   <td>{application.university}</td>
-                  {
-                    <td>
-                      {application.studentCertificateUrl ? (
-                        <button
-                          onClick={() =>
-                            downloadPDF(application?.studentCertificateUrl)
-                          }
-                        >
-                          Open Certificate
-                        </button>
-                      ) : (
-                        'N/A'
-                      )}
-                    </td>
-                  }{' '}
                   <td>{application.universityWebsite || 'N/A'}</td>
                   <td>{application.isEnglishSpeaker ? 'Yes' : 'No'}</td>
                   <td>{application.applyingAs}</td>
-                  <td className={styles.textareaTable}>
-                    {application.themePowerThoughts}
-                  </td>
-                  <td className={styles.textareaTable}>
-                    {application.countryPowerIssue}
-                  </td>
-                  <td className={styles.textareaTable}>
-                    {application.motivation}
-                  </td>
-                  <td className={styles.textareaTable}>
-                    {application.financialSupportReason}
-                  </td>
+                  <td className={styles.textareaTable}>{application.themePowerThoughts}</td>
+                  <td className={styles.textareaTable}>{application.countryPowerIssue}</td>
+                  <td className={styles.textareaTable}>{application.motivation}</td>
+                  <td className={styles.textareaTable}>{application.financialSupportReason}</td>
                   <td>{application.fullOrPartialFunding}</td>
                   <td>{application.dependents}</td>
                   <td>{application.familyIncome}</td>
                   <td>{application.canParticipate}</td>
                   <td>{application.countryTravelingFrom}</td>
-                  <td className={styles.textareaTable}>
-                    {application.otherFundingInfo}
-                  </td>
+                  <td className={styles.textareaTable}>{application.otherFundingInfo}</td>
                   <td>{application.consentVisa}</td>
                   <td>{application.consentFlight ? 'Yes' : 'No'}</td>
                   <td>{application.consentNorwegianLaw ? 'Yes' : 'No'}</td>
@@ -372,11 +304,7 @@ const AdminPage: React.FC = () => {
                   <td>{application.consentPersonalDetails ? 'Yes' : 'No'}</td>
                   <td>{application.consentAttendance ? 'Yes' : 'No'}</td>
                   <td>{application.consentMedia}</td>
-                  <td>
-                    {application.createdAt
-                      ? new Date(application.createdAt).toLocaleDateString()
-                      : 'N/A'}
-                  </td>
+                  <td>{application.createdAt ? new Date(application.createdAt).toLocaleDateString() : 'N/A'}</td>
                 </tr>
               ))}
             </tbody>

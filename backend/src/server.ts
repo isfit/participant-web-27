@@ -11,6 +11,7 @@ dotenv.config();
 
 const app: Express = express();
 
+// CORS settings
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -18,23 +19,24 @@ app.use(cookieParser());
 
 const uri: string = process.env.MONGODB_URI || "mongodb://localhost:27017";
 
+// MongoDB connection options
 const options = {
-  socketTimeoutMS: 180000, // Increase socket timeout to 3 minutes (180000 ms)
-  connectTimeoutMS: 180000, // Increase connection timeout to 3 minutes (180000 ms)
-  serverSelectionTimeoutMS: 180000, // The timeout for server selection (3 minutes)
-  maxPoolSize: 50, // Increase pool size to handle more concurrent connections if needed
+  socketTimeoutMS: 180000,
+  connectTimeoutMS: 180000,
+  serverSelectionTimeoutMS: 180000,
+  maxPoolSize: 50,
 };
 
-
 (async () => {
-try {
-  await mongoose.connect(uri, options);
-  console.log("Connected to the database");
-} catch (error) {
-  console.error("Error connecting to the database", error);
-}
+  try {
+    await mongoose.connect(uri, options);
+    console.log("Connected to the database");
+  } catch (error) {
+    console.error("Error connecting to the database", error);
+  }
 })();
 
+// Routes
 app.use("/auth", auth);
 app.use("/api", user);
 app.use("/api/application", application);
@@ -43,12 +45,8 @@ app.get("/health", (_req: Request, res: Response) => {
   res.status(200).send("Server is running");
 });
 
+// Health check logs every minute
 const PORT: string | number = process.env.PORT || 4000;
-
-app.listen(PORT, () => {
-  console.log(`Server is running on PORT: ${PORT}`);
-});
-
 setInterval(() => {
   console.log("Server health check. Server is running on port:" + PORT);
 }, 60000);
@@ -59,4 +57,8 @@ app.use((err: any, _req: Request, res: Response, next: Function) => {
     return res.status(400).json({ error: "Duplicate key error", message: err.message });
   }
   next(err);
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on PORT: ${PORT}`);
 });
