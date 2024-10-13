@@ -18,18 +18,21 @@ app.use(cookieParser());
 
 const uri: string = process.env.MONGODB_URI || "mongodb://localhost:27017";
 
-const mongooseOptions = {
-  socketTimeoutMS: 180000,
-  connectTimeoutMS: 180000,
+const options = {
+  socketTimeoutMS: 180000, // Increase socket timeout to 3 minutes (180000 ms)
+  connectTimeoutMS: 180000, // Increase connection timeout to 3 minutes (180000 ms)
+  serverSelectionTimeoutMS: 180000, // The timeout for server selection (3 minutes)
+  maxPoolSize: 50, // Increase pool size to handle more concurrent connections if needed
 };
 
+
 (async () => {
-  try {
-    await mongoose.connect(uri, mongooseOptions);
-    console.log("Connected to the database");
-  } catch (error) {
-    console.error("Error connecting to the database", error);
-  }
+try {
+  await mongoose.connect(uri, options);
+  console.log("Connected to the database");
+} catch (error) {
+  console.error("Error connecting to the database", error);
+}
 })();
 
 app.use("/auth", auth);
