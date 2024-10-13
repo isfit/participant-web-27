@@ -57,11 +57,9 @@ const AdminPage: React.FC = () => {
           params: {
             startDate,
             endDate,
-            fields: '-studentCertificate',
           },
         },
       );
-      
 
       return response.data;
     } catch (error) {
@@ -141,10 +139,10 @@ const AdminPage: React.FC = () => {
           app.isStudent ? 'Yes' : 'No',
           escapeCSV(app.studyField),
           escapeCSV(app.university),
-          //app.studentCertificateUrl
-            //? escapeCSV(app.studentCertificateUrl)
-            //: 'N/A', // Commented out for now
-          app.universityWebsite ? escapeCSV(app.universityWebsite) : 'N/A', 
+          app.studentCertificateUrl
+            ? escapeCSV(app.studentCertificateUrl)
+            : 'N/A', // Commented out for now
+          app.universityWebsite ? escapeCSV(app.universityWebsite) : 'N/A', // Commented out for now
           app.isEnglishSpeaker ? 'Yes' : 'No',
           escapeCSV(app.applyingAs),
           escapeCSV(app.themePowerThoughts),
@@ -209,10 +207,10 @@ const AdminPage: React.FC = () => {
     }
   };*/ // Commented out for now
 
- /* const downloadPDF = async (url: string | undefined) => {
+  const downloadPDF = async (url: string | undefined) => {
     //Open the PDF in a new tab
     if (url) window.open(url);
-  };*/
+  };
 
   return (
     <div className={styles.adminOuter}>
@@ -329,7 +327,7 @@ const AdminPage: React.FC = () => {
                   <td>{application.isStudent ? 'Yes' : 'No'}</td>
                   <td>{application.studyField}</td>
                   <td>{application.university}</td>
-                  {/*
+                  {
                     <td>
                       {application.studentCertificateUrl ? (
                         <button
@@ -343,7 +341,7 @@ const AdminPage: React.FC = () => {
                         'N/A'
                       )}
                     </td>
-                  */}{' '}
+                  }{' '}
                   <td>{application.universityWebsite || 'N/A'}</td>
                   <td>{application.isEnglishSpeaker ? 'Yes' : 'No'}</td>
                   <td>{application.applyingAs}</td>
