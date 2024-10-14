@@ -693,7 +693,7 @@ const ApplicationForm: React.FC = () => {
               {renderStep()}
             </div>
           </form>
-          <div className="navigationButtons">
+          {/*<div className="navigationButtons">
             {currentStep > 0 && (
               <Button type="button" onClick={handlePrevious}>
                 Previous
@@ -708,7 +708,7 @@ const ApplicationForm: React.FC = () => {
                 Apply
               </Button>
             )}
-          </div>
+          </div>*/}
           <CustomToast
             open={toastOpen}
             setOpen={setToastOpen}
