@@ -70,9 +70,9 @@ const HomePage: React.FC = () => {
       <div className={styles.centerContainer}>
         <img src={'images/Isfitlogo_power_white_version2.png'} alt="Logo" className={styles.logo} />
         <br />
-       {/* <Link to="/applicationForm">
+        <Link to="/applicationForm">
           <Button className={styles.applyButton}>Apply now!</Button>
-        </Link>*/}
+        </Link>
         <div className={styles.container}>
           <h1 className={styles.homePageHeader}>
             Welcome to the ISFiT 2025 Participant Web!
