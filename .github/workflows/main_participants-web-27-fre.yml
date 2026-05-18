@@ -30,7 +30,9 @@ jobs:
           cd frontend
           npm install
           npm run build --if-present || true
-          cp web.config dist/
+          cp server.js dist/
+          cp server-package.json dist/package.json
+          cd dist && npm install --production
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
