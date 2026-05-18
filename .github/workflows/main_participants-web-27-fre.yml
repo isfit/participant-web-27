@@ -24,6 +24,8 @@ jobs:
           node-version: '22.x'
 
       - name: npm install and build
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
         run: |
           cd frontend
           npm install
