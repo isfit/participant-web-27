@@ -106,7 +106,7 @@ const HomePage: React.FC = () => {
       {/* Footer Section */}
       <footer className={styles.footer}>
       <img
-      src='/images/isift_log.png'
+      src='/images/isfit_log.png'
       alt="Logo"
       className={styles.footerLogo}
     />
