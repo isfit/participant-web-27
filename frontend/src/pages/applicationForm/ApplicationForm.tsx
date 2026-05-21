@@ -609,20 +609,22 @@ const ApplicationForm: React.FC = () => {
         <>
           <div className="outerContainer">
             <h1 className="applicationSectionHeader">
-              Welcome to the ISFiT 2025 Participant Application!
+              Welcome to the ISFiT 2027 Participant Application!
             </h1>
             <p>
-              Welcome to the ISFiT 2025 Participant Application! ISFiT, the
+              Welcome to the ISFiT 2027 Participant Application! ISFiT, the
               world’s largest international student festival, is held biennially
               in Trondheim, Norway, during the spring semester. Since its
               inception in 1990, ISFiT has brought together students from
               diverse national and cultural backgrounds, fostering dialogue and
               connection through stimulating discussions on important global
-              issues. Each festival centers around a unique theme, and for 2025,
-              we will be exploring the theme of POWER. We invite you to join us
-              from March 13th to 23rd, 2025, for this exciting event, where
-              students from across the globe will gather in Trondheim to engage,
-              learn, and inspire one another.
+              issues. Each festival centers around a unique theme, and for 2027,
+              we will be exploring the theme of CHANGING WINDS. In a world of
+              mass political upheaval, climate change, and a shifting global
+              order, old truths are no longer certain. We invite you to join us
+              in Trondheim for this exciting event, where students from across
+              the globe will gather to engage, learn, and inspire one another
+              as we discuss the state of our world and this fragile present.
             </p>
             <p>
               ​We are currently accepting participant applications, and you can
@@ -637,7 +639,7 @@ const ApplicationForm: React.FC = () => {
               just attending events and concerts — it means actively
               contributing your ideas, experiences, and perspectives to the
               discussions and debates that shape our understanding of the theme
-              of POWER.{' '}
+              of CHANGING WINDS.{' '}
             </p>
             <p>
               We in ISFiT will provide food and accomodation while you are here,
@@ -657,7 +659,7 @@ const ApplicationForm: React.FC = () => {
               </a>
               !
             </p>
-            <p>
+            {/* <p>
               If you are having trouble applying through this website, you can
               alternatively apply through this{' '}
               <a
@@ -668,7 +670,7 @@ const ApplicationForm: React.FC = () => {
                 Google Form
               </a>
               !
-            </p>
+            </p> */}
           </div>
           <div className="progressOverview">
             {steps.map((step, index) => (

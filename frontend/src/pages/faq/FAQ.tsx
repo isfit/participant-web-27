@@ -78,7 +78,7 @@ const FAQ: React.FC = () => {
           <div className={styles.faqSection}>
 
             <h3>Q: What are the requirements for being counted as a student?</h3>
-            <p>A: To be counted as a student, you must be enrolled in a university program in 2024 and/or 2025. If you received your degree in January 2024, you are still eligible to apply. The program must be at a university level or an equivalent.</p>
+            <p>A: To be counted as a student, you must be enrolled in a university program in 2026 and/or 2027. If you received your degree in January 2024, you are still eligible to apply. The program must be at a university level or an equivalent.</p>
             <br /><br />
             <h3>Q: My institute does not provide student certificates at this time/I am struggling with retrieving a student certificate, what can I send in?</h3>
             <p>A: Student certificates can be any of the following: A letter of admission stating the programme/course duration, student identity card, letter from university, and any school credential. All this must contain the student's full names and relevant information that confirms the applicant's status as a student. This should be uploaded as required during application for ISFiT.</p>
@@ -108,7 +108,7 @@ const FAQ: React.FC = () => {
             <p>A: No. Any application we suspect AI to be of use in writing will be discounted in the reviewing process.</p>
             <br /><br />
             <h3>Q: Can I apply even if I graduate before the festival?</h3>
-            <p>A: Yes, recent graduates are welcome to apply. We understand that academic schedules vary across regions, so students graduating in 2024 are still eligible to attend ISFiT 2025.</p>
+            <p>A: Yes, recent graduates are welcome to apply. We understand that academic schedules vary across regions, so students graduating in 2024 are still eligible to attend ISFiT 2027.</p>
             <br /><br />
             <h3>Q: Is there anything I can do to increase my chances of being selected?</h3>
             <p>A: To increase your chances, focus on answering the application questions thoroughly and thoughtfully. We're looking for participants who are genuinely interested in attending ISFiT and engaging in meaningful discussions on the theme of "Power." Show us that you can reflect on the theme and share unique experiences and perspectives from your background.</p>
@@ -130,7 +130,7 @@ const FAQ: React.FC = () => {
 
       {/* Footer Section */}
       <footer className={styles.footer}>
-        <img src='/images/Isfitlogo_power_white_version2.png' alt="Logo" className={styles.footerLogo} />
+        <img src='/images/isfit_logo.png' alt="Logo" className={styles.footerLogo} />
         <div className={styles.footerLine1}>
           <div className={styles.footerLeft}>
             <a href="https://www.isfit.org" className={styles.footerLink} target="_blank" rel="noopener noreferrer">
@@ -177,7 +177,7 @@ const FAQ: React.FC = () => {
           <img src={'/images/vaernes.png'} alt="Vaernes" className={styles.partnersIcon} />
         </div>
         <div className={styles.footerLine6}>
-          <p>© 2025 ISFiT | All Rights Reserved</p>
+          <p>© 2027 ISFiT | All Rights Reserved</p>
         </div>
       </footer>
     </div>
