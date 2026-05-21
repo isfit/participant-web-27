@@ -46,7 +46,7 @@
   left: -250px; 
   width: 250px;
   height: 100%;
-  background-color: #88242c;
+  background-color: #50763F;
   z-index: 999;
   padding-top: 60px; 
   transition: left 0.3s ease;
@@ -67,7 +67,7 @@
 }
 
 .sideMenu a:hover {
-  background-color: #98343c;
+  background-color: #50763F;
 }
 
 .centerContainer {
@@ -79,7 +79,7 @@
   margin-bottom: 40px;
   padding-top: 40px;
   padding-bottom: 10px;
-  background-color: #88242c;
+  background-color: #50763F;
   border-radius: 20px;
 }
 
