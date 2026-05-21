@@ -3,7 +3,7 @@
 }
 
 .applicationInfo {
-    background-color: #88242c;
+    background-color: #50763F;
     padding: 20px;
     border-radius: 10px;
     margin-bottom: 20px;
@@ -186,7 +186,7 @@ label {
 }
 
 .applicationFormContainer {
-    --primary-bg: #88242c;
+    --primary-bg: #50763F;
     --primary-color: white;
     --secondary-color: white;
     --input-bg: white;
@@ -200,7 +200,7 @@ label {
 }
 
 .outerContainer {
-    background-color: #88242c;
+    background-color: #50763F;
     padding: 20px;
     border-radius: 20px;
     display: flex;
@@ -234,7 +234,7 @@ label {
 
 .outerContainerSection {
     width: 100%;
-    background-color: #88242c;
+    background-color: #50763F;
     padding-top: 20px;
     padding-bottom: 40px;
     border-radius: 20px;
@@ -349,7 +349,7 @@ label {
     align-items: center;
     margin-bottom: 20px;
     font-size: 1.2em;
-    background-color: #88242c;
+    background-color: #50763F;
     border-radius: 20px;
     padding-top: 20px;
     padding-bottom: 20px;

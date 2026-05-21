@@ -121,7 +121,7 @@ export function getSummary() {
           </tr>
           <tr>
             <td>
-              <strong>Motivation for Attending ISFiT25:</strong>
+              <strong>Motivation for Attending ISFiT27:</strong>
             </td>
             <td>{formValues.motivation || 'N/A'}</td>
           </tr>
