@@ -89,6 +89,12 @@ export const personalDetails: FormField[] = [
     type: 'text',
     placeholder: 'ex. https://youruniversity.edu',
   },
+    {
+    label: 'Where did you first hear about ISFiT27? (Through friends, social media, ambassadors etc.)',
+    name: 'how',
+    type: 'text',
+    placeholder: 'I heard about ISFiT27 through...',
+  },
   {
     labelElement: (
       <>
@@ -144,27 +150,27 @@ export const personalDetails: FormField[] = [
   export const themeSection: FormField[] = [
     {
       label:
-      "Every time ISFiT is arranged, we explore a new theme that affects students across the globe. The theme for ISFiT27 is 'Changing Winds'. When considering the theme of 'Changing Winds' for ISFiT27, what aspects or dimensions of change come to your mind first? (max 100 words)",
-      name: 'themePowerThoughts',
+      "Every time ISFiT is arranged, we explore a new theme that affects students across the globe. The theme for ISFiT27 is 'Changing Winds'. When considering the theme of 'Changing Winds' for ISFiT27, what comes to your mind first? (This could be politica, technological, environmental, social or something else.) (max 100 words) ",
+      name: 'themeCWThoughts',
       type: 'textarea',
       placeholder: 'When I think of Changing Winds I think of ...',
       required: true,
     },
     {
       label:
-      "Reflecting on your country's context, can you identify a specific issue related to changing winds? How does this issue manifest, and what are its consequences? (max 300 words)",      
-      name: 'countryPowerIssue',
+      "Reflecting on your country or community, can you point to a specific change or turning point of significance? How has it unfolded, and what has it meant for you and/or the people around you? (max 300 words)",      
+      name: 'countryCW',
       type: 'textarea',
       placeholder:
-        "When reflecting on my country's context, an issue related to changing winds is ...",
+        "When reflecting on my country's context ...",
       required: true,
     },
     {
       label:
-        'What is your motivation for attending ISFiT27? How do you envision contributing to discussions and activities surrounding this theme during the festival? (max 300 words)',
-      name: 'motivation',
+        'How do you see youself contributing to the dialogue and activities surrounding this theme during ISFiT27? Is there a change you wish to make, either on a local or global scale? (max 300 words)',
+      name: 'contribution',
       type: 'textarea',
-      placeholder: 'My motivation for attending ISFiT27 is ...',
+      placeholder: 'My contribution to ISFiT27 is ...',
       required: true,
     },
   ];
