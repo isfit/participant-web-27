@@ -177,10 +177,10 @@ const ApplicationForm: React.FC = () => {
     if (type === 'textarea') {
       const wordCount = value.trim().split(/\s+/).length;
       if (
-        ((name === 'themePowerThoughts' || name === 'otherFundingInfo') &&
+        ((name === 'themeCWThoughts' || name === 'otherFundingInfo' || name === 'how') &&
           wordCount <= 100) ||
-        ((name === 'countryPowerIssue' ||
-          name === 'motivation' ||
+        ((name === 'countryCW' ||
+          name === 'contribution' ||
           name === 'financialSupportReason') &&
           wordCount <= 300)
       ) {
