@@ -111,7 +111,7 @@ const FAQ: React.FC = () => {
             <p>A: Yes, recent graduates are welcome to apply. We understand that academic schedules vary across regions, so students graduating in 2026 are still eligible to attend ISFiT 2027.</p>
             <br /><br />
             <h3>Q: Is there anything I can do to increase my chances of being selected?</h3>
-            <p>A: To increase your chances, focus on answering the application questions thoroughly and thoughtfully. We're looking for participants who are genuinely interested in attending ISFiT and engaging in meaningful discussions on the theme of "Power." Show us that you can reflect on the theme and share unique experiences and perspectives from your background.</p>
+            <p>A: To increase your chances, focus on answering the application questions thoroughly and thoughtfully. We're looking for participants who are genuinely interested in attending ISFiT and engaging in meaningful discussions on the theme of "Changing Winds." Show us that you can reflect on the theme and share unique experiences and perspectives from your background.</p>
             <br /><br />
             <h3>Q: When will you know if you've been selected as a participant?</h3>
             <p>A: Invitation letters will be sent out around November 17th. Selected participants will have until November 26th to accept the invitation. If a participant can no longer attend, their spot will be offered to someone on the waiting list, who will be notified via email. Rejection letters will be sent after November 26th.</p>
