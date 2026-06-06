@@ -629,7 +629,7 @@ const ApplicationForm: React.FC = () => {
             </p>
             <p>
               ​We are currently accepting participant applications, and you can
-              apply up until October 13th!
+              apply up until August 2nd!
             </p>
             <p>
               As a participant, you will be part of a community of international
@@ -655,8 +655,8 @@ const ApplicationForm: React.FC = () => {
               </Link>
               section to see if your question has already been answered, or ask
               us at this information-email:
-              <a href="mailto:question@isfit.no" className="emailLink">
-                question@isfit.no
+              <a href="mailto:questions@isfit.no" className="emailLink">
+                questions@isfit.no
               </a>
               !
             </p>
