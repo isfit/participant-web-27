@@ -109,7 +109,6 @@ const AdminPage: React.FC = () => {
         'Theme Changing Winds Thoughts',
         'Country Changing Winds',
         'Contribution',
-        'Motivation for Attending ISFiT27',
         'Financial Support Reason',
         'Full or partial funding',
         'Dependents',
@@ -151,7 +150,6 @@ const AdminPage: React.FC = () => {
           escapeCSV(app.themeCWThoughts),
           escapeCSV(app.countryCW),
           escapeCSV(app.contribution),
-          escapeCSV(app.motivation),
           escapeCSV(app.financialSupportReason),
           escapeCSV(app.fullOrPartialFunding),
           app.dependents != null ? escapeCSV(app.dependents.toString()) : 'N/A',
@@ -297,7 +295,6 @@ const AdminPage: React.FC = () => {
                 <th className={styles.textareaTable}>Theme Changing Winds Thoughts</th>
                 <th className={styles.textareaTable}>Country Changing Winds</th>
                 <th className={styles.textareaTable}>Contribution</th>
-                <th className={styles.textareaTable}>Motivation for Attending ISFiT27</th>
                 <th className={styles.textareaTable}>
                   Financial Support Reason
                 </th>
@@ -360,9 +357,6 @@ const AdminPage: React.FC = () => {
                   </td>
                   <td className={styles.textareaTable}>
                     {application.contribution}
-                  </td>
-                  <td className={styles.textareaTable}>
-                    {application.motivation}
                   </td>
                   <td className={styles.textareaTable}>
                     {application.financialSupportReason}

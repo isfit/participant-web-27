@@ -21,7 +21,6 @@ interface IApplication extends Document {
     themeCWThoughts: string;
     countryCW: string;
     contribution: string;
-    motivation: string;
     financialSupportReason: string;
     fullOrPartialFunding: string;
     dependents: number;
@@ -59,7 +58,6 @@ const ApplicationSchema: Schema = new Schema({
     themeCWThoughts: { type: String, required: true },
     countryCW: { type: String, required: true },
     contribution: { type: String, required: true },
-    motivation: { type: String, required: true },
     financialSupportReason: { type: String },
     fullOrPartialFunding: { type: String },
     dependents: { type: Number },
