@@ -173,6 +173,14 @@ export const personalDetails: FormField[] = [
       placeholder: 'My contribution to ISFiT27 is ...',
       required: true,
     },
+    {
+      label:
+        'What is your motivation for attending ISFiT27? (max 300 words)',
+      name: 'motivation',
+      type: 'textarea',
+      placeholder: 'My motivation for attending ISFiT27 is ...',
+      required: true,
+    },
   ];
 
   export const financialSupportSection: FormField[] = [

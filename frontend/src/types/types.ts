@@ -45,6 +45,7 @@ export interface IApplicationForm {
   themeCWThoughts: string;
   countryCW: string;
   contribution: string;
+  motivation: string;
   financialSupportReason: string;
   fullOrPartialFunding: string;
   dependents: number;
