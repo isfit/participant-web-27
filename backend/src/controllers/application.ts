@@ -49,6 +49,10 @@ const submitApplication = async (
 
         const studentCertificate = req.file?.buffer;
 
+        if (!studentCertificate) {
+            return res.status(400).json({ message: "Student certificate is required" });
+        }
+
         // Upload Certificate to Azure Blob Storage and set the URL in the application
         let studentCertificateUrl: string | undefined;
         if (studentCertificate) {

@@ -41,9 +41,12 @@ const ApplicationForm: React.FC = () => {
 
   const [formValues, setFormValues] = useState<IApplicationForm>(() => {
     const savedForm = localStorage.getItem('applicationForm');
-    return savedForm
-      ? JSON.parse(savedForm)
-      : {
+    if (savedForm) {
+      const parsed = JSON.parse(savedForm);
+      // File objects cannot survive JSON serialization — clear any stale placeholder
+      return { ...parsed, studentCertificate: undefined };
+    }
+    return {
           fullName: '',
           email: user?.email || '',
           phoneNumber: '',
@@ -121,7 +124,8 @@ const ApplicationForm: React.FC = () => {
   );
 
   useEffect(() => {
-    localStorage.setItem('applicationForm', JSON.stringify(formValues));
+    const { studentCertificate: _file, ...serializableValues } = formValues;
+    localStorage.setItem('applicationForm', JSON.stringify(serializableValues));
   }, [formValues]);
 
   useEffect(() => {
@@ -299,8 +303,10 @@ const ApplicationForm: React.FC = () => {
     const formData = new FormData();
 
     Object.entries(formValues).forEach(([key, value]) => {
-      if (key === 'studentCertificate' && value) {
-        formData.append(key, value as File);
+      if (key === 'studentCertificate') {
+        if (value instanceof File) {
+          formData.append(key, value);
+        }
       } else {
         formData.append(key, String(value));
       }
