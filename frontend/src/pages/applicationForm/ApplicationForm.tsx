@@ -3,7 +3,8 @@ import { Button } from '@radix-ui/themes';
 import Header from '../../components/Header/Header';
 import './ApplicationForm.css';
 import { IApplicationForm } from '../../types/types';
-import { apply } from '../../api/application';
+import { apply, getMyApplication } from '../../api/application';
+import {SavedApplicationForm} from'./SavedApplicationForm.tsx'
 import { Navigate } from 'react-router-dom';
 import { getContinentFromNationality } from './nationality';
 import { countryCodes } from './countryCodes.ts';
@@ -92,6 +93,9 @@ const ApplicationForm: React.FC = () => {
   const [selectedMonth, setSelectedMonth] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
 
+
+
+
   useEffect(() => {
     if (selectedDay && selectedMonth && selectedYear) {
       setFormValues((prevState) => ({
@@ -137,6 +141,21 @@ const ApplicationForm: React.FC = () => {
         email: user.email,
       }));
     }
+  }, [user]);
+
+  useEffect(() => {
+    const loadSubmissionStatus = async () => {
+      if (!user?.email) return;
+
+      try {
+        const response = await getMyApplication();
+        setSubmitted(Boolean(response.data.submitted));
+      } catch (error) {
+        console.error('Error checking submission status:', error);
+      }
+    };
+
+    loadSubmissionStatus();
   }, [user]);
 
   const handleChange = (
@@ -497,7 +516,7 @@ const ApplicationForm: React.FC = () => {
     }
 
     if (type === 'summary') {
-      return getSummary();
+      return getSummary(localStorage.getItem('applicationForm'));
     }
 
     return (
@@ -600,6 +619,7 @@ const ApplicationForm: React.FC = () => {
         <div className="outerContainer">
           <h1 className="applicationSectionHeader">Application submitted</h1>
           <p>Thank you for applying to ISFiT!</p>
+          <SavedApplicationForm />
           <div className="navigationButtons">
             <Button type="button" onClick={() => setRedirect(true)}>
               Back to Homepage

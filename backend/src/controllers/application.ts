@@ -52,32 +52,33 @@ const submitApplication = async (
         // Upload Certificate to Azure Blob Storage and set the URL in the application
         let studentCertificateUrl: string | undefined;
         if (studentCertificate) {
-            // Create the BlobServiceClient object with connection string
-            if (!AZURE_STORAGE_CONNECTION_STRING) {
-                throw Error("Azure Storage Connection string not found");
-            }
-            const blobServiceClient = BlobServiceClient.fromConnectionString(
-                AZURE_STORAGE_CONNECTION_STRING
-            );
-            const containerClient = blobServiceClient.getContainerClient(
-                "studentcertificates"
-            );
+            if (AZURE_STORAGE_CONNECTION_STRING) {
+                // Upload Certificate to Azure Blob Storage and set the URL in the application
+                const blobServiceClient = BlobServiceClient.fromConnectionString(
+                    AZURE_STORAGE_CONNECTION_STRING
+                );
+                const containerClient = blobServiceClient.getContainerClient(
+                    "studentcertificates"
+                );
 
-            const blobName = `certificate_${email}.pdf`;
-            const blockBlobClient =
-                containerClient.getBlockBlobClient(blobName);
-            const exists = await blockBlobClient.exists();
-            if (exists) {
-                await blockBlobClient.delete();
-            }
-            await blockBlobClient.upload(
-                studentCertificate,
-                studentCertificate.length
-            );
+                const blobName = `certificate_${email}.pdf`;
+                const blockBlobClient =
+                    containerClient.getBlockBlobClient(blobName);
+                const exists = await blockBlobClient.exists();
+                if (exists) {
+                    await blockBlobClient.delete();
+                }
+                await blockBlobClient.upload(
+                    studentCertificate,
+                    studentCertificate.length
+                );
 
-            // Get the URL of the uploaded blob
-            const blobUrl = blockBlobClient.url;
-            studentCertificateUrl = `${blobUrl}?${AZURE_STORAGE_DOWNLOAD_STRING}`;
+                const blobUrl = blockBlobClient.url;
+                studentCertificateUrl = `${blobUrl}?${AZURE_STORAGE_DOWNLOAD_STRING}`;
+            } else {
+                // Local development fallback: store the certificate buffer directly in MongoDB
+                studentCertificateUrl = undefined;
+            }
         } else {
             studentCertificateUrl = undefined;
         }
@@ -124,6 +125,34 @@ const submitApplication = async (
         res.status(201).json({
             message: "Application submitted successfully",
             application: newApplication,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+const getMyApplication = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    try {
+        const user = req.body.user as { email?: string } | undefined;
+        if (!user?.email) {
+            return res.status(401).json({ message: "Authentication required" });
+        }
+
+        const application = await Application.findOne({ email: user.email }).select('-studentCertificate');
+        if (!application) {
+            return res.status(404).json({
+                submitted: false,
+                application: null,
+            });
+        }
+
+        res.status(200).json({
+            submitted: true,
+            application,
         });
     } catch (error) {
         next(error);
@@ -202,4 +231,4 @@ const downloadCertificate = async (
     }
 };
 
-export { submitApplication, getApplications, downloadCertificate };
+export { submitApplication, getApplications, downloadCertificate, getMyApplication };

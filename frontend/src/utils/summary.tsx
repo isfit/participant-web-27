@@ -1,11 +1,13 @@
-export function getSummary() {
-  const savedForm = localStorage.getItem('applicationForm');
+import { IApplicationForm } from "../types/types";
+
+export function getSummary(savedForm: string | object | null) {
 
   if (!savedForm) {
     return <div>No application data found.</div>;
   }
 
-  const formValues = JSON.parse(savedForm);
+  const formValues =
+    typeof savedForm === 'string' ? JSON.parse(savedForm) : savedForm;
 
   return (
     <div>

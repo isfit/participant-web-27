@@ -19,7 +19,7 @@ export const apply = async (applicationForm: FormData) => {
 
 export const getApplications = async () => {
   const config = {
-    method: 'post',
+    method: 'get',
     maxBodyLength: Infinity,
     url: `${api_url}/api/application/applications`,
   };
@@ -30,7 +30,14 @@ export const getApplications = async () => {
     const message =
     error.response?.data?.errors?.[0]?.msg ?? 'Network error. Please try again later.';
     return { success: false, message };
-
-
   }
+};
+
+export const getMyApplication = async () => {
+  const config = {
+    method: 'get',
+    url: `${api_url}/api/application/me`,
+  };
+  const response = await axiosInstance.request(config);
+  return response;
 };
