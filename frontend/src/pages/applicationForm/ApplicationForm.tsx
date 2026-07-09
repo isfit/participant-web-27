@@ -77,6 +77,8 @@ const ApplicationForm: React.FC = () => {
           consentPersonalDetails: false,
           consentAttendance: false,
           consentMedia: '',
+          summary: '',
+          summaryCheck: false,
         };
   });
   const [redirect, setRedirect] = useState(false);
@@ -146,64 +148,39 @@ const ApplicationForm: React.FC = () => {
   ) => {
     const { name, value, type } = e.target;
     const isCheckbox = type === 'checkbox';
+    const fieldName = name as keyof IApplicationForm;
+
+    if (fieldName === 'dependents') {
+      const numericValue = parseInt(value, 10);
+      setFormValues((prevState) => ({
+        ...prevState,
+        dependents: Number.isNaN(numericValue) || numericValue < 0 ? 0 : numericValue,
+      }));
+      return;
+    }
+
+    if (type === 'textarea') {
+      const wordCount = value.trim().split(/\s+/).filter(Boolean).length;
+      const over100 = ['themeCWThoughts', 'otherFundingInfo', 'how'].includes(name);
+      const over300 = ['countryCW', 'contribution', 'financialSupportReason'].includes(name);
+
+      if ((over100 && wordCount > 100) || (over300 && wordCount > 300)) {
+        return;
+      }
+    }
+
     setFormValues((prevState) => {
       const updatedValues = {
         ...prevState,
         [name]: isCheckbox ? (e.target as HTMLInputElement).checked : value,
       };
 
-      // Update the continent field based on the selected nationality
       if (name === 'nationality') {
-        const continent = getContinentFromNationality(value);
-        updatedValues['continent'] = continent;
+        updatedValues.continent = getContinentFromNationality(value);
       }
 
       return updatedValues;
     });
-
-    // Handling the "dependents" field
-    if (name === 'dependents') {
-      const numericValue = parseInt(value, 10);
-      if (numericValue < 0) {
-        setFormValues((prevState) => ({
-          ...prevState,
-          [name]: 0,
-        }));
-        return;
-      }
-    }
-
-    // Updating text areas with word limit constraints
-    if (type === 'textarea') {
-      const wordCount = value.trim().split(/\s+/).length;
-      if (
-        ((name === 'themeCWThoughts' || name === 'otherFundingInfo' || name === 'how') &&
-          wordCount <= 100) ||
-        ((name === 'countryCW' ||
-          name === 'contribution' ||
-          name === 'financialSupportReason') &&
-          wordCount <= 300)
-      ) {
-        setFormValues((prevState) => ({
-          ...prevState,
-          [name]: value,
-        }));
-      }
-    } else {
-      setFormValues((prevState) => ({
-        ...prevState,
-        [name]: isCheckbox ? (e.target as HTMLInputElement).checked : value,
-      }));
-    }
-
-    // Separate state update for nationality/continent logic
-    if (name === 'nationality') {
-      const continent = getContinentFromNationality(value);
-      setFormValues((prevState) => ({
-        ...prevState,
-        continent,
-      }));
-    }
   };
 
   const handlePhoneNumberChange = (
@@ -232,31 +209,56 @@ const ApplicationForm: React.FC = () => {
     const { name } = e.target;
     const file = e.target.files?.[0];
 
-    if (file) {
-      if (!['application/pdf'].includes(file.type)) {
-        alert('File must be a PDF.');
-        e.target.value = '';
-        return;
-      }
-      if (file.size > 1.8 * 1024 * 1024) {
-        // 1.8 MB limit
-        alert('File size exceeds 1.8 MB');
-        e.target.value = '';
-        return;
-      }
+    if (!file) {
+      setFormValues((prevState) => ({
+        ...prevState,
+        [name]: undefined,
+      }));
+      return;
+    }
+
+    if (!['application/pdf'].includes(file.type)) {
+      alert('File must be a PDF.');
+      e.target.value = '';
+      setFormValues((prevState) => ({
+        ...prevState,
+        [name]: undefined,
+      }));
+      return;
+    }
+
+    if (file.size > 1.8 * 1024 * 1024) {
+      alert('File size exceeds 1.8 MB');
+      e.target.value = '';
+      setFormValues((prevState) => ({
+        ...prevState,
+        [name]: undefined,
+      }));
+      return;
     }
 
     setFormValues((prevState) => ({
       ...prevState,
-      [name]: file || undefined,
+      [name]: file,
     }));
+  };
+
+  const isFieldFilled = (fieldName: keyof IApplicationForm) => {
+    const value = formValues[fieldName];
+    if (fieldName === 'studentCertificate') {
+      return value instanceof File;
+    }
+    if (typeof value === 'string') {
+      return value.trim().length > 0;
+    }
+    return value !== undefined && value !== null;
   };
 
   const validateStep = () => {
     const currentFields = getCurrentFields();
     const stepErrors: string[] = [];
     currentFields.forEach((field) => {
-      if (field.required && !formValues[field.name]) {
+      if (field.required && !isFieldFilled(field.name)) {
         stepErrors.push(field.label);
       }
     });

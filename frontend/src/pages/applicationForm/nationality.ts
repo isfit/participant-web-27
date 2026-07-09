@@ -257,6 +257,7 @@ export const nationalities = [
     'Dutch',
     'Timorese',
     'Ecuadorean',
+    'El Salvador / Salvadoran',
     'Egyptian',
     'Emirati',
     'Equatorial Guinean',

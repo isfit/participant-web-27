@@ -37,8 +37,8 @@ export interface IApplicationForm {
   studyField: string;
   university: string;
   universityWebsite?: string;
-  how: string; 
-  studentCertificate?: Buffer;
+  how: string;
+  studentCertificate?: File | Buffer;
   studentCertificateUrl?: string;
   isEnglishSpeaker: boolean;
   applyingAs: string;
