@@ -9,6 +9,7 @@ import { ROLES } from '../../config/roles';
 import { Button } from '@radix-ui/themes';
 import cross from '../../../public/cross.svg';
 import axiosInstance from '../../api/axios';
+import { generateResetLink } from '../../api/auth';
 
 const api_url: string = import.meta.env.VITE_API_URL;
 
@@ -20,6 +21,27 @@ const AdminPage: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const [numOfApplciation, setNumOfApplication] = useState(0);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetLink, setResetLink] = useState<string | undefined>();
+  const [resetError, setResetError] = useState<string | undefined>();
+  const [resetLoading, setResetLoading] = useState(false);
+
+  const handleGenerateResetLink = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setResetLoading(true);
+    setResetError(undefined);
+    setResetLink(undefined);
+    try {
+      const link = await generateResetLink(resetEmail);
+      setResetLink(link);
+    } catch (error: any) {
+      setResetError(
+        error.response?.data?.message || 'Failed to generate reset link',
+      );
+    } finally {
+      setResetLoading(false);
+    }
+  };
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -252,6 +274,40 @@ const AdminPage: React.FC = () => {
         <Header linkTo="/homepage" />
       </div>
       <div>
+        <div className={styles.filterContainer}>
+          <form onSubmit={handleGenerateResetLink}>
+            <label>
+              Reset password for
+              <input
+                type="email"
+                value={resetEmail}
+                onChange={(e) => {
+                  setResetEmail(e.target.value);
+                  setResetError(undefined);
+                  setResetLink(undefined);
+                }}
+                placeholder="name@email.com"
+                required
+              />
+            </label>
+            <Button disabled={resetLoading}>
+              {resetLoading ? 'Generating...' : 'Generate Reset Link'}
+            </Button>
+          </form>
+          {resetError && <div style={{ color: 'red' }}>{resetError}</div>}
+          {resetLink && (
+            <div>
+              <p>Send this link to the user (expires in 1 hour):</p>
+              <input type="text" readOnly value={resetLink} onFocus={(e) => e.target.select()} />
+              <Button
+                type="button"
+                onClick={() => navigator.clipboard.writeText(resetLink)}
+              >
+                Copy
+              </Button>
+            </div>
+          )}
+        </div>
         <div className={styles.filterContainer}>
           <label>
             Start Date

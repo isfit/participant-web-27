@@ -5,6 +5,7 @@ import { Request, Response, NextFunction } from "express";
 import exp from "constants";
 import { body, validationResult } from "express-validator";
 import { ROLES } from "../../config/roles";
+import crypto from "crypto";
 
 // Register
 const register = [
@@ -112,6 +113,75 @@ const refresh = async (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-export { register, login, refresh };
+// Generate reset link (admin-only) - admin sends this link to the user manually
+const generateResetLink = async (req: Request, res: Response, next: NextFunction) => {
+    const { email } = req.body;
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Generate reset token
+        const resetToken = crypto.randomBytes(32).toString('hex');
+        const hashedToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+        // Save hashed token and expiration to database
+        user.resetPasswordToken = hashedToken;
+        user.resetPasswordExpires = new Date(Date.now() + 3600000); // 1 hour from now
+        await user.save();
+
+        const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+        const resetLink = `${frontendUrl}/reset-password?token=${resetToken}`;
+
+        res.status(200).json({ resetLink });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// Reset Password - Verify token and update password
+const resetPassword = [
+    body("token").isString().withMessage("Token is required"),
+    body("newPassword")
+        .isString()
+        .isLength({ min: 8, max: 50 })
+        .withMessage("Password must be at least 8 characters long"),
+
+    async (req: Request, res: Response, next: NextFunction) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const { token, newPassword } = req.body;
+        try {
+            // Hash the token to compare with stored one
+            const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+            // Find user with valid token
+            const user = await User.findOne({
+                resetPasswordToken: hashedToken,
+                resetPasswordExpires: { $gt: new Date() },
+            });
+
+            if (!user) {
+                return res.status(400).json({ message: "Invalid or expired token" });
+            }
+
+            // Update password
+            user.password = newPassword;
+            user.resetPasswordToken = undefined;
+            user.resetPasswordExpires = undefined;
+            await user.save();
+
+            res.status(200).json({ message: "Password reset successful" });
+        } catch (error) {
+            next(error);
+        }
+    },
+];
+
+export { register, login, refresh, generateResetLink, resetPassword };
 
 const auth = {};

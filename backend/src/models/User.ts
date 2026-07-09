@@ -6,6 +6,8 @@ interface IUser {
     email: string;
     password: string;
     role: string;
+    resetPasswordToken?: string;
+    resetPasswordExpires?: Date;
     comparePassword: (password: string) => Promise<boolean>;
 };
 
@@ -28,6 +30,14 @@ const userSchema = new Schema<IUser>({
         type: String,
         enum: ['ADMIN', 'USER'],
         default: 'USER'
+    },
+    resetPasswordToken: {
+        type: String,
+        default: null
+    },
+    resetPasswordExpires: {
+        type: Date,
+        default: null
     }
 });
 

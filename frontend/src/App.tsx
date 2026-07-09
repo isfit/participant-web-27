@@ -10,6 +10,7 @@ import PrivateRoute from './components/Routing/PrivateRoutes';
 import AdminPage from './pages/adminPage/AdminPage';
 import FAQ from './pages/faq/FAQ';
 import ProtectedAdminRoute from './components/Routing/AdminRoutes';
+import ResetPassword from './pages/resetPassword/ResetPassword';
 
 const App: React.FC = () => {
   return (
@@ -19,6 +20,7 @@ const App: React.FC = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/createUser" element={<CreateUser />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/homePage" element={<HomePage />} />
           <Route

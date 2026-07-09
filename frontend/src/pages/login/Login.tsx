@@ -88,6 +88,7 @@ const Login: React.FC = () => {
           <Button className={styles.submitButton}>Login</Button>
           {errorMessage && <div className="errorMessage">{errorMessage}</div>}
           <br />
+
           <div className={styles.createUserPrompt}>Don't have an account?</div>
 
           <Link to="/createUser" className={styles.createUserLink}>
