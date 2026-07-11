@@ -502,8 +502,10 @@ const ApplicationForm: React.FC = () => {
       return getSummary();
     }
 
+    const Wrapper = type === 'file' ? 'div' : 'label';
+
     return (
-      <label key={name} className="formSection">
+      <Wrapper key={name} className="formSection">
         <p>{labelElement || label}</p>
         {type === 'textarea' && (
           <textarea
@@ -569,7 +571,7 @@ const ApplicationForm: React.FC = () => {
               placeholder={placeholder}
             />
           )}
-      </label>
+      </Wrapper>
     );
   };
 
