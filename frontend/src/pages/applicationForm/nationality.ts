@@ -501,6 +501,7 @@ const nationalityToContinent: { [key: string]: string } = {
     Kiribati: 'Australia',
     Kuwaiti: 'Asia',
     Kyrgyz: 'Asia',
+    Kosovar: 'Europe',
     Laotian: 'Asia',
     Latvian: 'Europe',
     Lebanese: 'Asia',
