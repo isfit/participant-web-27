@@ -339,6 +339,16 @@ const ApplicationForm: React.FC = () => {
     },
   ];
 
+  const renderLabel = (
+    content: JSX.Element | string,
+    required?: boolean,
+  ) => (
+    <>
+      {content}
+      {required && <span className="requiredAsterisk">*</span>}
+    </>
+  );
+
   const renderInput = ({
     label,
     labelElement,
@@ -351,7 +361,7 @@ const ApplicationForm: React.FC = () => {
     if (name === 'dateOfBirth') {
       return (
         <label key={name} className="formSection">
-          <p>{label}</p>
+          <p>{renderLabel(label, required)}</p>
           <div className="dobContainer">
             <select
               name="day"
@@ -412,7 +422,7 @@ const ApplicationForm: React.FC = () => {
       const continent = getContinentFromNationality(nationality);
       return (
         <label key={name} className="formSection">
-          <p>{label}</p>
+          <p>{renderLabel(label, required)}</p>
           <input
             type={type}
             name={name}
@@ -430,7 +440,7 @@ const ApplicationForm: React.FC = () => {
     if (name === 'phoneNumber') {
       return (
         <label key={name} className="formSection">
-          <p>{label}</p>
+          <p>{renderLabel(label, required)}</p>
           <div className="phoneInputContainer">
             <select
               name="countryCode"
@@ -476,7 +486,9 @@ const ApplicationForm: React.FC = () => {
               className="checkboxInput"
               required={required}
             />
-            <span className="checkboxLabel">{labelElement || label}</span>
+            <span className="checkboxLabel">
+              {renderLabel(labelElement || label, required)}
+            </span>
           </div>
         </label>
       );
@@ -485,7 +497,7 @@ const ApplicationForm: React.FC = () => {
     if (type === 'textarea') {
       return (
         <label key={name} className="formSection">
-          <p>{label}</p>
+          <p>{renderLabel(label, required)}</p>
           <textarea
             name={name}
             value={formValues[name] as string}
@@ -506,7 +518,7 @@ const ApplicationForm: React.FC = () => {
 
     return (
       <Wrapper key={name} className="formSection">
-        <p>{labelElement || label}</p>
+        <p>{renderLabel(labelElement || label, required)}</p>
         {type === 'textarea' && (
           <textarea
             name={name}
@@ -697,6 +709,9 @@ const ApplicationForm: React.FC = () => {
           <form id="applicationContainer">
             <div className="outerContainerSection">
               <h1 className="applicationSectionHeader">{steps[currentStep]}</h1>
+              <p className="requiredLegend">
+                <span className="requiredAsterisk">*</span> Required question
+              </p>
               {renderStep()}
             </div>
           </form>
