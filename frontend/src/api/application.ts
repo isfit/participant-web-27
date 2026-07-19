@@ -7,9 +7,6 @@ export const apply = async (applicationForm: FormData) => {
     method: 'post',
     maxBodyLength: Infinity,
     url: `${api_url}/api/application/apply`,
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
     data: applicationForm,
   };
   const response = await axiosInstance.request(config);
