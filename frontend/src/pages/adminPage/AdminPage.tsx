@@ -297,7 +297,7 @@ const AdminPage: React.FC = () => {
           {resetError && <div style={{ color: 'red' }}>{resetError}</div>}
           {resetLink && (
             <div>
-              <p>Send this link to the user (expires in 1 hour):</p>
+              <p>Send this link to the user (expires in 24 hours):</p>
               <input type="text" readOnly value={resetLink} onFocus={(e) => e.target.select()} />
               <Button
                 type="button"

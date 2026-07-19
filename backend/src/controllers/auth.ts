@@ -128,7 +128,7 @@ const generateResetLink = async (req: Request, res: Response, next: NextFunction
 
         // Save hashed token and expiration to database
         user.resetPasswordToken = hashedToken;
-        user.resetPasswordExpires = new Date(Date.now() + 3600000); // 1 hour from now
+        user.resetPasswordExpires = new Date(Date.now() + 24 * 3600000); // 24 hours from now
         await user.save();
 
         const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
