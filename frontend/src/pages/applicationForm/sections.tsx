@@ -94,6 +94,7 @@ export const personalDetails: FormField[] = [
     name: 'how',
     type: 'text',
     placeholder: 'I heard about ISFiT27 through...',
+    required: true,
   },
   {
     labelElement: (
